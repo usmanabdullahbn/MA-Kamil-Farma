@@ -1,0 +1,96 @@
+.simple-page { padding-top:112px; }
+.simple-hero { background:linear-gradient(160deg,var(--navy-dark) 0%,var(--navy) 100%); padding:72px 0 56px; }
+.simple-body { padding:64px 24px 96px; }
+
+/* About */
+.about-ceo { background:var(--navy-dark); border-radius:var(--r-xl); padding:52px; margin-bottom:0; border-left:4px solid var(--gold); }
+.about-ceo__quote-mark { font-family:var(--font-display); font-size:5rem; color:var(--gold); line-height:1; opacity:.4; margin-bottom:-16px; }
+.about-ceo__text { font-family:var(--font-display); font-style:italic; font-size:1.15rem; color:rgba(255,255,255,0.82); line-height:1.8; margin-bottom:28px; }
+.about-ceo__author { display:flex; align-items:center; gap:14px; }
+.about-ceo__avatar { width:48px; height:48px; border-radius:50%; background:linear-gradient(135deg,var(--gold),var(--gold-dark)); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:var(--navy-dark); font-family:var(--font-display); }
+.about-ceo__name { font-size:14px; font-weight:600; color:var(--white); }
+.about-ceo__title { font-size:12px; color:var(--gold); }
+
+.about-timeline { max-width:720px; margin:32px 0; }
+.timeline-item { display:grid; grid-template-columns:100px 1fr; gap:32px; padding:24px 0; border-bottom:1px solid var(--gray-100); }
+.timeline-item:last-child { border-bottom:none; }
+.timeline-year { font-family:var(--font-display); font-size:1.2rem; font-weight:600; color:var(--gold-dark); text-align:right; padding-right:24px; border-right:2px solid var(--gray-100); position:relative; }
+.timeline-year::after { content:''; position:absolute; right:-6px; top:8px; width:10px; height:10px; border-radius:50%; background:var(--gold); border:2px solid var(--white); box-shadow:0 0 0 2px var(--gold-light); }
+.timeline-content h3 { font-family:var(--font-display); font-size:1.1rem; font-weight:600; color:var(--navy); margin-bottom:6px; }
+.timeline-content p { font-size:14px; color:var(--gray-500); line-height:1.65; }
+
+.values-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; margin-top:32px; }
+.value-card { padding:28px; border-radius:var(--r-lg); border:1px solid var(--gray-100); background:var(--off-white); }
+.value-icon { font-size:28px; display:block; margin-bottom:12px; }
+.value-card h3 { font-family:var(--font-display); font-size:1rem; font-weight:600; color:var(--navy); margin-bottom:8px; }
+.value-card p { font-size:13.5px; color:var(--gray-500); line-height:1.65; }
+
+.about-policies { margin-top:64px; }
+.policies-grid { display:flex; flex-direction:column; gap:8px; margin-top:24px; }
+.policy-item { display:flex; align-items:center; gap:12px; padding:14px 18px; border-radius:var(--r-sm); border:1px solid var(--gray-100); background:var(--white); transition:box-shadow var(--t-fast); }
+.policy-item:hover { box-shadow:var(--shadow-sm); }
+.policy-item svg { color:var(--navy); flex-shrink:0; }
+.policy-item span { flex:1; font-size:14px; color:var(--gray-600); }
+.policy-item a { font-size:12.5px; color:var(--navy); font-weight:600; }
+
+/* Science */
+.trials-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:20px; margin-top:32px; }
+.trial-card { padding:28px; border-radius:var(--r-lg); border:1px solid var(--gray-100); background:var(--white); display:flex; flex-direction:column; gap:8px; }
+.trial-metric { font-family:var(--font-display); font-size:2.8rem; font-weight:700; color:var(--green); line-height:1; }
+.trial-label { font-size:14px; font-weight:600; color:var(--navy); }
+.trial-product { font-size:12px; font-weight:600; color:var(--gold-dark); }
+.trial-detail { font-size:13px; color:var(--gray-500); line-height:1.6; flex:1; }
+
+.tech-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:20px; margin-top:32px; }
+.tech-card { padding:24px; border-radius:var(--r-lg); border:1px solid var(--gray-100); background:var(--off-white); }
+.tech-icon { font-size:28px; display:block; margin-bottom:12px; }
+.tech-card h3 { font-family:var(--font-display); font-size:1rem; font-weight:600; color:var(--navy); margin-bottom:8px; }
+.tech-card p { font-size:13.5px; color:var(--gray-500); line-height:1.65; }
+
+.downloads-section { margin-top:64px; }
+.downloads-grid { display:flex; flex-direction:column; gap:8px; margin-top:24px; }
+.download-item { display:flex; align-items:center; gap:12px; padding:14px 18px; border-radius:var(--r-sm); border:1px solid var(--gray-100); background:var(--white); color:var(--gray-600); font-size:14px; transition:all var(--t-fast); }
+.download-item:hover { background:var(--navy); color:var(--white); }
+
+/* Industries */
+.industry-detail { padding:36px; border-radius:var(--r-xl); border:1px solid var(--gray-100); background:var(--white); margin-bottom:24px; border-left:4px solid var(--ic,var(--navy)); }
+.industry-detail__header { display:flex; align-items:flex-start; gap:20px; margin-bottom:16px; }
+.industry-icon { font-size:36px; flex-shrink:0; }
+.industry-focus { font-size:12px; font-weight:600; color:var(--ic,var(--navy)); letter-spacing:.05em; margin-top:6px; }
+.industry-desc { font-size:15px; color:var(--gray-600); line-height:1.75; margin-bottom:18px; }
+.industry-products { display:flex; flex-wrap:wrap; gap:8px; }
+.industry-product { padding:6px 14px; border-radius:100px; font-size:12.5px; font-weight:500; background:var(--gray-100); color:var(--gray-600); }
+
+/* Contact */
+.contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start; }
+.contact-info h2,.contact-form-box h2 { font-family:var(--font-display); font-size:1.5rem; font-weight:600; color:var(--navy); margin-bottom:28px; }
+.contact-row { display:flex; align-items:flex-start; gap:14px; padding:14px 0; border-bottom:1px solid var(--gray-100); }
+.contact-row:last-of-type { border-bottom:none; }
+.contact-icon { font-size:18px; flex-shrink:0; margin-top:2px; }
+.contact-label { font-size:10.5px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-400); margin-bottom:3px; }
+.contact-val { font-size:15px; color:var(--gray-800); font-weight:500; }
+.distributor-map { margin-top:28px; padding:20px; background:var(--off-white); border-radius:var(--r-lg); }
+.distributor-map h3 { font-family:var(--font-display); font-size:1rem; font-weight:600; color:var(--navy); margin-bottom:14px; }
+.dist-region { display:grid; grid-template-columns:80px 1fr; gap:12px; padding:8px 0; border-bottom:1px solid var(--gray-100); font-size:13px; }
+.dist-region:last-child { border-bottom:none; }
+.dist-region__name { font-weight:700; color:var(--navy); }
+.dist-region__detail { color:var(--gray-500); }
+.contact-form { display:flex; flex-direction:column; gap:16px; }
+.form-field { display:flex; flex-direction:column; gap:6px; }
+.form-field label { font-size:11.5px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; color:var(--gray-500); }
+.form-field input,.form-field select,.form-field textarea { padding:11px 14px; border-radius:var(--r-sm); border:1.5px solid var(--gray-200); font-size:14px; color:var(--gray-800); transition:border-color var(--t-fast); background:var(--white); font-family:var(--font-body); resize:vertical; }
+.form-field input:focus,.form-field select:focus,.form-field textarea:focus { outline:none; border-color:var(--navy); }
+.contact-form-box { background:var(--off-white); border-radius:var(--r-xl); padding:40px; border:1px solid var(--gray-100); }
+
+/* Join */
+.jobs-list { display:flex; flex-direction:column; gap:12px; margin-top:28px; }
+.job-card { display:flex; align-items:center; justify-content:space-between; padding:22px 24px; border-radius:var(--r-lg); border:1px solid var(--gray-100); background:var(--white); transition:box-shadow var(--t-fast); }
+.job-card:hover { box-shadow:var(--shadow-md); }
+.job-card h3 { font-family:var(--font-display); font-size:1rem; font-weight:600; color:var(--navy); margin-bottom:10px; }
+.job-card__tags { display:flex; gap:8px; }
+.distributor-cta { display:flex; align-items:center; justify-content:space-between; gap:40px; background:var(--navy-dark); border-radius:var(--r-xl); padding:52px; }
+.distributor-cta .section-lead { color:rgba(255,255,255,0.65); }
+
+@media (max-width:1000px) { .trials-grid,.tech-grid{grid-template-columns:repeat(2,1fr)} }
+@media (max-width:900px) { .contact-grid{grid-template-columns:1fr} .values-grid{grid-template-columns:repeat(2,1fr)} .timeline-item{grid-template-columns:80px 1fr;gap:16px} .distributor-cta{flex-direction:column;align-items:flex-start;padding:36px} }
+@media (max-width:560px) { .values-grid{grid-template-columns:1fr} .trials-grid,.tech-grid{grid-template-columns:1fr} .job-card{flex-direction:column;align-items:flex-start;gap:14px} }
