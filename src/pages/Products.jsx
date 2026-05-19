@@ -3,18 +3,6 @@ import { Link, useParams, useSearchParams } from 'react-router-dom';
 import './Products.css';
 
 const BRANDS = {
-  'pharma-nutra': {
-    name: 'Pharma & Nutra Excipients', color: '#003366', icon: '⚗️',
-    desc: 'High-purity raw materials, amino acids, vitamins, and excipients for pharmaceutical and nutraceutical manufacturers.',
-    products: [
-      { name: 'L-Lysine HCl 98.5%', form: 'Powder', species: 'All', desc: 'Essential amino acid for feed fortification and pharma formulations.' },
-      { name: 'DL-Methionine 99%', form: 'Powder', species: 'All', desc: 'Sulphur-containing amino acid for poultry and livestock nutrition.' },
-      { name: 'Vitamin A Acetate', form: 'Powder', species: 'All', desc: 'Stabilised vitamin A for premix and feed applications.' },
-      { name: 'Vitamin D3 500,000 IU', form: 'Powder', species: 'All', desc: 'High-potency cholecalciferol for bone health and immunity.' },
-      { name: 'Choline Chloride 60%', form: 'Powder', species: 'Poultry', desc: 'Essential nutrient for liver function and fat metabolism.' },
-      { name: 'Sodium Bicarbonate IP', form: 'Powder', species: 'All', desc: 'Pharmaceutical-grade buffering agent and excipient.' },
-    ]
-  },
   'kamil-farma': {
     name: 'M.A. Kamil Farma Line', color: '#1e6b40', icon: '💊',
     desc: 'Registered veterinary pharmaceuticals for poultry and livestock — antibiotics, anti-virals, phytogenics, and premixes.',
@@ -49,16 +37,7 @@ const BRANDS = {
       { name: 'Flea & Tick Spray', form: 'Liquid', species: 'Dogs & Cats', desc: 'Safe, effective ectoparasite control spray for pets.' },
     ]
   },
-  'indenting': {
-    name: 'Indenting Division', color: '#4a6080', icon: '🌍',
-    desc: 'Import and supply of antibiotics, additives, premixes, and toxin binders from global manufacturers.',
-    products: [
-      { name: 'Imported Antibiotics', form: 'Various', species: 'All', desc: 'Wide range of imported veterinary antibiotics from certified global suppliers.' },
-      { name: 'Feed Additives Range', form: 'Powder', species: 'All', desc: 'Enzymes, organic acids, and specialty additives from Europe & Asia.' },
-      { name: 'Premix Ingredients', form: 'Powder', species: 'All', desc: 'Micro and macro mineral premix raw materials for feed manufacturers.' },
-      { name: 'Toxin Binders', form: 'Powder', species: 'All', desc: 'Imported mycotoxin binders with certificate of analysis.' },
-    ]
-  },
+
 };
 
 const SPECIES = ['All', 'Poultry', 'Dairy', 'Livestock', 'Aquaculture', 'Dogs & Cats'];

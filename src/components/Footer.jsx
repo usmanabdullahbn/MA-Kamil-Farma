@@ -48,11 +48,9 @@ export default function Footer() {
           {/* Products */}
           <div className="footer__col">
             <h4>Products</h4>
-            <Link to="/products/pharma-nutra">Pharma & Nutra Excipients</Link>
             <Link to="/products/kamil-farma">M.A. Kamil Farma Line</Link>
             <Link to="/products/rotamin">Rotamin Line</Link>
             <Link to="/products/pet-care">Pet Care</Link>
-            <Link to="/products/indenting">Indenting Division</Link>
           </div>
 
           {/* Company */}

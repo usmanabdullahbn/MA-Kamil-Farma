@@ -19,11 +19,9 @@ const NAV = [
       {
         title: 'By Brand',
         links: [
-          { label: 'Pharma & Nutra Excipients', to: '/products/pharma-nutra' },
           { label: 'M.A. Kamil Farma Line', to: '/products/kamil-farma' },
           { label: 'Rotamin Line', to: '/products/rotamin' },
           { label: 'Pet Care', to: '/products/pet-care' },
-          { label: 'Indenting Division', to: '/products/indenting' },
         ]
       },
       {

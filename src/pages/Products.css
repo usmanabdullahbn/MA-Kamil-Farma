@@ -5,7 +5,7 @@
 .products-hero__icon { font-size:36px; }
 
 .products-brands { background:var(--off-white); padding:48px 0; }
-.products-brands-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:16px; }
+.products-brands-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
 .brand-card {
   padding:24px 20px; border-radius:var(--r-lg);
   border:1px solid var(--gray-100); background:var(--white);
