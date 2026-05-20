@@ -178,7 +178,6 @@ const PRODUCTS = [
 const INDUSTRIES = [
   { icon: '🌾', title: 'Feed Mills', color: '#2E8B57', desc: 'Binders and Rotamin portfolio for optimal pellet quality and nutritional value.', focus: 'Rotamin · Binders · Premixes' },
   { icon: '🐄', title: 'Farms & Doctors', color: '#003366', desc: 'Antibiotics, phytogenics, and herd health management solutions.', focus: 'Antibiotics · Phytogenics · Anti-Virals' },
-  { icon: '🧪', title: 'Pharma & Nutra', color: '#C9A635', desc: 'High-purity excipients, raw materials, amino acids, and vitamins for manufacturers.', focus: 'Amino Acids · Vitamins · Excipients' },
   { icon: '🐟', title: 'Aquaculture', color: '#1a5c99', desc: 'Tailored solutions for sustainable aquaculture operations.', focus: 'Coming Soon' },
 ];
 
