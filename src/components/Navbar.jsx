@@ -20,8 +20,6 @@ const NAV = [
         title: 'By Brand',
         links: [
           { label: 'M.A. Kamil Farma Line', to: '/products/kamil-farma' },
-          { label: 'Rotamin Line', to: '/products/rotamin' },
-          { label: 'Pet Care', to: '/products/pet-care' },
         ]
       },
       {
@@ -44,6 +42,8 @@ const NAV = [
       {
         title: 'Featured',
         links: [
+          { label: 'Rotamin Line', to: '/products/rotamin' },
+          { label: 'Pet Care', to: '/products/pet-care' },
           { label: 'Feed Additives', to: 'https://feedadditives.makamilfarma.com', external: true },
         ]
       },
