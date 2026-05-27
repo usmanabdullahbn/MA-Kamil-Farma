@@ -3,6 +3,73 @@ import { Link, useParams } from 'react-router-dom';
 import { api } from '../utils/api';
 import './Blog.css';
 
+// CRUD Modal Component
+function BlogModal({ blog, onSave, onClose }) {
+  const [form, setForm] = useState(blog || {
+    title: '', excerpt: '', content: '', category: 'General', tags: '', author: 'M.A. Kamil Farma', published: false, readTime: 0
+  });
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const data = {
+      ...form,
+      tags: form.tags.split(',').map(t => t.trim()).filter(t => t),
+      readTime: parseInt(form.readTime) || 0,
+      published: form.published === true || form.published === 'true',
+    };
+    await onSave(data);
+    setLoading(false);
+    onClose();
+  };
+
+  return (
+    <div className="blog-modal" onClick={onClose}>
+      <div className="blog-modal__content" onClick={e => e.stopPropagation()}>
+        <button className="blog-modal__close" onClick={onClose}>✕</button>
+        <h2>{blog ? 'Edit Blog' : 'Create Blog'}</h2>
+        <form onSubmit={handleSubmit} className="blog-form">
+          <input type="text" placeholder="Title" required value={form.title} onChange={e => setForm({...form, title: e.target.value})} />
+          <textarea placeholder="Excerpt" required value={form.excerpt} onChange={e => setForm({...form, excerpt: e.target.value})} rows="2"></textarea>
+          <textarea placeholder="Content (HTML allowed)" required value={form.content} onChange={e => setForm({...form, content: e.target.value})} rows="8"></textarea>
+          
+          <div className="blog-form__row">
+            <select value={form.category} onChange={e => setForm({...form, category: e.target.value})}>
+              <option>General</option>
+              <option>Poultry</option>
+              <option>Livestock</option>
+              <option>Feed Additives</option>
+              <option>Compounding Pharmacy</option>
+              <option>Industry News</option>
+              <option>Science</option>
+              <option>Research</option>
+              <option>Innovation</option>
+              <option>Sustainability</option>
+            </select>
+            <input type="text" placeholder="Author" value={form.author} onChange={e => setForm({...form, author: e.target.value})} />
+          </div>
+
+          <div className="blog-form__row">
+            <input type="text" placeholder="Tags (comma-separated)" value={form.tags} onChange={e => setForm({...form, tags: e.target.value})} />
+            <input type="number" placeholder="Read time (min)" value={form.readTime} onChange={e => setForm({...form, readTime: e.target.value})} />
+          </div>
+
+          <label className="blog-checkbox">
+            <input type="checkbox" checked={form.published === true || form.published === 'true'} onChange={e => setForm({...form, published: e.target.checked})} />
+            Published
+          </label>
+
+          <div className="blog-form__actions">
+            <button type="submit" disabled={loading} className="btn btn--navy">{loading ? 'Saving...' : 'Save Blog'}</button>
+            <button type="button" onClick={onClose} className="btn btn--outline">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
 const MOCK_BLOGS = [
   { _id:'1', slug:'one-health-future', category:'Science', title:'One Health: The Future of Veterinary Pharmaceutical Design', excerpt:'The One Health approach — recognizing the inseparable connection between human, animal, and environmental health — is reshaping how pharmaceutical companies design their products.', publishedAt:'2026-04-14', readTime:6 },
   { _id:'2', slug:'antibiotic-resistance-pakistan', category:'Industry News', title:"Antibiotic Resistance in Pakistan's Livestock Sector: What Farmers Must Know", excerpt:"Pakistan's livestock sector faces a growing antibiotic resistance crisis. Understanding the economic and health implications is critical for every farmer and veterinarian.", publishedAt:'2026-04-01', readTime:8 },
@@ -22,6 +89,15 @@ export function Blog() {
   const [page, setPage] = useState(1);
   const [activeCategory, setActiveCategory] = useState('');
   const [pagination, setPagination] = useState(null);
+  
+  // Admin CRUD states
+  const [isAdmin, setIsAdmin] = useState(!!localStorage.getItem('adminToken'));
+  const [adminToken, setAdminToken] = useState(localStorage.getItem('adminToken') || '');
+  const [showTokenForm, setShowTokenForm] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [editingBlog, setEditingBlog] = useState(null);
+  const [adminLoading, setAdminLoading] = useState(false);
+  const [allBlogs, setAllBlogs] = useState([]);
 
   useEffect(() => {
     setLoading(true);
@@ -31,11 +107,110 @@ export function Blog() {
       .finally(() => setLoading(false));
   }, [page, activeCategory]);
 
+  useEffect(() => {
+    const handleAdminModalRequest = () => {
+      if (localStorage.getItem('showAdminModal') === 'true') {
+        setShowTokenForm(true);
+        localStorage.removeItem('showAdminModal');
+      }
+    };
+    window.addEventListener('adminModalRequested', handleAdminModalRequest);
+    return () => window.removeEventListener('adminModalRequested', handleAdminModalRequest);
+  }, []);
+
+  const fetchAllBlogs = () => {
+    setAdminLoading(true);
+    api.blogs.list({ page: 1, limit: 1000 })
+      .then(r => setAllBlogs(r.data))
+      .catch(() => setAllBlogs([]))
+      .finally(() => setAdminLoading(false));
+  };
+
+  const handleAdminLogin = (e) => {
+    e.preventDefault();
+    localStorage.setItem('adminToken', adminToken);
+    setIsAdmin(true);
+    setShowTokenForm(false);
+    fetchAllBlogs();
+  };
+
+  const handleAdminLogout = () => {
+    localStorage.removeItem('adminToken');
+    setIsAdmin(false);
+    setAdminToken('');
+    setAllBlogs([]);
+  };
+
+  const handleSaveBlog = async (data) => {
+    try {
+      if (editingBlog) {
+        await api.blogs.update(editingBlog._id, data);
+      } else {
+        await api.blogs.create(data);
+      }
+      setLoading(true);
+      api.blogs.list({ page, limit: 9, category: activeCategory })
+        .then(r => { setBlogs(r.data); setPagination(r.pagination); })
+        .catch(() => setBlogs(MOCK_BLOGS))
+        .finally(() => setLoading(false));
+      fetchAllBlogs();
+      setEditingBlog(null);
+    } catch (err) {
+      alert('Error: ' + err.message);
+    }
+  };
+
+  const handleDeleteBlog = async (id) => {
+    if (!confirm('Delete this blog?')) return;
+    try {
+      await api.blogs.delete(id);
+      setLoading(true);
+      api.blogs.list({ page, limit: 9, category: activeCategory })
+        .then(r => { setBlogs(r.data); setPagination(r.pagination); })
+        .catch(() => setBlogs(MOCK_BLOGS))
+        .finally(() => setLoading(false));
+      fetchAllBlogs();
+    } catch (err) {
+      alert('Error: ' + err.message);
+    }
+  };
+
   const categories = ['Science', 'Industry News', 'Research', 'Innovation', 'News', 'Sustainability'];
   const [featured, ...rest] = blogs;
 
   return (
     <div className="blog-page">
+      {/* Admin Token Form */}
+      {showTokenForm && (
+        <div className="blog-modal" onClick={() => setShowTokenForm(false)}>
+          <div className="blog-modal__content" onClick={e => e.stopPropagation()}>
+            <h2>Admin Login</h2>
+            <form onSubmit={handleAdminLogin} className="blog-form">
+              <input 
+                type="password" 
+                placeholder="Enter admin token" 
+                value={adminToken} 
+                onChange={e => setAdminToken(e.target.value)}
+                required
+              />
+              <div className="blog-form__actions">
+                <button type="submit" className="btn btn--navy">Login</button>
+                <button type="button" onClick={() => setShowTokenForm(false)} className="btn btn--outline">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Blog CRUD Modal */}
+      {showModal && (
+        <BlogModal 
+          blog={editingBlog} 
+          onSave={handleSaveBlog} 
+          onClose={() => { setShowModal(false); setEditingBlog(null); }}
+        />
+      )}
+
       <div className="blog-page__hero">
         <div className="container blog-page__hero-inner">
           <span className="section-eyebrow">Knowledge Hub</span>
@@ -47,6 +222,13 @@ export function Blog() {
       </div>
 
       <div className="blog-page__body container">
+        {/* Admin Control Bar */}
+        {isAdmin && (
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '2rem' }}>
+            <button className="btn btn--navy" onClick={() => { setEditingBlog(null); setShowModal(true); }}>+ Create Blog</button>
+          </div>
+        )}
+
         {/* Category filters */}
         <div className="blog-cats">
           <button className={`pf-btn ${!activeCategory?'active':''}`} onClick={() => { setActiveCategory(''); setPage(1); }}>All</button>
@@ -68,22 +250,66 @@ export function Blog() {
                   <h2 className="blog-featured__title">{featured.title}</h2>
                   <p className="blog-featured__excerpt">{featured.excerpt}</p>
                   <div className="blog-meta">{formatDate(featured.publishedAt)} · {featured.readTime} min read</div>
+                  {isAdmin && (
+                    <div className="blog-actions">
+                      <button className="btn btn--sm" onClick={() => { setEditingBlog(featured); setShowModal(true); }}>Edit</button>
+                      <button className="btn btn--sm btn--outline" onClick={() => handleDeleteBlog(featured._id)}>Delete</button>
+                    </div>
+                  )}
                 </div>
               </Link>
             )}
 
             <div className="blog-grid">
               {rest.map(b => (
-                <Link key={b._id} to={`/blog/${b.slug}`} className="blog-card-item">
-                  <div className="blog-card-item__img"><div className="blog-card-item__ph"/><span className="tag tag--navy blog-cat-pos">{b.category}</span></div>
-                  <div className="blog-card-item__body">
-                    <h3>{b.title}</h3>
-                    <p>{b.excerpt}</p>
-                    <div className="blog-meta">{formatDate(b.publishedAt)} · {b.readTime} min read</div>
-                  </div>
-                </Link>
+                <div key={b._id} className="blog-card-item">
+                  <Link to={`/blog/${b.slug}`} className="blog-card-link">
+                    <div className="blog-card-item__img"><div className="blog-card-item__ph"/><span className="tag tag--navy blog-cat-pos">{b.category}</span></div>
+                    <div className="blog-card-item__body">
+                      <h3>{b.title}</h3>
+                      <p>{b.excerpt}</p>
+                      <div className="blog-meta">{formatDate(b.publishedAt)} · {b.readTime} min read</div>
+                    </div>
+                  </Link>
+                  {isAdmin && (
+                    <div className="blog-card-actions">
+                      <button className="btn btn--sm" onClick={() => { setEditingBlog(b); setShowModal(true); }}>Edit</button>
+                      <button className="btn btn--sm btn--outline" onClick={() => handleDeleteBlog(b._id)}>Delete</button>
+                    </div>
+                  )}
+                </div>
               ))}
             </div>
+
+            {/* Admin Dashboard */}
+            {isAdmin && (
+              <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid #ddd' }}>
+                <h2>All Blogs (Admin)</h2>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
+                  <thead>
+                    <tr style={{ borderBottom: '2px solid #ddd' }}>
+                      <th style={{ textAlign: 'left', padding: '0.5rem' }}>Title</th>
+                      <th style={{ textAlign: 'left', padding: '0.5rem' }}>Category</th>
+                      <th style={{ textAlign: 'center', padding: '0.5rem' }}>Published</th>
+                      <th style={{ textAlign: 'center', padding: '0.5rem' }}>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {allBlogs.map(b => (
+                      <tr key={b._id} style={{ borderBottom: '1px solid #eee' }}>
+                        <td style={{ padding: '0.5rem' }}><strong>{b.title}</strong></td>
+                        <td style={{ padding: '0.5rem' }}>{b.category}</td>
+                        <td style={{ textAlign: 'center', padding: '0.5rem' }}>{b.published ? '✓' : '○'}</td>
+                        <td style={{ textAlign: 'center', padding: '0.5rem' }}>
+                          <button className="btn btn--sm" onClick={() => { setEditingBlog(b); setShowModal(true); }}>Edit</button>
+                          <button className="btn btn--sm btn--outline" onClick={() => handleDeleteBlog(b._id)} style={{ marginLeft: '0.5rem' }}>Delete</button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
 
             {pagination?.pages > 1 && (
               <div className="blog-pagination">
