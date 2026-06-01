@@ -49,21 +49,50 @@
   position: absolute; inset: 0;
 }
 .hero__bg-mesh {
-  position: absolute; inset: 0;
+  /* Fallback gradient shown while video loads */
+  position: absolute; inset: 0; z-index: 0;
   background:
-    radial-gradient(ellipse at 20% 60%, rgba(0,64,128,0.55) 0%, transparent 55%),
-    radial-gradient(ellipse at 75% 25%, rgba(46,139,87,0.18) 0%, transparent 45%),
-    radial-gradient(ellipse at 90% 80%, rgba(201,166,53,0.1) 0%, transparent 40%),
+    radial-gradient(ellipse at 20% 60%, rgba(0,64,128,0.65) 0%, transparent 55%),
+    radial-gradient(ellipse at 75% 25%, rgba(46,139,87,0.22) 0%, transparent 45%),
+    radial-gradient(ellipse at 90% 80%, rgba(201,166,53,0.12) 0%, transparent 40%),
     linear-gradient(165deg, #001428 0%, #002055 45%, #001f40 100%);
 }
-.hero__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+/* ── Hero video ── */
+.hero__video {
+  position: absolute; inset: 0; z-index: 1;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  /* Slow cinematic playback — feels premium */
+  filter: saturate(0.72) brightness(0.62);
+  opacity: 0;
+  animation: heroVideoFadeIn 1.8s ease 0.3s forwards;
+}
+@keyframes heroVideoFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
 .hero__bg-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(to right, rgba(0,20,40,0.85) 0%, rgba(0,20,40,0.4) 60%, transparent 100%);
+  /* Sits above video — gradient darkens left for readability, right stays more transparent */
+  position: absolute; inset: 0; z-index: 2;
+  background:
+    linear-gradient(to right,
+      rgba(0,12,28,0.88) 0%,
+      rgba(0,18,40,0.72) 38%,
+      rgba(0,18,40,0.38) 65%,
+      rgba(0,12,28,0.55) 100%
+    ),
+    linear-gradient(to bottom,
+      rgba(0,12,28,0.35) 0%,
+      transparent 40%,
+      transparent 70%,
+      rgba(0,12,28,0.5) 100%
+    );
 }
 
 .hero__content {
-  position: relative; z-index: 2;
+  position: relative; z-index: 3;
   padding-top: 40px; padding-bottom: 60px;
   max-width: 720px;
 }

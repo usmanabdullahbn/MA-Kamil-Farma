@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useLang } from '../hooks/useLang';
+import bgHeroVideo from '../assert/bg-hero.mp4';
 import './Home.css';
 
 // ── Expo Countdown ──────────────────────────────────────────
@@ -210,8 +211,22 @@ export default function Home() {
       {/* ── Hero ── */}
       <section className="hero">
         <div className="hero__bg">
+          {/* Background video — custom hero background */}
+          <video
+            className="hero__video"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E"
+          >
+            <source
+              src={bgHeroVideo}
+              type="video/mp4"
+            />
+          </video>
           <div className="hero__bg-mesh" />
-          {/* Video: place <video autoPlay muted loop playsInline className="hero__video"> here when client provides */}
           <div className="hero__bg-overlay" />
         </div>
 

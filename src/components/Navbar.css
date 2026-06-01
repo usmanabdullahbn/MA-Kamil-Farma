@@ -125,6 +125,11 @@
   text-transform: uppercase;
   color: var(--gold);
 }
+.nav__logo-img {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
+}
 
 /* Links */
 .nav__links {

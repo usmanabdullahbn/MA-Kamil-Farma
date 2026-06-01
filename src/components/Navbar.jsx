@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useLang } from '../hooks/useLang';
+import farmaLogo from '../assert/Farma Logo.jpg';
 import './Navbar.css';
 
 const LANGS = [
@@ -114,14 +115,7 @@ export default function Navbar() {
         <div className="container nav__main-inner">
           {/* Logo */}
           <Link to="/" className="nav__logo">
-            <div className="nav__logo-icon">
-              <span>MA</span>
-              <div className="nav__logo-dot" />
-            </div>
-            <div className="nav__logo-text">
-              <span className="nav__logo-name">M.A. Kamil Farma</span>
-              <span className="nav__logo-est">Pvt. Ltd. · Est. 1923</span>
-            </div>
+            <img src={farmaLogo} alt="M.A. Kamil Farma" className="nav__logo-img" />
           </Link>
 
           {/* Desktop links */}

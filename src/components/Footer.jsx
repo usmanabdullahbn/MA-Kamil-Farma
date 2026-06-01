@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import farmaLogo from '../assert/Farma Logo.jpg';
 import './Footer.css';
 
 const CERTS = ['ISO 9001', 'GMP', 'Halal', 'DRAP'];
@@ -27,11 +28,7 @@ export default function Footer() {
           {/* Brand col */}
           <div className="footer__brand">
             <div className="footer__logo">
-              <div className="footer__logo-icon"><span>MA</span></div>
-              <div>
-                <div className="footer__logo-name">M.A. Kamil Farma</div>
-                <div className="footer__logo-est">Pvt. Ltd. · Est. 1923</div>
-              </div>
+              <img src={farmaLogo} alt="M.A. Kamil Farma" className="footer__logo-img" />
             </div>
             <p className="footer__tagline">
               One Health. One Vision. One Kamil.<br />

@@ -41,6 +41,7 @@
 .footer__logo-icon span { font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--navy-dark); }
 .footer__logo-name { font-family: var(--font-display); font-size: 16px; font-weight: 600; color: var(--white); }
 .footer__logo-est { font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
+.footer__logo-img { height: 60px; width: auto; object-fit: contain; }
 .footer__tagline { font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.7; margin-bottom: 12px; }
 .footer__tagline em { font-style: italic; color: var(--gold-light); opacity: 0.8; }
 .footer__address { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 20px; }
