@@ -744,7 +744,7 @@ export default function Products() {
                     className={`filter-card-btn ${sp === activeSpecies ? 'active' : ''}`}
                     onClick={() => setActiveSpecies(sp)}
                   >
-                    <span className="filter-card-icon">🐔</span>
+                    <span className="filter-card-icon">{sp === 'Poultry' ? '🐔' : '🐄'}</span>
                     <span className="filter-card-text">{sp}</span>
                   </button>
                 ))}
