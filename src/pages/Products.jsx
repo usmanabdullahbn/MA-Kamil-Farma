@@ -3,7 +3,7 @@ import { Link, useParams, useSearchParams } from 'react-router-dom';
 import './Products.css';
 
 // ─────────────────────────────────────────────────────────────────────────────
-// ALL 41 PRODUCTS — sourced from M.A. Kamil Farma product literature PDFs
+// ALL 80 PRODUCTS — sourced from M.A. Kamil Farma product literature PDFs
 // ─────────────────────────────────────────────────────────────────────────────
 const ALL_PRODUCTS = [
 
@@ -157,7 +157,7 @@ const ALL_PRODUCTS = [
     fullName: 'CHLORKAM-200 Water Soluble Powder',
     category: 'antibiotics',
     form: 'Powder',
-    species: 'Poultry & Livestock',
+    species: 'Livestock',
     composition: 'Chlortetracycline HCl (USP)',
     indications: 'Gram +ve & −ve bacteria, Chlamydia, Mycoplasma, E. coli, Klebsiella, Pasteurella, Salmonella, Staphylococcus, Streptococcus.',
     dosage: 'As directed by veterinarian.',
@@ -170,7 +170,7 @@ const ALL_PRODUCTS = [
     fullName: 'NEOKAM-72 Powder',
     category: 'antibiotics',
     form: 'Powder',
-    species: 'Poultry & Livestock',
+    species: 'Livestock',
     composition: 'Neomycin Sulphate 720mg / gram',
     indications: 'Bacterial infections including skin infections, GI disorders, urinary tract infections.',
     dosage: 'As directed by veterinarian.',
@@ -183,7 +183,7 @@ const ALL_PRODUCTS = [
     fullName: 'NEOKAM-100 Powder',
     category: 'antibiotics',
     form: 'Powder',
-    species: 'Poultry & Livestock',
+    species: 'Livestock',
     composition: 'Neomycin Sulphate 1000mg / gram',
     indications: 'Skin infections, gastrointestinal disorders, urinary tract infections in poultry and livestock.',
     dosage: 'As directed by veterinarian.',
@@ -423,7 +423,7 @@ const ALL_PRODUCTS = [
     fullName: 'C-KAM 100 Powder',
     category: 'vitamins',
     form: 'Powder',
-    species: 'Poultry & Livestock',
+    species: 'Livestock',
     composition: 'Ascorbic Acid 1000mg / gram (BP)',
     indications: 'Vitamin C deficiency, heat stress, overcrowding, vaccination stress, eggshell quality, egg production.',
     dosage: 'Poultry: 0.5g/L drinking water. Cattle: 8–12g/animal/day.',
@@ -436,7 +436,7 @@ const ALL_PRODUCTS = [
     fullName: 'C-KAM 250',
     category: 'vitamins',
     form: 'Powder',
-    species: 'Poultry & Livestock',
+    species: 'Livestock',
     composition: 'Ascorbic Acid 250mg / gram (BP)',
     indications: 'Vitamin C deficiency, illness, injury recovery, stress conditions.',
     dosage: 'Poultry: 0.5g/L. Lambs/Kids/Calves: 1g/animal/day for 7–10 days.',
@@ -652,7 +652,7 @@ export default function Products() {
     if (speciesParam) {
       const speciesMap = {
         'poultry': 'Poultry',
-        'livestock': 'Poultry & Livestock'
+        'livestock': 'Livestock'
       };
       setActiveSpecies(speciesMap[speciesParam] || '');
     }
@@ -738,7 +738,7 @@ export default function Products() {
             <div className="filter-card-group">
               <h3 className="filter-group-title">Filter by Species</h3>
               <div className="filter-card-list">
-                {['Poultry', 'Poultry & Livestock'].map(sp => (
+                {['Poultry', 'Livestock'].map(sp => (
                   <button 
                     key={sp}
                     className={`filter-card-btn ${sp === activeSpecies ? 'active' : ''}`}
@@ -761,7 +761,7 @@ export default function Products() {
                     className={`filter-card-btn ${f === activeFormCard ? 'active' : ''}`}
                     onClick={() => setActiveFormCard(f)}
                   >
-                    <span className="filter-card-icon">{f === 'Powder' ? '💨' : '💧'}</span>
+                    <span className="filter-card-icon">{f === 'Powder' ? '🧂' : '💧'}</span>
                     <span className="filter-card-text">{f}</span>
                   </button>
                 ))}

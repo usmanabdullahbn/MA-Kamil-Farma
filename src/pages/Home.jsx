@@ -147,13 +147,6 @@ const STATS = [
 
 const PRODUCTS = [
   {
-    icon: '⚗️', tag: 'Pharma & Nutra', color: '#003366',
-    title: 'Excipients & Raw Materials',
-    desc: 'Amino acids, vitamins, minerals, and nutraceutical raw materials for pharma and feed manufacturers.',
-    to: '/products/pharma-nutra',
-    items: ['Amino Acids', 'Vitamins', 'Minerals', 'Excipients'],
-  },
-  {
     icon: '💊', tag: 'Kamil Farma', color: '#1e6b40',
     title: 'Veterinary Pharmaceuticals',
     desc: 'Antibiotics, anti-virals, phytogenics, additives, and premixes for poultry and livestock.',
