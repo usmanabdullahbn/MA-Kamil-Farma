@@ -1,7 +1,16 @@
 import { useState, useEffect } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import './Products.css';
-
+import mak_mox_C_20 from '../assert/product/Mak Amox C-20.jpg';
+import mak_amox_C_50 from '../assert/product/Mak Amox C-50.jpg';
+import colikam from '../assert/product/COLIKAM.jpg';
+import colikam_50 from '../assert/product/COLIKAM-50.jpg';
+import chlorkam_200 from '../assert/product/CHLORKAM-200.jpg';
+import neokam_72 from '../assert/product/NEOKAM-72.jpg';
+import neokam_100 from '../assert/product/NEOKAM-100.jpg';
+import oxykam_95 from '../assert/product/OXYKAM-95.jpg';
+import floxy_n_mak from '../assert/product/FLOXY-N MAK.jpg';
+import tylokam_100 from '../assert/product/TYLOKAM-100 (Cayan).jpg';
 // ─────────────────────────────────────────────────────────────────────────────
 // ALL 80 PRODUCTS — sourced from M.A. Kamil Farma product literature PDFs
 // ─────────────────────────────────────────────────────────────────────────────
@@ -33,6 +42,7 @@ const ALL_PRODUCTS = [
     dosage: 'Prevention: 1g/4L. Treatment: 1g/2–3L for 3–5 days.',
     packaging: '1kg, 5kg',
     desc: 'Higher-strength dual-action WSP. Amoxicillin inhibits cell wall synthesis; Colistin disrupts gram −ve membranes.',
+    image: mak_mox_C_20,
   },
   {
     id: 3,
@@ -46,6 +56,7 @@ const ALL_PRODUCTS = [
     dosage: 'Prevention: 1g/4L. Treatment: 1g/2–3L for 3–5 days.',
     packaging: '1kg, 5kg',
     desc: 'High-potency Amoxicillin + Colistin combination for severe gram +ve/−ve infections in poultry flocks.',
+    image: mak_amox_C_50,
   },
   {
     id: 4,
@@ -124,6 +135,7 @@ const ALL_PRODUCTS = [
     dosage: 'As directed by veterinarian.',
     packaging: '1kg, 5kg',
     desc: 'Maximum-strength Tylosin soluble powder for severe Mycoplasma infections and chronic respiratory disease.',
+    image: tylokam_100,
   },
   {
     id: 10,
@@ -137,6 +149,7 @@ const ALL_PRODUCTS = [
     dosage: 'As directed by veterinarian.',
     packaging: '1kg, 5kg',
     desc: 'Pure Colistin powder. Disrupts gram −ve bacterial cell membranes by binding to lipopolysaccharides.',
+    image: colikam,
   },
   {
     id: 11,
@@ -150,6 +163,7 @@ const ALL_PRODUCTS = [
     dosage: 'As directed by veterinarian.',
     packaging: '1kg, 5kg',
     desc: 'Water-soluble Colistin for simple mixing in drinking water. Effective against gram −ve pathogens.',
+    image: colikam_50,
   },
   {
     id: 12,
@@ -163,6 +177,7 @@ const ALL_PRODUCTS = [
     dosage: 'As directed by veterinarian.',
     packaging: '1kg, 5kg',
     desc: 'Broad-spectrum tetracycline inhibiting bacterial protein synthesis. Active against anaerobes and atypical pathogens.',
+    image: chlorkam_200,
   },
   {
     id: 13,
@@ -176,6 +191,7 @@ const ALL_PRODUCTS = [
     dosage: 'As directed by veterinarian.',
     packaging: '1kg, 5kg',
     desc: 'Aminoglycoside antibiotic with bactericidal activity primarily against gram −ve bacteria. Broad-spectrum coverage.',
+    image: neokam_72,
   },
   {
     id: 14,
@@ -189,6 +205,7 @@ const ALL_PRODUCTS = [
     dosage: 'As directed by veterinarian.',
     packaging: '1kg, 5kg',
     desc: 'High-potency Neomycin powder for comprehensive treatment of bacterial infections in poultry and livestock.',
+    image: neokam_100,
   },
   {
     id: 15,
@@ -202,6 +219,7 @@ const ALL_PRODUCTS = [
     dosage: 'As directed by veterinarian.',
     packaging: '1kg, 5kg',
     desc: '95% Oxytetracycline — broad-spectrum tetracycline antibiotic interfering with bacterial protein synthesis.',
+    image: oxykam_95,
   },
   {
     id: 16,
@@ -215,6 +233,7 @@ const ALL_PRODUCTS = [
     dosage: 'As directed by veterinarian.',
     packaging: '1kg, 5kg',
     desc: 'Dual aminoglycoside + tetracycline combination. Synergistic action against enteric and respiratory pathogens.',
+    image: floxy_n_mak,
   },
   {
     id: 17,
@@ -794,14 +813,23 @@ export default function Products() {
               const color = CAT_COLORS[p.category] || '#003366';
               return (
                 <div key={p.id} className="prod-item" onClick={() => setSelectedProduct(p)}>
-                  <div className="prod-item__img" style={{ background: color + '10' }}>
-                    <div className="prod-item__cat-icon" style={{ color }}>{CAT_ICONS[p.category] || '💊'}</div>
+                  <div className="prod-item__img" style={{ background: p.image ? 'transparent' : color + '10' }}>
+                    {p.image ? (
+                      <>
+                        <img src={p.image} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0, 0, 0, 0.35)' }} />
+                      </>
+                    ) : (
+                      <>
+                        <div className="prod-item__cat-icon" style={{ color }}>{CAT_ICONS[p.category] || '💊'}</div>
+                        <div className="prod-item__color-bar" style={{ background: color }} />
+                      </>
+                    )}
                     <div className="prod-item__badges">
-                      <span className="tag" style={{ background: FORM_COLORS[p.form]+'18', color: FORM_COLORS[p.form], fontSize:'10px' }}>
+                      <span className="tag" style={{ background: p.image ? FORM_COLORS[p.form] : FORM_COLORS[p.form]+'18', color: p.image ? '#fff' : FORM_COLORS[p.form], fontSize:'10px', fontWeight: '600' }}>
                         {p.form}
                       </span>
                     </div>
-                    <div className="prod-item__color-bar" style={{ background: color }} />
                   </div>
                   <div className="prod-item__body">
                     <div className="prod-item__species">{p.species}</div>
