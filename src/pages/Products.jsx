@@ -27,12 +27,17 @@ import mprokam_90 from '../assert/product/MPROKAM-90.jpg';
 import ofloxkam_10 from '../assert/product/OFLOXKAM-10.jpg';
 import pefloxkam_10 from '../assert/product/PEFLOXKAM-10.jpg';
 import tilkam_25 from '../assert/product/TILKAM-25 Solution.jpg';
+import makflor_25 from '../assert/product/MAKFLOR-25.jpg';
+import mprokam_50 from '../assert/product/MPROKAM-50.jpg';
+import doxykam_50 from '../assert/product/DOXYKAM-50.jpg';
+import doxykam_80 from '../assert/product/DOXYKAM-80.jpg';
 // ─────────────────────────────────────────────────────────────────────────────
 // ALL 80 PRODUCTS — sourced from M.A. Kamil Farma product literature PDFs
 // ─────────────────────────────────────────────────────────────────────────────
 const ALL_PRODUCTS = [
 
   // ── ANTIBIOTICS ────────────────────────────────────────────────────────────
+  /* NO IMAGE - COMMENTED OUT
   {
     id: 1,
     name: 'Mak Amox C-15',
@@ -46,6 +51,7 @@ const ALL_PRODUCTS = [
     packaging: '1kg, 5kg',
     desc: 'Broad-spectrum WSP combining Amoxicillin + Colistin for gram +ve and gram −ve bacterial infections in poultry.',
   },
+  */
   {
     id: 2,
     name: 'Mak Amox C-20',
@@ -74,6 +80,7 @@ const ALL_PRODUCTS = [
     desc: 'High-potency Amoxicillin + Colistin combination for severe gram +ve/−ve infections in poultry flocks.',
     image: mak_amox_C_50,
   },
+  /* NO IMAGE - COMMENTED OUT
   {
     id: 4,
     name: 'Mak Amox-50',
@@ -87,6 +94,8 @@ const ALL_PRODUCTS = [
     packaging: '1kg, 5kg',
     desc: 'Pure Amoxicillin WSP for broad-spectrum treatment of respiratory and enteric bacterial infections in poultry.',
   },
+  */
+  /* NO IMAGE - COMMENTED OUT
   {
     id: 5,
     name: 'Mak Amox-80',
@@ -100,6 +109,7 @@ const ALL_PRODUCTS = [
     packaging: '1kg, 5kg',
     desc: 'High-concentration Amoxicillin powder for severe bacterial infections requiring maximum bactericidal activity.',
   },
+  */
   {
     id: 6,
     name: 'Doxykam-50',
@@ -112,6 +122,7 @@ const ALL_PRODUCTS = [
     dosage: 'As directed by veterinarian.',
     packaging: '1kg, 5kg',
     desc: 'Tetracycline-class antibiotic that inhibits bacterial protein synthesis at the 30S ribosomal subunit.',
+    image: doxykam_50,
   },
   {
     id: 7,
@@ -125,7 +136,9 @@ const ALL_PRODUCTS = [
     dosage: 'As directed by veterinarian.',
     packaging: '1kg, 5kg',
     desc: 'High-strength Doxycycline for severe bacterial infections. Broad-spectrum tetracycline-class coverage.',
+    image: doxykam_80,
   },
+  /* NO IMAGE - COMMENTED OUT
   {
     id: 8,
     name: 'Tylokam-10',
@@ -139,6 +152,7 @@ const ALL_PRODUCTS = [
     packaging: '1kg, 5kg',
     desc: 'Macrolide antibiotic binding the 50S ribosomal subunit. Effective for CRD control and FCR improvement.',
   },
+  */
   {
     id: 9,
     name: 'Tylokam-100',
@@ -337,6 +351,7 @@ const ALL_PRODUCTS = [
     desc: 'High-strength Enrofloxacin WSP with Colistin. Fluoroquinolone class with enhanced gram −ve coverage.',
     image: enrokam_c20,
   },
+  /* NO IMAGE - COMMENTED OUT
   {
     id: 23,
     name: 'Makflor-23',
@@ -350,6 +365,7 @@ const ALL_PRODUCTS = [
     packaging: '1L, 5L',
     desc: 'Florfenicol broad-spectrum antibiotic. Inhibits bacterial protein synthesis at the 50S ribosomal subunit.',
   },
+  */
   {
     id: 24,
     name: 'Makflor-25',
@@ -362,6 +378,7 @@ const ALL_PRODUCTS = [
     dosage: 'As directed by veterinarian.',
     packaging: '1L, 5L',
     desc: 'Higher-strength Florfenicol oral liquid for severe respiratory infections with GI complications.',
+    image: makflor_25,
   },
   {
     id: 25,
@@ -419,6 +436,7 @@ const ALL_PRODUCTS = [
     dosage: 'As directed by veterinarian.',
     packaging: '1kg, 5kg',
     desc: 'Coccidiostat that inhibits growth and reproduction of coccidia. Supports optimal growth and feed efficiency.',
+    image: mprokam_50,
   },
   {
     id: 29,
@@ -436,6 +454,7 @@ const ALL_PRODUCTS = [
   },
 
   // ── VITAMINS & SUPPLEMENTS ─────────────────────────────────────────────────
+  /* NO IMAGE - COMMENTED OUT
   {
     id: 30,
     name: 'Mak Fourvit',
@@ -449,6 +468,7 @@ const ALL_PRODUCTS = [
     packaging: '1L, 5L',
     desc: 'Four-vitamin oral liquid for immunity, bone health, feather quality and reproductive performance.',
   },
+  */
   {
     id: 31,
     name: 'Mak Fivevit',
@@ -505,6 +525,7 @@ const ALL_PRODUCTS = [
     desc: 'Hepatoprotective oral liquid with essential amino acids and liver-supportive nutrients for poultry.',
     image: hepakam,
   },
+  /* NO IMAGE - COMMENTED OUT
   {
     id: 35,
     name: 'Makliv Solution',
@@ -518,6 +539,7 @@ const ALL_PRODUCTS = [
     packaging: '1L, 5L',
     desc: 'Liver tonic and metabolic support. L-Carnitine for fat transport; Choline + Betaine for liver function.',
   },
+  */
   {
     id: 36,
     name: 'Mak Ze-Sel',
@@ -534,6 +556,7 @@ const ALL_PRODUCTS = [
   },
 
   // ── RESPIRATORY & MUCOLYTICS ───────────────────────────────────────────────
+  /* NO IMAGE - COMMENTED OUT
   {
     id: 37,
     name: 'Bromokam-5',
@@ -547,6 +570,8 @@ const ALL_PRODUCTS = [
     packaging: '1L, 5L',
     desc: 'Expectorant with mucolytic action. Reduces mucus viscosity and supports respiratory function.',
   },
+  */
+  /* NO IMAGE - COMMENTED OUT
   {
     id: 38,
     name: 'Bronchoment-20',
@@ -560,8 +585,10 @@ const ALL_PRODUCTS = [
     packaging: '1L, 5L',
     desc: 'Bromhexine + Menthol dual mucolytic/bronchodilator. Menthol provides additional airway-opening action.',
   },
+  */
 
   // ── SPECIALTY PRODUCTS ─────────────────────────────────────────────────────
+  /* NO IMAGE - COMMENTED OUT
   {
     id: 39,
     name: 'Mak Gumbonil',
@@ -575,6 +602,8 @@ const ALL_PRODUCTS = [
     packaging: '1kg',
     desc: 'IBD/Gumboro supportive therapy. Alkalinising agents + B-vitamin complex for metabolic recovery.',
   },
+  */
+  /* NO IMAGE - COMMENTED OUT
   {
     id: 40,
     name: 'Flushkam WSP',
@@ -588,6 +617,7 @@ const ALL_PRODUCTS = [
     packaging: '1kg',
     desc: 'Urinary antiseptic (Methenamine releases formaldehyde in acidic urine) + B-vitamin metabolic support.',
   },
+  */
   {
     id: 41,
     name: 'Makflor-23 Oral',
