@@ -11,6 +11,22 @@ import neokam_100 from '../assert/product/NEOKAM-100.jpg';
 import oxykam_95 from '../assert/product/OXYKAM-95.jpg';
 import floxy_n_mak from '../assert/product/FLOXY-N MAK.jpg';
 import tylokam_100 from '../assert/product/TYLOKAM-100 (Cayan).jpg';
+import moxclav_powder from '../assert/product/MOXCLAV POWDER.jpg';
+import mox_ls from '../assert/product/MOX-LS Powder.jpg';
+import sintolin_plus from '../assert/product/Sintolin Plus Oral Powder.jpg';
+import xinkmak_wsp from '../assert/product/XINKMAK Water Soluble Powder.jpg';
+import enrokam_c10 from '../assert/product/ENROKAM C-10 Oral Solution Label Final.jpg';
+import makflor_23 from '../assert/product/MAKFLOR-23 Liquid.jpg';
+import enrokam_c20 from '../assert/product/ENROKAM C-20 Oral Solution.jpg';
+import c_kam_100 from '../assert/product/C-KAM-100 (new).jpg';
+import c_kam_250 from '../assert/product/C-KAM 250 Powder.jpg';
+import hepakam from '../assert/product/HEPAKAM Liquid.jpg';
+import mak_fivevit from '../assert/product/MAK FIVEVIT WSP.jpg';
+import mak_ze_sel from '../assert/product/MAK ZE-SEL Liquid.jpg';
+import mprokam_90 from '../assert/product/MPROKAM-90.jpg';
+import ofloxkam_10 from '../assert/product/OFLOXKAM-10.jpg';
+import pefloxkam_10 from '../assert/product/PEFLOXKAM-10.jpg';
+import tilkam_25 from '../assert/product/TILKAM-25 Solution.jpg';
 // ─────────────────────────────────────────────────────────────────────────────
 // ALL 80 PRODUCTS — sourced from M.A. Kamil Farma product literature PDFs
 // ─────────────────────────────────────────────────────────────────────────────
@@ -247,6 +263,7 @@ const ALL_PRODUCTS = [
     dosage: 'As directed by veterinarian.',
     packaging: '1kg',
     desc: 'Amoxicillin–Clavulanate combination. Clavulanic acid protects Amoxicillin from beta-lactamase degradation.',
+    image: moxclav_powder,
   },
   {
     id: 18,
@@ -260,6 +277,7 @@ const ALL_PRODUCTS = [
     dosage: 'As directed by veterinarian.',
     packaging: '1kg',
     desc: 'Triple-antibiotic combination (Amoxicillin + Lincomycin + Spectinomycin) with vitamin E support.',
+    image: mox_ls,
   },
   {
     id: 19,
@@ -273,6 +291,7 @@ const ALL_PRODUCTS = [
     dosage: 'As directed by veterinarian.',
     packaging: '1kg',
     desc: 'Three-way antibiotic combination covering gram +ve (Lincomycin), gram −ve (Spectinomycin), and broad-spectrum (Spiramycin).',
+    image: sintolin_plus,
   },
   {
     id: 20,
@@ -286,6 +305,7 @@ const ALL_PRODUCTS = [
     dosage: 'As directed by veterinarian.',
     packaging: '1kg, 5kg',
     desc: 'Comprehensive 4-in-1 formula: macrolide + tetracycline + polymyxin + mucolytic for complex respiratory disease.',
+    image: xinkmak_wsp,
   },
 
   // ── FLUOROQUINOLONES ───────────────────────────────────────────────────────
@@ -301,6 +321,7 @@ const ALL_PRODUCTS = [
     dosage: 'As directed by veterinarian.',
     packaging: '1L, 5L',
     desc: 'Fluoroquinolone + Polymyxin combination. Enrofloxacin inhibits DNA gyrase; Colistin disrupts cell membranes.',
+    image: enrokam_c10,
   },
   {
     id: 22,
@@ -314,6 +335,7 @@ const ALL_PRODUCTS = [
     dosage: 'As directed by veterinarian.',
     packaging: '1kg, 5kg',
     desc: 'High-strength Enrofloxacin WSP with Colistin. Fluoroquinolone class with enhanced gram −ve coverage.',
+    image: enrokam_c20,
   },
   {
     id: 23,
@@ -353,6 +375,7 @@ const ALL_PRODUCTS = [
     dosage: 'As directed by veterinarian.',
     packaging: '1L, 5L',
     desc: 'Fluoroquinolone. Inhibits bacterial DNA gyrase and topoisomerase IV, stopping DNA replication.',
+    image: ofloxkam_10,
   },
   {
     id: 26,
@@ -366,6 +389,7 @@ const ALL_PRODUCTS = [
     dosage: 'As directed by veterinarian.',
     packaging: '1L, 5L',
     desc: 'Potent fluoroquinolone. Inhibits DNA gyrase and topoisomerase IV across broad gram −ve & +ve spectrum.',
+    image: pefloxkam_10,
   },
   {
     id: 27,
@@ -379,6 +403,7 @@ const ALL_PRODUCTS = [
     dosage: 'As directed by veterinarian.',
     packaging: '1L',
     desc: 'Macrolide antibiotic for respiratory Mycoplasma infections. Improves flock health and productivity.',
+    image: tilkam_25,
   },
 
   // ── ANTICOCCIDIALS ─────────────────────────────────────────────────────────
@@ -407,6 +432,7 @@ const ALL_PRODUCTS = [
     dosage: 'As directed by veterinarian.',
     packaging: '1kg, 5kg',
     desc: 'High-concentration Amprolium for severe coccidiosis challenge. Maximum coccidiostat activity.',
+    image: mprokam_90,
   },
 
   // ── VITAMINS & SUPPLEMENTS ─────────────────────────────────────────────────
@@ -435,6 +461,7 @@ const ALL_PRODUCTS = [
     dosage: 'As directed by veterinarian.',
     packaging: '1kg',
     desc: 'Five-vitamin combination powder. Comprehensive multi-vitamin support for optimal flock health.',
+    image: mak_fivevit,
   },
   {
     id: 32,
@@ -448,6 +475,7 @@ const ALL_PRODUCTS = [
     dosage: 'Poultry: 0.5g/L drinking water. Cattle: 8–12g/animal/day.',
     packaging: '1kg',
     desc: 'High-potency Vitamin C powder. Collagen synthesis support, antioxidant protection, immune boost under stress.',
+    image: c_kam_100,
   },
   {
     id: 33,
@@ -461,6 +489,7 @@ const ALL_PRODUCTS = [
     dosage: 'Poultry: 0.5g/L. Lambs/Kids/Calves: 1g/animal/day for 7–10 days.',
     packaging: '1kg',
     desc: 'Standard-strength Vitamin C supplement for stress recovery, wound healing and immune support.',
+    image: c_kam_250,
   },
   {
     id: 34,
@@ -474,6 +503,7 @@ const ALL_PRODUCTS = [
     dosage: 'As directed by veterinarian.',
     packaging: '1L, 5L',
     desc: 'Hepatoprotective oral liquid with essential amino acids and liver-supportive nutrients for poultry.',
+    image: hepakam,
   },
   {
     id: 35,
@@ -500,6 +530,7 @@ const ALL_PRODUCTS = [
     dosage: '1ml/10L drinking water.',
     packaging: '1L',
     desc: 'Vitamin E + Selenium + Zinc combination for antioxidant protection and mineral supplementation.',
+    image: mak_ze_sel,
   },
 
   // ── RESPIRATORY & MUCOLYTICS ───────────────────────────────────────────────
@@ -569,6 +600,7 @@ const ALL_PRODUCTS = [
     dosage: 'As directed by veterinarian.',
     packaging: '1L, 5L',
     desc: 'Broad-spectrum florfenicol oral liquid. 50S ribosomal subunit inhibitor for respiratory and enteric pathogens.',
+    image: makflor_23,
   },
 ];
 
