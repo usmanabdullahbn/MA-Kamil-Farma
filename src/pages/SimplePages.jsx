@@ -7,7 +7,7 @@ export function About() {
       <div className="simple-hero">
         <div className="container">
           <span className="section-eyebrow">Our Story</span>
-          <h1 className="section-title section-title--white">A Century of Pharmaceutical Excellence</h1>
+          <h1 className="section-title section-title--white">Decades of Pharmaceutical Excellence</h1>
           <p className="section-lead" style={{ color:'rgba(255,255,255,0.65)' }}>
             From a small pharmacy in Karachi to Pakistan's leading veterinary pharmaceutical group — guided by the One Health vision since 1923.
           </p>
