@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 import { LangProvider } from './hooks/useLang';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -8,6 +9,16 @@ import Products from './pages/Products';
 import { Blog, BlogPost } from './pages/Blog';
 import { About, Science, Industries, Contact, Join, Expo2025 } from './pages/SimplePages';
 import './App.css';
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
 
 function NotFound() {
   return (
@@ -22,6 +33,7 @@ export default function App() {
   return (
     <LangProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <div className="app">
           <Navbar />
           <main>

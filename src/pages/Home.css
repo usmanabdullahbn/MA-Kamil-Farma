@@ -183,7 +183,7 @@
 .blog-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
 
 .products-grid {
-  display: grid; grid-template-columns: repeat(4,1fr); gap: 22px;
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 22px;
 }
 .product-card { overflow: hidden; display: flex; flex-direction: column; }
 .product-card__top { padding: 24px 24px 20px; border-bottom: 1px solid var(--gray-100); }
