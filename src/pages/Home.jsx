@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useLang } from '../hooks/useLang';
+import { useTyping } from '../hooks/useTyping';
+import { TypingTitle } from '../components/TypingTitle';
 import bgHeroVideo from '../assert/bg-hero.mp4';
 import './Home.css';
 
@@ -229,11 +231,11 @@ export default function Home() {
             <span>Est. 1923 · Pakistan</span>
             <span className="hero__est-line" />
           </div>
-          <h1 className="hero__title animate-fade-up-d1">
-            {t.tagline.split(',').map((part, i) => (
-              <span key={i}>{i > 0 && <br />}{part}</span>
-            ))}
-          </h1>
+          <TypingTitle 
+            text={t.tagline.replace(/,/g, ' ')} 
+            speed={25} 
+            className="hero__title animate-fade-up-d1"
+          />
           <p className="hero__sub animate-fade-up-d2">{t.heroDesc}</p>
           <div className="hero__actions animate-fade-up-d3">
             <Link to="/products" className="btn btn--gold">{t.exploreProducts}</Link>
@@ -407,7 +409,7 @@ export default function Home() {
             <span className="section-eyebrow" style={{ color: 'var(--gold)' }}>Client Testimonials</span>
             <h2 className="section-title section-title--white">Trusted by Pakistan's Best Farms</h2>
           </div>
-          <div className="testimonials-slider">
+          <div className="testimonials-slider testimonials-container">
             {TESTIMONIALS.map((t, i) => (
               <div key={i} className={`testimonial-card ${i === activeTestimonial ? 'active' : ''}`}>
                 <div className="testimonial-stars">{'★'.repeat(t.rating)}</div>

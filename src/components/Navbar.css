@@ -56,22 +56,26 @@
 /* Main nav */
 .nav__main {
   background: var(--navy);
+  border-bottom: 3px solid var(--green-light);
   transition:
     background var(--t-mid),
     box-shadow var(--t-mid),
-    padding var(--t-mid);
+    padding var(--t-mid),
+    border-color var(--t-mid);
 }
 .nav--scrolled .nav__main {
   background: rgba(0, 31, 64, 0.97);
   backdrop-filter: blur(14px);
   box-shadow: 0 2px 32px rgba(0, 0, 0, 0.25);
+  border-bottom-color: var(--green);
 }
 .nav__main-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 64px;
+  height: 80px;
   gap: 16px;
+  padding: 8px 0;
 }
 
 /* Logo */
@@ -80,55 +84,23 @@
   align-items: center;
   gap: 12px;
   flex-shrink: 0;
-}
-.nav__logo-icon {
-  position: relative;
-  width: 42px;
-  height: 42px;
-  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  padding: 6px 0;
   border-radius: var(--r-sm);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  transition: opacity var(--t-fast);
 }
-.nav__logo-icon span {
-  font-family: var(--font-display);
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--navy-dark);
-  letter-spacing: 0.03em;
-}
-.nav__logo-dot {
-  position: absolute;
-  bottom: -2px;
-  right: -2px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--green);
-  border: 2px solid var(--navy);
-}
-.nav__logo-name {
-  display: block;
-  font-family: var(--font-display);
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--white);
-  line-height: 1.1;
-  letter-spacing: 0.01em;
-}
-.nav__logo-est {
-  display: block;
-  font-size: 9.5px;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--gold);
+
+.nav__logo:hover {
+  opacity: 0.9;
 }
 .nav__logo-img {
-  height: 50px;
+  height: 64px;
   width: auto;
   object-fit: contain;
+  transition: transform var(--t-fast);
+}
+
+.nav__logo:hover .nav__logo-img {
+  transform: scale(1.05);
 }
 
 /* Links */
