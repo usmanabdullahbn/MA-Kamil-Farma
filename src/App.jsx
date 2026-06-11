@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
-import { LangProvider } from './hooks/useLang';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import WhatsApp from './components/WhatsApp';
@@ -31,31 +30,29 @@ function NotFound() {
 
 export default function App() {
   return (
-    <LangProvider>
-      <BrowserRouter>
-        <ScrollToTop />
-        <div className="app">
-          <Navbar />
-          <main>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/products" element={<Products />} />
-              <Route path="/products/:brand" element={<Products />} />
-              <Route path="/blog" element={<Blog />} />
-              <Route path="/blog/:slug" element={<BlogPost />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/science" element={<Science />} />
-              <Route path="/industries" element={<Industries />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/join" element={<Join />} />
-              <Route path="/expo2025" element={<Expo2025 />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </main>
-          <Footer />
-          <WhatsApp />
-        </div>
-      </BrowserRouter>
-    </LangProvider>
+    <BrowserRouter>
+      <ScrollToTop />
+      <div className="app">
+        <Navbar />
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/products/:brand" element={<Products />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:slug" element={<BlogPost />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/science" element={<Science />} />
+            <Route path="/industries" element={<Industries />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/join" element={<Join />} />
+            <Route path="/expo2025" element={<Expo2025 />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </main>
+        <Footer />
+        <WhatsApp />
+      </div>
+    </BrowserRouter>
   );
 }

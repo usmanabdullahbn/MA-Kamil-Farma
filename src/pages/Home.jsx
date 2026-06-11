@@ -232,14 +232,14 @@ export default function Home() {
             <span className="hero__est-line" />
           </div>
           <TypingTitle 
-            text={t.tagline.replace(/,/g, ' ')} 
+            text={t('tagline').replace(/,/g, ' ')} 
             speed={25} 
             className="hero__title animate-fade-up-d1"
           />
-          <p className="hero__sub animate-fade-up-d2">{t.heroDesc}</p>
+          <p className="hero__sub animate-fade-up-d2">{t('heroDesc')}</p>
           <div className="hero__actions animate-fade-up-d3">
-            <Link to="/products" className="btn btn--gold">{t.exploreProducts}</Link>
-            <Link to="/contact" className="btn btn--outline-white">{t.contactUs}</Link>
+            <Link to="/products" className="btn btn--gold">{t('exploreProducts')}</Link>
+            <Link to="/contact" className="btn btn--outline-white">{t('contactUs')}</Link>
           </div>
 
           {/* Trust strip */}
@@ -285,8 +285,8 @@ export default function Home() {
       <section className="section products-section">
         <div className="container">
           <div className="section-header">
-            <span className="section-eyebrow">{t.ourProducts}</span>
-            <h2 className="section-title">{t.productsTitle}</h2>
+            <span className="section-eyebrow">{t('ourProducts')}</span>
+            <h2 className="section-title">{t('productsTitle')}</h2>
             <p className="section-lead">From proprietary pharmaceutical brands to raw material excipients — engineered for performance, safety, and compliance.</p>
           </div>
           <div className="products-grid">
@@ -305,7 +305,7 @@ export default function Home() {
                     {p.items.map(i => <span key={i} className="product-card__item">{i}</span>)}
                   </div>
                   <span className="product-card__cta">
-                    {t.learnMore}
+                    {t('learnMore')}
                     <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                   </span>
                 </div>
@@ -313,7 +313,7 @@ export default function Home() {
             ))}
           </div>
           <div className="products-section__footer">
-            <Link to="/products" className="btn btn--primary">{t.viewAll} Products</Link>
+            <Link to="/products" className="btn btn--primary">{t('viewAll')} Products</Link>
           </div>
         </div>
       </section>
@@ -440,11 +440,11 @@ export default function Home() {
         <div className="container">
           <div className="section-header blog-header">
             <div>
-              <span className="section-eyebrow">{t.blogTitle}</span>
-              <h2 className="section-title">{t.blogTitle}</h2>
-              <p className="section-lead">{t.blogSub}</p>
+              <span className="section-eyebrow">{t('blogTitle')}</span>
+              <h2 className="section-title">{t('blogTitle')}</h2>
+              <p className="section-lead">{t('blogSub')}</p>
             </div>
-            <Link to="/blog" className="btn btn--outline">{t.viewAll} Articles</Link>
+            <Link to="/blog" className="btn btn--outline">{t('viewAll')} Articles</Link>
           </div>
           <div className="blog-grid">
             {BLOGS.map(b => (

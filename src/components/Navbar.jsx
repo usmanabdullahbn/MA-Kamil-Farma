@@ -181,8 +181,8 @@ export default function Navbar() {
             )}
 
             {/* Language toggle */}
-            <div className="nav__lang" onMouseLeave={() => setLangOpen(false)}>
-              <button className="nav__lang-btn" onMouseEnter={() => setLangOpen(true)} onClick={() => setLangOpen(!langOpen)}>
+            <div className="nav__lang" onMouseEnter={() => setLangOpen(true)} onMouseLeave={() => setLangOpen(false)}>
+              <button className="nav__lang-btn" onClick={() => setLangOpen(!langOpen)}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
                 {LANGS.find(l => l.code === lang)?.label}
               </button>
