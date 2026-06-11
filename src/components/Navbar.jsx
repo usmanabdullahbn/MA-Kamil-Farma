@@ -101,22 +101,25 @@ export default function Navbar() {
   return (
     <header className={`nav ${scrolled ? 'nav--scrolled' : ''}`}>
       {/* Top bar */}
-      <div className="nav__topbar">
+      {/* <div className="nav__topbar">
         <div className="container nav__topbar-inner">
           <span className="nav__topbar-text">Expo 2026 Participation — <Link to="/expo2025" className="nav__topbar-link">Register Interest →</Link></span>
           <div className="nav__topbar-right">
             <a href="https://feedadditives.makamilfarma.com" target="_blank" rel="noopener noreferrer" className="nav__topbar-link">Feed Additives ↗</a>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Main nav */}
       <div className="nav__main">
         <div className="container nav__main-inner">
           {/* Logo */}
-          <Link to="/" className="nav__logo">
-            <img src={farmaLogo} alt="M.A. Kamil Farma" className="nav__logo-img" />
-          </Link>
+          <div className="nav__logo-wrap">
+            <Link to="/" className="nav__logo" aria-label="M.A. Kamil Farma home">
+              <img src={farmaLogo} alt="M.A. Kamil Farma" className="nav__logo-img" />
+              {/* <span className="nav__brand">M.A. Kamil Farma</span> */}
+            </Link>
+          </div>
 
           {/* Desktop links */}
           <nav className="nav__links">
