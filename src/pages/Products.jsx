@@ -877,10 +877,7 @@ export default function Products() {
                 <div key={p.id} className="prod-item" onClick={() => setSelectedProduct(p)}>
                   <div className="prod-item__img" style={{ background: p.image ? 'transparent' : color + '10' }}>
                     {p.image ? (
-                      <>
-                        <img src={p.image} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0, 0, 0, 0.35)' }} />
-                      </>
+                      <img className="prod-item__photo" src={p.image} alt={p.name} />
                     ) : (
                       <>
                         <div className="prod-item__cat-icon" style={{ color }}>{CAT_ICONS[p.category] || '💊'}</div>
