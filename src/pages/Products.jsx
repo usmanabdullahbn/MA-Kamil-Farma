@@ -770,7 +770,7 @@ export default function Products() {
           <span className="section-eyebrow">Products & Solutions</span>
           <h1 className="section-title section-title--white">Poultry Pharmaceutical Range</h1>
           <p className="section-lead" style={{ color: 'rgba(255,255,255,0.65)' }}>
-            {ALL_PRODUCTS.length} registered veterinary products — antibiotics, vitamins, anticoccidials, and specialty formulations. DRAP approved. GMP manufactured.
+            {ALL_PRODUCTS.length} registered veterinary products — antibiotics, vitamins, anticoccidials, and specialty formulations. DRAP approved.
           </p>
           <div className="products-hero-stats">
             {CATEGORIES.slice(1).map(c => (

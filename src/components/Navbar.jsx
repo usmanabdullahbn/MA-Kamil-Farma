@@ -43,8 +43,6 @@ const NAV = [
       {
         title: 'Featured',
         links: [
-          { label: 'Rotamin Line', to: '/products/rotamin' },
-          { label: 'Pet Care', to: '/products/pet-care' },
           { label: 'Feed Additives', to: 'https://feedadditives.makamilfarma.com', external: true },
         ]
       },

@@ -156,18 +156,11 @@ const PRODUCTS = [
     items: ['Antibiotics', 'Anti-Virals', 'Phytogenics', 'Premixes'],
   },
   {
-    icon: '🌿', tag: 'Rotamin', color: '#C9A635',
-    title: 'Rotamin Line',
-    desc: 'Binders, probiotics, Rota Plus, and yeast-based solutions for feed efficiency and gut health.',
-    to: '/products/rotamin',
-    items: ['Binders', 'Probiotics', 'Rota Plus', 'Yeast Solutions'],
-  },
-  {
-    icon: '🐾', tag: 'Pet Care', color: '#8b4513',
-    title: 'Pet Care Division',
-    desc: 'Cat litter, pet medicines, and accessories — a growing portfolio for companion animal care.',
-    to: '/products/pet-care',
-    items: ['Cat Litter', 'Pet Medicines', 'Accessories'],
+    icon: '�', tag: 'Feed Additives', color: '#2E8B57',
+    title: 'Feed Additive Solutions',
+    desc: 'Binders, premixes, enzymes, and nutritional additives designed to improve feed efficiency and animal performance.',
+    to: '/products',
+    items: ['Binders', 'Premixes', 'Enzymes', 'Additives'],
   },
 ];
 
@@ -244,7 +237,7 @@ export default function Home() {
 
           {/* Trust strip */}
           <div className="hero__trust animate-fade-up-d4">
-            {['ISO 9001', 'GMP Certified', 'DRAP Approved', 'Halal'].map(c => (
+            {['DRAP Approved'].map(c => (
               <div key={c} className="hero__trust-badge">
                 <span className="hero__trust-check">✓</span>
                 {c}

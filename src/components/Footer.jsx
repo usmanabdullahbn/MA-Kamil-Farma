@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import farmaLogo from '../assert/Farma Logo.jpg';
 import './Footer.css';
 
-const CERTS = ['ISO 9001', 'GMP', 'Halal', 'DRAP'];
+const CERTS = ['DRAP'];
 
 export default function Footer() {
   return (
@@ -31,8 +31,8 @@ export default function Footer() {
               <img src={farmaLogo} alt="M.A. Kamil Farma" className="footer__logo-img" />
             </div>
             <p className="footer__tagline">
-              One Health. One Vision. One Kamil.<br />
-              <em>Dedicated to one health, devoted to tails.</em>
+              One Health. One Vision.<br />
+              <em>Trusted Partnerships. Responsible Solutions.</em>
             </p>
             <p className="footer__address">H-17 SITE Phase 2, Karachi, Pakistan</p>
             <div className="footer__social">
@@ -46,8 +46,7 @@ export default function Footer() {
           <div className="footer__col">
             <h4>Products</h4>
             <Link to="/products/kamil-farma">M.A. Kamil Farma Line</Link>
-            <Link to="/products/rotamin">Rotamin Line</Link>
-            <Link to="/products/pet-care">Pet Care</Link>
+            <a href="https://feedadditives.makamilfarma.com" target="_blank" rel="noopener noreferrer">Feed Additives</a>
           </div>
 
           {/* Company */}

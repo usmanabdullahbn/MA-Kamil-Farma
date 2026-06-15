@@ -19,7 +19,7 @@ export function About() {
         <section className="about-ceo">
           <div className="about-ceo__quote-mark">"</div>
           <blockquote className="about-ceo__text">
-            At M.A. Kamil Farma Pvt. Ltd., we are guided by the Divine Providence of Allah and committed to the One Health vision. Our future strategy includes replacing traditional antibiotic products with green alternatives that are not only effective but also environmentally sustainable. This commitment reflects our dedication to a healthier planet for future generations.
+            At M.A. Kamil Farma Pvt. Ltd., we are guided by the Divine Providence of Allah and committed to the One Health vision. We believe the future of animal health lies in balancing proven therapeutic solutions with innovation, responsibility, and sustainability. Through responsible stewardship and continuous improvement, we strive to advance veterinary healthcare while creating lasting value for our communities and future generations.
           </blockquote>
           <div className="about-ceo__author">
             <div className="about-ceo__avatar">CEO</div>
@@ -56,16 +56,16 @@ export function About() {
 
         {/* Values */}
         <section style={{ margin:'64px 0' }}>
-          <span className="section-eyebrow">Our Values</span>
-          <h2 className="section-title">What Drives Us</h2>
+          <span className="section-eyebrow">Our Commitments</span>
+          <h2 className="section-title">What We Stand For</h2>
           <div className="values-grid">
             {[
-              { icon:'🔬', title:'Quality & Safety', desc:'Every product adheres to GMP standards and DRAP regulations. Rigorous QC at every stage.' },
-              { icon:'💡', title:'Innovation', desc:'Continuous R&D investment to bring cutting-edge solutions to Pakistan\'s veterinary sector.' },
-              { icon:'❤️', title:'Compassion', desc:'We recognize the deep bond between humans and animals. Our products reflect that understanding.' },
-              { icon:'🤝', title:'Integrity', desc:'Transparent business practices and unwavering ethical standards in everything we do.' },
-              { icon:'🌱', title:'Sustainability', desc:'Committed to reducing ecological footprint and transitioning to green pharmaceutical alternatives.' },
-              { icon:'🐾', title:'Animal Welfare', desc:'Products designed to promote health and happiness across diverse animal species.' },
+              { icon:'🔬', title:'Quality & Compliance', desc:'Committed to maintaining the highest standards of quality, regulatory compliance, and product consistency.' },
+              { icon:'🤝', title:'Strategic Partnerships', desc:'Building long-term relationships with international manufacturers, distributors, and industry stakeholders.' },
+              { icon:'💡', title:'Innovation', desc:'Continuously exploring new technologies and solutions to meet the evolving needs of animal health.' },
+              { icon:'⚖️', title:'Integrity', desc:'Conducting business with transparency, accountability, and professional ethics.' },
+              { icon:'✅', title:'Reliability', desc:'Delivering dependable products, responsive service, and consistent market support.' },
+              { icon:'🌱', title:'Sustainable Growth', desc:'Focused on creating long-term value through responsible business practices and continuous improvement.' },
             ].map(v => (
               <div key={v.title} className="value-card">
                 <span className="value-icon">{v.icon}</span>
@@ -81,7 +81,7 @@ export function About() {
           <span className="section-eyebrow">Corporate Governance</span>
           <h2 className="section-title">Our Policies</h2>
           <div className="policies-grid">
-            {['Quality Policy','Environmental Policy','Animal Welfare Policy','Anti-Corruption Policy','Data Privacy Policy'].map(p=>(
+            {['Quality Policy','Environmental Policy','Animal Welfare Policy'].map(p=>(
               <div key={p} className="policy-item">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
                 <span>{p}</span>
@@ -101,9 +101,9 @@ export function Science() {
       <div className="simple-hero">
         <div className="container">
           <span className="section-eyebrow">Science & Innovation</span>
-          <h1 className="section-title section-title--white">Research-Backed Excellence</h1>
+          <h1 className="section-title section-title--white">Science-Driven Solutions</h1>
           <p className="section-lead" style={{ color:'rgba(255,255,255,0.65)' }}>
-            Our R&D team works collaboratively to develop innovative products that address industry needs and advance the science of veterinary medicine.
+            Leveraging scientific expertise, industry knowledge, and strategic partnerships to deliver effective veterinary healthcare solutions for modern animal production.
           </p>
         </div>
       </div>
@@ -155,7 +155,7 @@ export function Science() {
           <span className="section-eyebrow">Literature Downloads</span>
           <h2 className="section-title">Technical Documentation</h2>
           <div className="downloads-grid">
-            {['Product Brochures','Product Information Sheets (PIS)','Trial Data Reports','Safety Data Sheets','Certifications (ISO, GMP, Halal)'].map(d=>(
+            {['Product Brochures','Product Information Sheets (PIS)','Trial Data Reports','Safety Data Sheets','Certifications (DRAP)'].map(d=>(
               <a key={d} href="#" className="download-item">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
                 <span>{d}</span>
@@ -182,7 +182,7 @@ export function Industries() {
       </div>
       <div className="container simple-body">
         {[
-          { icon:'🌾', title:'Feed Mills', color:'var(--green)', desc:'Feed mills rely on consistency, quality, and pellet durability. Our Rotamin portfolio delivers proven binder technology, probiotic enhancement, and mycotoxin management solutions that improve product quality and protect end-user animals.', products:['Rotamin Binder Pro', 'Rotamin Premium', 'Mycotoxin Binder Range', 'Organic Acid Blends'], focus:'Binders · Mycotoxin Management · Probiotics · Organic Acids' },
+          { icon:'🌾', title:'Feed Mills', color:'var(--green)', desc:'Feed mills rely on consistency, quality, and pellet durability. Our feed additive solutions deliver proven binder technology, probiotic enhancement, and mycotoxin management to improve product quality and protect end-user animals.', products:[], focus:'Binders · Mycotoxin Management · Probiotics · Organic Acids' },
           { icon:'🐄', title:'Farms & Veterinarians', color:'var(--navy)', desc:'Farms and practising veterinarians need reliable, DRAP-approved products with clearly stated withdrawal periods and efficacy data. Our antibiotic, phytogenic, and supportive care range supports both treatment and prevention protocols.', products:['Amoxicillin 20% WSP', 'Doxycycline 10%', 'Phytogenic Blend Pro', 'Multivitamin Liquid'], focus:'Antibiotics · Phytogenics · Anti-Virals · Supportive Care' },
           { icon:'🐟', title:'Aquaculture', color:'var(--navy-light)', desc:'A fast-growing sector in Pakistan and across Asia. Our aquaculture-specific formulations are currently in development, with initial products targeting gut health and feed conversion in commercial fish farming.', products:['Rotamin Aqua', 'Aqua Probiotic Plus'], focus:'Coming Soon — Contact Us for Pre-Launch Information' },
         ].map(ind => (
