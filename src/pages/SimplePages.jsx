@@ -208,37 +208,133 @@ export function Science() {
 }
 
 export function Industries() {
+  const industries = [
+    {
+      icon: '🐔',
+      title: 'Poultry Industry',
+      desc: 'Supporting broiler, layer, breeder, and integrated poultry operations with veterinary pharmaceuticals, nutritional solutions, and animal health technologies.',
+      keyAreas: [
+        'Disease Management',
+        'Performance Optimization',
+        'Preventive Healthcare',
+        'Nutritional Support',
+        'Production Efficiency',
+      ],
+    },
+    {
+      icon: '🌾',
+      title: 'Feed Manufacturers & Nutrition Companies',
+      desc: 'Providing feed additives, nutritional technologies, toxin management solutions, and specialty ingredients that support feed quality and animal performance.',
+      keyAreas: [
+        'Feed Additives',
+        'Toxin Management',
+        'Nutritional Technologies',
+        'Feed Quality Solutions',
+        'Performance Enhancement',
+      ],
+    },
+    {
+      icon: '🐄',
+      title: 'Livestock & Dairy Operations',
+      desc: 'Serving dairy, beef, and small-ruminant producers with animal health products and productivity-focused solutions.',
+      keyAreas: [
+        'Herd Health Management',
+        'Dairy Production Support',
+        'Disease Prevention',
+        'Nutritional Solutions',
+        'Animal Productivity',
+      ],
+    },
+    {
+      icon: '👨‍⚕️',
+      title: 'Veterinarians & Animal Health Professionals',
+      desc: 'Delivering reliable veterinary solutions supported by technical expertise, product knowledge, and industry experience.',
+      keyAreas: [
+        'Therapeutic Solutions',
+        'Technical Support',
+        'Veterinary Products',
+        'Disease Management',
+        'Professional Collaboration',
+      ],
+    },
+    {
+      icon: '🐾',
+      title: 'Companion Animals',
+      desc: 'Expanding into companion animal healthcare with a future portfolio focused on pet wellness, nutrition, and veterinary solutions. This initiative reflects our long-term commitment to serving the evolving needs of the animal health industry.',
+      keyAreas: [
+        'Pet Health',
+        'Pet Nutrition',
+        'Preventive Care',
+        'Veterinary Support',
+        'Companion Animal Wellness',
+      ],
+    },
+    {
+      icon: '🌍',
+      title: 'International Manufacturers & Strategic Partners',
+      desc: 'Supporting global animal health companies seeking market access, manufacturing capabilities, and long-term commercial partnerships in Pakistan\'s livestock, poultry, and emerging companion animal sectors.',
+      keyAreas: [
+        'Distribution Partnerships',
+        'Contract Manufacturing',
+        'Technology Transfer',
+        'Product Registration Support',
+        'Market Development',
+      ],
+    },
+  ];
+
   return (
     <div className="simple-page">
       <div className="simple-hero">
         <div className="container">
-          <span className="section-eyebrow">Industries Served</span>
-          <h1 className="section-title section-title--white">Tailored for Every Sector</h1>
-          <p className="section-lead" style={{ color:'rgba(255,255,255,0.65)' }}>
-            From large-scale feed mills to individual farm veterinarians — we understand your challenges and deliver the right solutions.
+          <span className="section-eyebrow">Industries We Serve</span>
+          <h1 className="section-title section-title--white">Serving Pakistan's Animal Health Industry</h1>
+          <p className="section-lead" style={{ color: 'rgba(255,255,255,0.65)' }}>
+            Through manufacturing expertise, market knowledge, and strategic partnerships, M.A. Kamil Farma supports key segments of Pakistan's livestock, poultry, feed, and veterinary sectors. Our solutions are designed to meet the evolving needs of producers, veterinarians, distributors, and animal health professionals across the country.
           </p>
         </div>
       </div>
       <div className="container simple-body">
-        {[
-          { icon:'🌾', title:'Feed Mills', color:'var(--green)', desc:'Feed mills rely on consistency, quality, and pellet durability. Our feed additive solutions deliver proven binder technology, probiotic enhancement, and mycotoxin management to improve product quality and protect end-user animals.', products:[], focus:'Binders · Mycotoxin Management · Probiotics · Organic Acids' },
-          { icon:'🐄', title:'Farms & Veterinarians', color:'var(--navy)', desc:'Farms and practising veterinarians need reliable, DRAP-approved products with clearly stated withdrawal periods and efficacy data. Our antibiotic, phytogenic, and supportive care range supports both treatment and prevention protocols.', products:['Amoxicillin 20% WSP', 'Doxycycline 10%', 'Phytogenic Blend Pro', 'Multivitamin Liquid'], focus:'Antibiotics · Phytogenics · Anti-Virals · Supportive Care' },
-          { icon:'🐟', title:'Aquaculture', color:'var(--navy-light)', desc:'A fast-growing sector in Pakistan and across Asia. Our aquaculture-specific formulations are currently in development, with initial products targeting gut health and feed conversion in commercial fish farming.', products:['Rotamin Aqua', 'Aqua Probiotic Plus'], focus:'Coming Soon — Contact Us for Pre-Launch Information' },
-        ].map(ind => (
-          <div key={ind.title} className="industry-detail" style={{ '--ic': ind.color }}>
-            <div className="industry-detail__header">
-              <span className="industry-icon">{ind.icon}</span>
-              <div>
-                <h2 style={{ fontFamily:'var(--font-display)', fontSize:'1.8rem', fontWeight:600, color:ind.color }}>{ind.title}</h2>
-                <div className="industry-focus">{ind.focus}</div>
+        {/* Industry Cards Grid */}
+        <section style={{ marginBottom: 80 }}>
+          <div className="industries-grid">
+            {industries.map((industry) => (
+              <div key={industry.title} className="industry-card">
+                <div className="industry-card__icon">{industry.icon}</div>
+                <h3 className="industry-card__title">{industry.title}</h3>
+                <p className="industry-card__desc">{industry.desc}</p>
+                <div className="industry-card__areas">
+                  <div className="industry-card__label">Key Areas</div>
+                  <ul className="industry-card__list">
+                    {industry.keyAreas.map((area) => (
+                      <li key={area}>
+                        <span className="list-bullet">•</span>
+                        {area}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
-            </div>
-            <p className="industry-desc">{ind.desc}</p>
-            <div className="industry-products">
-              {ind.products.map(p => <span key={p} className="industry-product">{p}</span>)}
-            </div>
+            ))}
           </div>
-        ))}
+        </section>
+
+        {/* Partnership Opportunities */}
+        <section className="partnership-cta">
+          <div className="partnership-cta__content">
+            <span className="section-eyebrow">Partnership Opportunities</span>
+            <h2 className="section-title">Looking to Enter the Pakistani Market?</h2>
+            <p className="section-lead">
+              M.A. Kamil Farma collaborates with international manufacturers, technology providers, and animal health innovators seeking long-term growth opportunities in Pakistan's livestock and poultry sectors.
+            </p>
+            <p style={{ fontSize: '1rem', color: 'var(--gray-500)', marginTop: 16 }}>
+              Our combination of market knowledge, industry relationships, and manufacturing capabilities makes us a trusted partner for sustainable business development.
+            </p>
+            <Link to="/contact" className="btn btn--gold" style={{ marginTop: 32 }}>
+              Get in Touch
+            </Link>
+          </div>
+        </section>
       </div>
     </div>
   );
@@ -315,64 +411,86 @@ export function Contact() {
 }
 
 export function Join() {
+  const partners = [
+    {
+      title: 'Distribution Opportunities',
+      eyebrow: 'Become a Distribution Partner',
+      desc: 'We welcome discussions with established distributors and commercial partners seeking to expand their presence in Pakistan\'s livestock, poultry, and animal health sectors.',
+      areas: ['Veterinary Pharmaceuticals', 'Feed Additives', 'Nutritional Solutions', 'Animal Health Products', 'Companion Animal Solutions'],
+      cta: { label: 'Enquire Now', to: '/contact' },
+    },
+    {
+      title: 'International Partnerships',
+      eyebrow: 'Partner With Us',
+      desc: 'M.A. Kamil Farma actively collaborates with international manufacturers and technology providers seeking market access, manufacturing support, and long-term commercial growth opportunities in Pakistan.',
+      areas: ['Distribution Partnerships', 'Contract Manufacturing', 'Technology Transfer', 'Product Development', 'Market Development'],
+      cta: { label: 'Discuss Opportunities', to: '/contact' },
+    },
+    {
+      title: 'Technical & Scientific Collaboration',
+      eyebrow: 'Explore New Opportunities',
+      desc: 'We welcome collaboration with universities, research institutions, technical experts, and industry professionals interested in advancing animal health through innovation, education, and knowledge sharing.',
+      areas: ['Product Evaluation', 'Field Studies', 'Technical Training', 'Scientific Exchange', 'Industry Development'],
+      cta: { label: 'Discuss Collaboration', to: '/contact' },
+    },
+  ];
+
   return (
     <div className="simple-page">
       <div className="simple-hero">
         <div className="container">
-          <span className="section-eyebrow">Careers</span>
-          <h1 className="section-title section-title--white">Join the M.A. Kamil Farma Team</h1>
-          <p className="section-lead" style={{ color:'rgba(255,255,255,0.65)' }}>
-            We are looking for passionate individuals to help shape the future of veterinary pharmaceutical care in Pakistan and beyond.
+          <span className="section-eyebrow">Partnerships & Collaboration</span>
+          <h1 className="section-title section-title--white">Grow With M.A. Kamil Farma</h1>
+          <p className="section-lead" style={{ color: 'rgba(255,255,255,0.75)' }}>
+            We are committed to building long-term relationships with distributors, manufacturers, technology providers, and animal health professionals who share our vision for advancing animal health.
           </p>
         </div>
       </div>
+
       <div className="container simple-body">
-        {/* Open positions */}
-        <section style={{ marginBottom:64 }}>
-          <span className="section-eyebrow">Open Positions</span>
-          <h2 className="section-title">Current Opportunities</h2>
-          <div className="jobs-list">
-            {[
-              { title:'Senior Research Scientist – Veterinary Pharma', dept:'R&D', location:'Karachi', type:'Full-time' },
-              { title:'Regional Sales Manager – Punjab', dept:'Sales', location:'Lahore', type:'Full-time' },
-              { title:'Quality Assurance Officer', dept:'Manufacturing', location:'Karachi', type:'Full-time' },
-              { title:'Veterinary Technical Advisor', dept:'Technical', location:'Multiple', type:'Full-time' },
-              { title:'Digital Marketing Executive', dept:'Marketing', location:'Karachi', type:'Full-time' },
-            ].map(j => (
-              <div key={j.title} className="job-card">
-                <div className="job-card__info">
-                  <h3>{j.title}</h3>
-                  <div className="job-card__tags">
-                    <span className="tag tag--navy">{j.dept}</span>
-                    <span className="tag">{j.location}</span>
-                    <span className="tag tag--green">{j.type}</span>
-                  </div>
+        <section style={{ marginBottom: 48 }}>
+          <div className="partners-grid">
+            {partners.map(p => (
+              <div key={p.title} className="partner-card">
+                <div>
+                  <div className="partner-eyebrow">{p.eyebrow}</div>
+                  <h3 className="partner-title">{p.title}</h3>
+                  <p className="partner-desc">{p.desc}</p>
                 </div>
-                <a href="mailto:careers@makamilfarma.com" className="btn btn--outline">Apply →</a>
+                <div className="partner-areas">
+                  <div className="partner-areas__label">Areas of Interest</div>
+                  <ul className="partner-areas__list">
+                    {p.areas.map(a => (
+                      <li key={a}><span className="list-bullet">•</span>{a}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div style={{ marginTop: 12 }}>
+                  <Link to={p.cta.to} className="btn btn--gold">{p.cta.label}</Link>
+                </div>
               </div>
             ))}
           </div>
         </section>
 
-        {/* Distributor */}
-        <section className="distributor-section">
-          <div className="distributor-cta">
-            <div>
-              <span className="section-eyebrow">Partnerships</span>
-              <h2 className="section-title">Become a Distributor</h2>
-              <p className="section-lead">
-                We are actively seeking distribution partners in Pakistan, GCC, Africa, and Southeast Asia. If you have an established network in veterinary pharma or animal feed, we want to hear from you.
-              </p>
+        <section style={{ marginTop: 24 }}>
+          <div className="future-careers">
+            <span className="section-eyebrow">Future Careers</span>
+            <h2 className="section-title">Careers at M.A. Kamil Farma</h2>
+            <p className="section-lead" style={{ marginTop: 8 }}>
+              As our organisation continues to grow, career opportunities will be announced through our official communication channels. For future opportunities, interested candidates may submit their profiles through the contact page.
+            </p>
+            <div style={{ marginTop: 18 }}>
+              <Link to="/contact" style={{ marginBottom: 12 }} className="btn btn--gold">Submit Profile</Link>
             </div>
-            <Link to="/contact" className="btn btn--gold">Enquire Now</Link>
           </div>
         </section>
       </div>
     </div>
   );
-}
+    }
 
-export function Expo2025() {
+    export function Expo2025() {
   return (
     <div className="simple-page">
       <div className="simple-hero">

@@ -35,11 +35,6 @@ export default function Footer() {
               <em>Trusted Partnerships. Responsible Solutions.</em>
             </p>
             <p className="footer__address">H-17 SITE Phase 2, Karachi, Pakistan</p>
-            <div className="footer__social">
-              {['LinkedIn', 'Facebook', 'Instagram', 'YouTube'].map(s => (
-                <a key={s} href="#" className="footer__social-link">{s.slice(0,2)}</a>
-              ))}
-            </div>
           </div>
 
           {/* Products */}
