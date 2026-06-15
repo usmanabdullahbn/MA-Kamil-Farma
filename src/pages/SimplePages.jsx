@@ -1,7 +1,28 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Simple.css';
 
 export function About() {
+  const [openPolicy, setOpenPolicy] = useState(null);
+
+  const policies = [
+    {
+      title: 'Quality Policy',
+      content: 'M. A. Kamil Farma (Pvt) Limited is committed to manufacturing veterinary pharmaceutical products, including powder and liquid formulations, in compliance with DRAP regulations. We maintain rigorous quality controls to ensure every batch meets defined safety, efficacy, and purity standards. Our quality management system is continuously reviewed and improved so veterinarians, farmers, and distributors can rely on consistent product performance.',
+    },
+    {
+      title: 'Environmental Policy',
+      content: 'M. A. Kamil Farma (Pvt) Limited acknowledges the environmental responsibilities that come with pharmaceutical manufacturing. Our facility operates dedicated effluent and waste treatment systems to ensure that manufacturing by-products are managed safely before disposal. We comply with applicable Pakistani environmental regulations and work to minimize water, energy, and material waste across our production operations.',
+    },
+    {
+      title: 'Animal Welfare Policy',
+      content: 'At M. A. Kamil Farma (Pvt) Limited, animal welfare is a core value. We develop veterinary formulations for cattle, livestock, and other animals with their health and well-being as the primary objective. Our work is guided by recognized animal welfare principles, and we promote the responsible and humane use of all our products by veterinary professionals and livestock farmers.',
+    },
+  ];
+
+  const togglePolicy = (title) => {
+    setOpenPolicy(openPolicy === title ? null : title);
+  };
   return (
     <div className="simple-page">
       <div className="simple-hero">
@@ -83,11 +104,27 @@ export function About() {
           <span className="section-eyebrow">Corporate Governance</span>
           <h2 className="section-title">Our Policies</h2>
           <div className="policies-grid">
-            {['Quality Policy','Environmental Policy','Animal Welfare Policy'].map(p=>(
-              <div key={p} className="policy-item">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
-                <span>{p}</span>
-                <a href="#">Download ↗</a>
+            {policies.map((policy) => (
+              <div
+                key={policy.title}
+                className={`policy-item ${openPolicy === policy.title ? 'policy-item--open' : ''}`}
+                onClick={() => togglePolicy(policy.title)}
+                role="button"
+                tabIndex={0}
+                onKeyPress={(e) => e.key === 'Enter' && togglePolicy(policy.title)}
+              >
+                <div className="policy-item__header">
+                  <div className="policy-item__title-wrap">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+                    <span>{policy.title}</span>
+                  </div>
+                  <span className="policy-item__chevron">{openPolicy === policy.title ? '−' : '+'}</span>
+                </div>
+                {openPolicy === policy.title && (
+                  <div className="policy-content">
+                    <p>{policy.content}</p>
+                  </div>
+                )}
               </div>
             ))}
           </div>
