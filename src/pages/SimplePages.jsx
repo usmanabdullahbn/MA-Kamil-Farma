@@ -33,15 +33,17 @@ export function About() {
         {/* Timeline */}
         <section style={{ margin:'64px 0' }}>
           <span className="section-eyebrow">Our Journey</span>
-          <h2 className="section-title">Ten Decades of Progress</h2>
+          <h2 className="section-title">OUR JOURNEY SINCE 1923</h2>
           <div className="about-timeline">
             {[
-              { year:'1923', title:'Founded', desc:'Established as a community pharmacy in Karachi, driven by a passion for accessible, reliable medicine.' },
-              { year:'1960s', title:'Veterinary Focus', desc:'Pivoted to veterinary pharmaceuticals, serving the growing livestock sector of Pakistan.' },
-              { year:'1990s', title:'Manufacturing Scale-up', desc:'Invested in GMP-compliant manufacturing facilities and expanded the product portfolio significantly.' },
-              { year:'2010s', title:'Rotamin & Innovation', desc:'Launched the Rotamin product line and began international export to GCC and African markets.' },
-              { year:'2020s', title:'One Health Vision', desc:'Embraced the One Health framework; began transition to green pharmaceutical alternatives.' },
-              { year:'Today', title:'Global Ambitions', desc:'Serving 15,000+ farms, exporting to 12 markets, with Expo 2025 participation and ambitious R&D pipeline.' },
+              { year:'1923', title:'Origins in Kolkata', desc:'The Kamil family established its roots in the chemical trade in Kolkata (formerly Calcutta), laying the foundation for a business legacy that spans more than a century.' },
+              { year:'2003', title:'Al Burque Enterprises', desc:'Established Al Burque Enterprises in Pakistan, supplying amino acids, vitamins, minerals, and specialty raw materials to the pharmaceutical, feed, and allied industries.' },
+              { year:'2005', title:'Entry into Veterinary Healthcare', desc:'Entered the veterinary healthcare sector through a strategic partnership with Sintofarm, expanding into veterinary product distribution and strengthening our presence in Pakistan\'s growing animal health market.' },
+              { year:'2009', title:'Contract Manufacturing Partnerships', desc:'Strengthened market presence through contract manufacturing partnerships with established pharmaceutical manufacturers, expanding the veterinary product portfolio and commercial reach.' },
+              { year:'2012', title:'Strategic International Partnership', desc:'Began collaboration with Rotamin (Turkey), introducing imported toxin binder solutions and strengthening international partnerships in animal nutrition and health.' },
+              { year:'2023', title:'Manufacturing Authorization Granted', desc:'Received veterinary pharmaceutical manufacturing authorization from the Drug Regulatory Authority of Pakistan (DRAP), marking a major milestone in the company\'s evolution.' },
+              { year:'2024', title:'Manufacturing Operations Commence', desc:'M.A. Kamil Farma commenced commercial manufacturing of veterinary pharmaceutical products, marking the transition from trading and distribution to manufacturing.' },
+              { year:'Today', title:'Building the Future of Animal Health', desc:'M.A. Kamil Farma continues to expand its manufacturing capabilities, international partnerships, and product portfolio while advancing its commitment to animal health, innovation, and sustainable growth.' },
             ].map(item => (
               <div key={item.year} className="timeline-item">
                 <div className="timeline-year">{item.year}</div>
