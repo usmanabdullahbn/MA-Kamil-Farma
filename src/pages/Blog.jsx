@@ -33,7 +33,7 @@ function BlogModal({ blog, onSave, onClose }) {
           <input type="text" placeholder="Title" required value={form.title} onChange={e => setForm({...form, title: e.target.value})} />
           <textarea placeholder="Excerpt" required value={form.excerpt} onChange={e => setForm({...form, excerpt: e.target.value})} rows="2"></textarea>
           <textarea placeholder="Content (HTML allowed)" required value={form.content} onChange={e => setForm({...form, content: e.target.value})} rows="8"></textarea>
-          
+
           <div className="blog-form__row">
             <select value={form.category} onChange={e => setForm({...form, category: e.target.value})}>
               <option>General</option>
@@ -70,15 +70,6 @@ function BlogModal({ blog, onSave, onClose }) {
   );
 }
 
-const MOCK_BLOGS = [
-  { _id:'1', slug:'one-health-future', category:'Science', title:'One Health: The Future of Veterinary Pharmaceutical Design', excerpt:'The One Health approach — recognizing the inseparable connection between human, animal, and environmental health — is reshaping how pharmaceutical companies design their products.', publishedAt:'2026-04-14', readTime:6 },
-  { _id:'2', slug:'antibiotic-resistance-pakistan', category:'Industry News', title:"Antibiotic Resistance in Pakistan's Livestock Sector: What Farmers Must Know", excerpt:"Pakistan's livestock sector faces a growing antibiotic resistance crisis. Understanding the economic and health implications is critical for every farmer and veterinarian.", publishedAt:'2026-04-01', readTime:8 },
-  { _id:'3', slug:'rotamin-fcr-trial', category:'Research', title:'Rotamin Trial Results: 18% FCR Improvement in Broiler Flocks', excerpt:'A controlled trial across three farms in Punjab demonstrated significant improvements in feed conversion ratio using Rotamin Binder Pro supplementation over 42 days.', publishedAt:'2026-03-18', readTime:5 },
-  { _id:'4', slug:'phytogenics-future-antibiotics', category:'Innovation', title:'Phytogenics: The Future of Antibiotic Alternatives in Poultry', excerpt:'As antibiotic restrictions tighten globally, phytogenic feed additives are emerging as the most promising natural alternative for maintaining flock health and performance.', publishedAt:'2026-03-05', readTime:7 },
-  { _id:'5', slug:'expo-2025-preview', category:'News', title:'M.A. Kamil Farma at VIV Asia 2025 — Bangkok', excerpt:"We are proud to announce our participation at VIV Asia 2025 in Bangkok. Discover what we'll be showcasing and how to connect with our team.", publishedAt:'2026-02-20', readTime:4 },
-  { _id:'6', slug:'sustainability-green-pharma', category:'Sustainability', title:'Our Commitment to Green Pharmaceuticals', excerpt:"M.A. Kamil Farma's strategy to replace traditional antibiotics with green alternatives reflects our dedication to environmental sustainability and One Health.", publishedAt:'2026-02-05', readTime:6 },
-];
-
 function formatDate(d) {
   return new Date(d).toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
 }
@@ -89,7 +80,7 @@ export function Blog() {
   const [page, setPage] = useState(1);
   const [activeCategory, setActiveCategory] = useState('');
   const [pagination, setPagination] = useState(null);
-  
+
   // Admin CRUD states
   const [isAdmin, setIsAdmin] = useState(!!localStorage.getItem('adminToken'));
   const [adminToken, setAdminToken] = useState(localStorage.getItem('adminToken') || '');
@@ -103,7 +94,7 @@ export function Blog() {
     setLoading(true);
     api.blogs.list({ page, limit: 9, category: activeCategory })
       .then(r => { setBlogs(r.data); setPagination(r.pagination); })
-      .catch(() => setBlogs(MOCK_BLOGS))
+      .catch(() => setBlogs([]))
       .finally(() => setLoading(false));
   }, [page, activeCategory]);
 
@@ -151,7 +142,7 @@ export function Blog() {
       setLoading(true);
       api.blogs.list({ page, limit: 9, category: activeCategory })
         .then(r => { setBlogs(r.data); setPagination(r.pagination); })
-        .catch(() => setBlogs(MOCK_BLOGS))
+        .catch(() => setBlogs([]))
         .finally(() => setLoading(false));
       fetchAllBlogs();
       setEditingBlog(null);
@@ -167,7 +158,7 @@ export function Blog() {
       setLoading(true);
       api.blogs.list({ page, limit: 9, category: activeCategory })
         .then(r => { setBlogs(r.data); setPagination(r.pagination); })
-        .catch(() => setBlogs(MOCK_BLOGS))
+        .catch(() => setBlogs([]))
         .finally(() => setLoading(false));
       fetchAllBlogs();
     } catch (err) {
@@ -175,7 +166,15 @@ export function Blog() {
     }
   };
 
-  const categories = ['Science', 'Industry News', 'Research', 'Innovation', 'News', 'Sustainability'];
+  const categories = [
+    'Company News',
+    'Industry Insights',
+    'Research & Development',
+    'Product Updates',
+    'Regulatory Updates',
+    'Event Participation',
+    'Partnerships & Collaborations',
+  ];
   const [featured, ...rest] = blogs;
 
   return (
@@ -186,10 +185,10 @@ export function Blog() {
           <div className="blog-modal__content" onClick={e => e.stopPropagation()}>
             <h2>Admin Login</h2>
             <form onSubmit={handleAdminLogin} className="blog-form">
-              <input 
-                type="password" 
-                placeholder="Enter admin token" 
-                value={adminToken} 
+              <input
+                type="password"
+                placeholder="Enter admin token"
+                value={adminToken}
                 onChange={e => setAdminToken(e.target.value)}
                 required
               />
@@ -202,147 +201,274 @@ export function Blog() {
         </div>
       )}
 
-      {/* Blog CRUD Modal */}
-      {showModal && (
-        <BlogModal 
-          blog={editingBlog} 
-          onSave={handleSaveBlog} 
-          onClose={() => { setShowModal(false); setEditingBlog(null); }}
-        />
-      )}
-
-      <div className="blog-page__hero">
-        <div className="container blog-page__hero-inner">
-          <span className="section-eyebrow">Knowledge Hub</span>
-          <h1 className="section-title section-title--white">News & Insights</h1>
-          <p className="section-lead" style={{ color:'rgba(255,255,255,0.65)' }}>
-            Science, innovation, sustainability, and the human–animal bond — published bi-weekly by the M.A. Kamil Farma team.
-          </p>
+      {/* Hero */}
+      <section className="blog-hero">
+        <div className="blog-hero__bg">
+          <div className="blog-hero__mesh" />
+          <div className="blog-hero__pattern" />
         </div>
-      </div>
-
-      <div className="blog-page__body container">
-        {/* Admin Control Bar */}
-        {isAdmin && (
-          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '2rem' }}>
-            <button className="btn btn--navy" onClick={() => { setEditingBlog(null); setShowModal(true); }}>+ Create Blog</button>
+        <div className="container blog-hero__inner">
+          <div className="blog-hero__content">
+            <span className="section-eyebrow blog-hero__eyebrow">Knowledge Hub</span>
+            <h1 className="blog-hero__title">
+              Insights, Research & <span className="blog-hero__accent">Industry Intelligence</span>
+            </h1>
+            <p className="blog-hero__lead">
+              Expert perspectives on veterinary pharmaceuticals, livestock health, and the evolving
+              landscape of animal nutrition — written by our team of scientists and industry specialists.
+            </p>
+            <div className="blog-hero__stats">
+              <div className="blog-hero__stat">
+                <span className="blog-hero__stat-num">{blogs.length > 0 ? blogs.length : '—'}</span>
+                <span className="blog-hero__stat-label">Published Articles</span>
+              </div>
+              <div className="blog-hero__stat">
+                <span className="blog-hero__stat-num">{categories.length}</span>
+                <span className="blog-hero__stat-label">Topic Areas</span>
+              </div>
+              <div className="blog-hero__stat">
+                <span className="blog-hero__stat-num">Weekly</span>
+                <span className="blog-hero__stat-label">New Content</span>
+              </div>
+            </div>
           </div>
-        )}
-
-        {/* Category filters */}
-        <div className="blog-cats">
-          <button className={`pf-btn ${!activeCategory?'active':''}`} onClick={() => { setActiveCategory(''); setPage(1); }}>All</button>
-          {categories.map(c => (
-            <button key={c} className={`pf-btn ${activeCategory===c?'active':''}`} onClick={() => { setActiveCategory(c); setPage(1); }}>{c}</button>
-          ))}
         </div>
+        <div className="blog-hero__divider">
+          <svg viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0,60 C360,0 1080,0 1440,60 L1440,60 L0,60 Z" fill="var(--off-white)" />
+          </svg>
+        </div>
+      </section>
 
-        {loading ? (
-          <div className="blog-skeletons">{[1,2,3].map(i=><div key={i} className="blog-skeleton"/>)}</div>
-        ) : (
-          <>
-            {/* Featured */}
-            {featured && (
-              <Link to={`/blog/${featured.slug}`} className="blog-featured">
-                <div className="blog-featured__img"><div className="blog-featured__ph" /></div>
-                <div className="blog-featured__body">
-                  <span className="tag tag--navy">{featured.category}</span>
-                  <h2 className="blog-featured__title">{featured.title}</h2>
-                  <p className="blog-featured__excerpt">{featured.excerpt}</p>
-                  <div className="blog-meta">{formatDate(featured.publishedAt)} · {featured.readTime} min read</div>
-                  {isAdmin && (
-                    <div className="blog-actions">
-                      <button className="btn btn--sm" onClick={() => { setEditingBlog(featured); setShowModal(true); }}>Edit</button>
-                      <button className="btn btn--sm btn--outline" onClick={() => handleDeleteBlog(featured._id)}>Delete</button>
-                    </div>
-                  )}
-                </div>
-              </Link>
-            )}
-
-            <div className="blog-grid">
-              {rest.map(b => (
-                <div key={b._id} className="blog-card-item">
-                  <Link to={`/blog/${b.slug}`} className="blog-card-link">
-                    <div className="blog-card-item__img"><div className="blog-card-item__ph"/><span className="tag tag--navy blog-cat-pos">{b.category}</span></div>
-                    <div className="blog-card-item__body">
-                      <h3>{b.title}</h3>
-                      <p>{b.excerpt}</p>
-                      <div className="blog-meta">{formatDate(b.publishedAt)} · {b.readTime} min read</div>
-                    </div>
-                  </Link>
-                  {isAdmin && (
-                    <div className="blog-card-actions">
-                      <button className="btn btn--sm" onClick={() => { setEditingBlog(b); setShowModal(true); }}>Edit</button>
-                      <button className="btn btn--sm btn--outline" onClick={() => handleDeleteBlog(b._id)}>Delete</button>
-                    </div>
-                  )}
-                </div>
+      {/* Body */}
+      <section className="blog-page__body">
+        <div className="container">
+          <div className="blog-toolbar">
+            <div className="blog-toolbar__left">
+              <span className="blog-toolbar__label">Browse Topics</span>
+            </div>
+            <div className="blog-cats">
+              <button
+                className={`blog-cat ${!activeCategory ? 'blog-cat--active' : ''}`}
+                onClick={() => { setActiveCategory(''); setPage(1); }}
+              >
+                All
+              </button>
+              {categories.map(c => (
+                <button
+                  key={c}
+                  className={`blog-cat ${activeCategory === c ? 'blog-cat--active' : ''}`}
+                  onClick={() => { setActiveCategory(c); setPage(1); }}
+                >
+                  {c}
+                </button>
               ))}
             </div>
+          </div>
 
-            {/* Admin Dashboard */}
-            {isAdmin && (
-              <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid #ddd' }}>
-                <h2>All Blogs (Admin)</h2>
-                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
+          {loading ? (
+            <div className="blog-skeletons">{[1,2,3,4,5,6].map(i => <div key={i} className="blog-skeleton" />)}</div>
+          ) : blogs.length === 0 ? (
+            <div className="blog-coming-soon">
+              <div className="blog-coming-soon__icon">
+                <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                  <line x1="8" y1="7" x2="16" y2="7"/>
+                  <line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </div>
+              <span className="section-eyebrow">Coming Soon</span>
+              <h2 className="blog-coming-soon__title">The Knowledge Hub is Underway</h2>
+              <p className="blog-coming-soon__lead">
+                We are developing a comprehensive resource library featuring industry updates,
+                research summaries, product information, and company news.
+                Please check back for future publications.
+              </p>
+              <div className="blog-coming-soon__actions">
+                <Link to="/contact" className="btn btn--gold">Register Interest</Link>
+                <a href="https://wa.me/923001234567" target="_blank" rel="noopener noreferrer" className="btn btn--outline">Get Notified</a>
+              </div>
+              <div className="blog-coming-soon__categories">
+                <h4 className="blog-coming-soon__categories-title">Future Topics Will Cover</h4>
+                <div className="blog-coming-soon__chips">
+                  {categories.map(c => (
+                    <span key={c} className="blog-coming-soon__chip">
+                      <span className="list-bullet">•</span> {c}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ) : (
+            <>
+              {featured && (
+                <Link to={`/blog/${featured.slug}`} className="blog-featured">
+                  <div className="blog-featured__img">
+                    <div className="blog-featured__ph" />
+                    <div className="blog-featured__overlay">
+                      <span className="blog-featured__badge">Featured Story</span>
+                    </div>
+                  </div>
+                  <div className="blog-featured__body">
+                    <div className="blog-featured__meta">
+                      <span className="tag tag--gold">{featured.category}</span>
+                      <span className="blog-featured__date">{formatDate(featured.publishedAt)}</span>
+                    </div>
+                    <h2 className="blog-featured__title">{featured.title}</h2>
+                    <p className="blog-featured__excerpt">{featured.excerpt}</p>
+                    <div className="blog-featured__footer">
+                      <div className="blog-meta">
+                        <span className="blog-meta__dot" />
+                        {featured.readTime} min read
+                      </div>
+                      <span className="blog-featured__cta">
+                        Read article
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <line x1="5" y1="12" x2="19" y2="12"/>
+                          <polyline points="12 5 19 12 12 19"/>
+                        </svg>
+                      </span>
+                    </div>
+                    {isAdmin && (
+                      <div className="blog-actions">
+                        <button className="btn btn--sm" onClick={() => { setEditingBlog(featured); setShowModal(true); }}>Edit</button>
+                        <button className="btn btn--sm btn--outline" onClick={() => handleDeleteBlog(featured._id)}>Delete</button>
+                      </div>
+                    )}
+                  </div>
+                </Link>
+              )}
+
+              {rest.length > 0 && (
+                <>
+                  <div className="blog-section-heading">
+                    <span className="section-eyebrow">More Articles</span>
+                    <h2 className="section-title">Latest From Our Team</h2>
+                  </div>
+                  <div className="blog-grid">
+                    {rest.map((b, i) => (
+                      <div key={b._id} className="blog-card-item" style={{ animationDelay: `${i * 60}ms` }}>
+                        <Link to={`/blog/${b.slug}`} className="blog-card-link">
+                          <div className="blog-card-item__img">
+                            <div className="blog-card-item__ph" />
+                            <span className="tag tag--navy blog-cat-pos">{b.category}</span>
+                            <div className="blog-card-item__read">{b.readTime} min</div>
+                          </div>
+                          <div className="blog-card-item__body">
+                            <div className="blog-card-item__date">{formatDate(b.publishedAt)}</div>
+                            <h3>{b.title}</h3>
+                            <p>{b.excerpt}</p>
+                            <span className="blog-card-item__arrow">
+                              Read more
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"/>
+                                <polyline points="12 5 19 12 12 19"/>
+                              </svg>
+                            </span>
+                          </div>
+                        </Link>
+                        {isAdmin && (
+                          <div className="blog-card-actions">
+                            <button className="btn btn--sm" onClick={() => { setEditingBlog(b); setShowModal(true); }}>Edit</button>
+                            <button className="btn btn--sm btn--outline" onClick={() => handleDeleteBlog(b._id)}>Delete</button>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {pagination?.pages > 1 && (
+                <div className="blog-pagination">
+                  <button
+                    className="blog-pagination__nav"
+                    disabled={page === 1}
+                    onClick={() => setPage(p => Math.max(1, p - 1))}
+                    aria-label="Previous page"
+                  >
+                    ←
+                  </button>
+                  {Array.from({ length: pagination.pages }, (_, i) => i + 1).map(p => (
+                    <button key={p} className={`blog-pagination__btn ${page === p ? 'blog-pagination__btn--active' : ''}`} onClick={() => setPage(p)}>
+                      {p}
+                    </button>
+                  ))}
+                  <button
+                    className="blog-pagination__nav"
+                    disabled={page === pagination.pages}
+                    onClick={() => setPage(p => Math.min(pagination.pages, p + 1))}
+                    aria-label="Next page"
+                  >
+                    →
+                  </button>
+                </div>
+              )}
+            </>
+          )}
+
+          {isAdmin && (
+            <div className="blog-admin-panel">
+              <div className="blog-admin-panel__header">
+                <div>
+                  <span className="section-eyebrow">Admin</span>
+                  <h2 className="section-title">All Blogs</h2>
+                </div>
+                <div className="blog-admin-panel__actions">
+                  <button className="btn btn--gold" onClick={() => setShowModal(true)}>Create Blog</button>
+                  <button className="btn btn--outline" onClick={handleAdminLogout}>Logout</button>
+                </div>
+              </div>
+              <div className="blog-admin-table-wrap">
+                <table className="blog-admin-table">
                   <thead>
-                    <tr style={{ borderBottom: '2px solid #ddd' }}>
-                      <th style={{ textAlign: 'left', padding: '0.5rem' }}>Title</th>
-                      <th style={{ textAlign: 'left', padding: '0.5rem' }}>Category</th>
-                      <th style={{ textAlign: 'center', padding: '0.5rem' }}>Published</th>
-                      <th style={{ textAlign: 'center', padding: '0.5rem' }}>Actions</th>
+                    <tr>
+                      <th>Title</th>
+                      <th>Category</th>
+                      <th>Status</th>
+                      <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
+                    {allBlogs.length === 0 && !adminLoading && (
+                      <tr><td colSpan="4" className="blog-admin-empty">No blogs yet — create your first post.</td></tr>
+                    )}
                     {allBlogs.map(b => (
-                      <tr key={b._id} style={{ borderBottom: '1px solid #eee' }}>
-                        <td style={{ padding: '0.5rem' }}><strong>{b.title}</strong></td>
-                        <td style={{ padding: '0.5rem' }}>{b.category}</td>
-                        <td style={{ textAlign: 'center', padding: '0.5rem' }}>{b.published ? '✓' : '○'}</td>
-                        <td style={{ textAlign: 'center', padding: '0.5rem' }}>
-                          <button className="btn btn--sm" onClick={() => { setEditingBlog(b); setShowModal(true); }}>Edit</button>
-                          <button className="btn btn--sm btn--outline" onClick={() => handleDeleteBlog(b._id)} style={{ marginLeft: '0.5rem' }}>Delete</button>
+                      <tr key={b._id}>
+                        <td><strong>{b.title}</strong></td>
+                        <td><span className="tag tag--navy">{b.category}</span></td>
+                        <td>
+                          {b.published
+                            ? <span className="tag tag--green">Published</span>
+                            : <span className="tag">Draft</span>}
+                        </td>
+                        <td>
+                          <div className="blog-admin-row-actions">
+                            <button className="btn btn--sm" onClick={() => { setEditingBlog(b); setShowModal(true); }}>Edit</button>
+                            <button className="btn btn--sm btn--outline" onClick={() => handleDeleteBlog(b._id)}>Delete</button>
+                          </div>
                         </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-            )}
+            </div>
+          )}
+        </div>
+      </section>
 
-            {pagination?.pages > 1 && (
-              <div className="blog-pagination">
-                {Array.from({length:pagination.pages},(_,i)=>i+1).map(p=>(
-                  <button key={p} className={`pf-btn ${page===p?'active':''}`} onClick={()=>setPage(p)}>{p}</button>
-                ))}
-              </div>
-            )}
-          </>
-        )}
-      </div>
+      {showModal && (
+        <BlogModal
+          blog={editingBlog}
+          onSave={handleSaveBlog}
+          onClose={() => { setShowModal(false); setEditingBlog(null); }}
+        />
+      )}
     </div>
   );
 }
-
-const MOCK_POST = {
-  title: 'One Health: The Future of Veterinary Pharmaceutical Design',
-  content: `
-    <p>The concept of <strong>One Health</strong> — recognizing the profound and inseparable connections between human health, animal health, and the health of our shared environment — is no longer just a philosophical framework. It has become the guiding principle behind the most innovative veterinary pharmaceutical companies in the world.</p>
-    <h2>Why One Health Matters Now</h2>
-    <p>Over 60% of known infectious diseases affecting humans originate in animals. The way we manage animal health directly impacts human health outcomes, food security, and environmental integrity. For a company like M.A. Kamil Farma, this understanding has shaped our product development strategy for decades.</p>
-    <h2>Implications for Product Design</h2>
-    <p>Products designed under the One Health framework must consider not just efficacy in the target animal species, but the residue profile in food products, the environmental fate of excipients, and the impact on non-target organisms in the ecosystem.</p>
-    <blockquote>Our future strategy includes replacing traditional antibiotic products with green alternatives that are not only effective but also environmentally sustainable. — CEO, M.A. Kamil Farma</blockquote>
-    <h2>Phytogenics and the Green Pharmacy</h2>
-    <p>Essential oil-based phytogenic compounds, plant extracts, and organic acids are increasingly displacing conventional antibiotics in production animal medicine. These natural compounds offer antimicrobial and immunostimulant properties without the residue or resistance concerns associated with synthetic antibiotics.</p>
-    <p>At M.A. Kamil Farma, our phytogenic range has been developed in collaboration with veterinary researchers across Pakistan to ensure relevance to local disease challenges and climate conditions.</p>
-    <h2>Looking Forward</h2>
-    <p>The One Health paradigm is not a constraint — it is an opportunity. Companies that embrace it will find themselves at the forefront of a global shift towards responsible, sustainable veterinary medicine that protects animals, people, and the planet simultaneously.</p>
-  `,
-  category: 'Science', author: 'M.A. Kamil Farma Research Team', publishedAt: '2026-04-14', readTime: 6,
-  tags: ['One Health', 'Innovation', 'Phytogenics', 'Sustainability'],
-};
 
 export function BlogPost() {
   const { slug } = useParams();
@@ -351,13 +477,44 @@ export function BlogPost() {
 
   useEffect(() => {
     window.scrollTo(0,0);
-    api.blogs.get(slug).then(r=>setPost(r.data)).catch(()=>setPost(MOCK_POST)).finally(()=>setLoading(false));
+    api.blogs.get(slug).then(r=>setPost(r.data)).catch(()=>setPost(null)).finally(()=>setLoading(false));
   }, [slug]);
 
   if (loading) return (
-    <div style={{ paddingTop:130 }}>
-      <div className="container" style={{ maxWidth:760 }}>
-        {[80,20,20,20,20].map((h,i) => <div key={i} className="blog-skeleton" style={{ height:h, marginTop:14, borderRadius:6 }}/>)}
+    <div className="post-page">
+      <div className="post-hero">
+        <div className="container post-hero__inner">
+          <div className="blog-skeleton" style={{ height: 24, width: 140, marginBottom: 24 }} />
+          <div className="blog-skeleton" style={{ height: 48, marginBottom: 16 }} />
+          <div className="blog-skeleton" style={{ height: 16, width: 240 }} />
+        </div>
+      </div>
+      <div style={{ padding: '64px 24px 96px' }}>
+        <div className="container" style={{ maxWidth: 760 }}>
+          {[80,20,20,20,20].map((h,i) => <div key={i} className="blog-skeleton" style={{ height:h, marginTop:14, borderRadius:6 }}/>)}
+        </div>
+      </div>
+    </div>
+  );
+
+  if (!post) return (
+    <div className="post-page">
+      <div className="post-hero">
+        <div className="container post-hero__inner">
+          <Link to="/blog" className="post-back">← Back to Knowledge Hub</Link>
+          <h1 className="post-title">Article Not Available</h1>
+          <div className="post-meta">This publication may have been removed or is not yet published.</div>
+        </div>
+      </div>
+      <div className="container post-body">
+        <div className="post-cta" style={{ marginTop: 0 }}>
+          <div className="post-cta__inner" style={{ textAlign: 'center' }}>
+            <p>Our Knowledge Hub is being developed — please check back for future publications.</p>
+            <div style={{ marginTop: 18 }}>
+              <Link to="/blog" className="btn btn--gold">Back to Knowledge Hub</Link>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -365,28 +522,43 @@ export function BlogPost() {
   return (
     <div className="post-page">
       <div className="post-hero">
+        <div className="post-hero__bg">
+          <div className="post-hero__mesh" />
+        </div>
         <div className="container post-hero__inner">
-          <Link to="/blog" className="post-back">← Back to Blog</Link>
-          <span className="tag tag--gold" style={{ marginTop:18, display:'inline-block' }}>{post.category}</span>
+          <Link to="/blog" className="post-back">← Back to Knowledge Hub</Link>
+          <span className="tag tag--gold post-hero__tag">{post.category}</span>
           <h1 className="post-title">{post.title}</h1>
-          <div className="post-meta">{post.author} · {formatDate(post.publishedAt)} · {post.readTime} min read</div>
+          <div className="post-meta">
+            <span className="post-meta__author">By {post.author}</span>
+            <span className="post-meta__sep" />
+            <span>{formatDate(post.publishedAt)}</span>
+            <span className="post-meta__sep" />
+            <span>{post.readTime} min read</span>
+          </div>
+        </div>
+        <div className="blog-hero__divider">
+          <svg viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0,60 C360,0 1080,0 1440,60 L1440,60 L0,60 Z" fill="var(--white)" />
+          </svg>
         </div>
       </div>
       <div className="container post-body">
         <article className="post-content" dangerouslySetInnerHTML={{ __html: post.content }} />
         {post.tags?.length > 0 && (
           <div className="post-tags">
-            <span>Topics:</span>
+            <span className="post-tags__label">Topics</span>
             {post.tags.map(t => <span key={t} className="post-tag">{t}</span>)}
           </div>
         )}
         <div className="post-cta">
           <div className="post-cta__inner">
+            <span className="section-eyebrow">Get In Touch</span>
             <h3>Have a Question About Our Products?</h3>
             <p>Our expert team is available to advise on the right pharmaceutical solution for your operation.</p>
-            <div style={{ display:'flex', gap:12, flexWrap:'wrap' }}>
+            <div className="post-cta__actions">
               <Link to="/contact" className="btn btn--gold">Contact Us</Link>
-              <a href="https://wa.me/923001234567" target="_blank" rel="noopener noreferrer" className="btn btn--green">WhatsApp</a>
+              <a href="https://wa.me/923001234567" target="_blank" rel="noopener noreferrer" className="btn btn--outline-white">WhatsApp</a>
             </div>
           </div>
         </div>

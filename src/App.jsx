@@ -42,7 +42,7 @@ export default function App() {
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/about" element={<About />} />
-            <Route path="/science" element={<Science />} />
+            {/* <Route path="/science" element={<Science />} /> */}
             <Route path="/industries" element={<Industries />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/join" element={<Join />} />
