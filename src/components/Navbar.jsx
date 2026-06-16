@@ -60,7 +60,6 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [megaOpen, setMegaOpen] = useState(null);
   const [langOpen, setLangOpen] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(!!localStorage.getItem('adminToken'));
   const { lang, setLang } = useLang();
   const location = useLocation();
   const timeoutRef = useRef(null);
@@ -75,18 +74,6 @@ export default function Navbar() {
     setMobileOpen(false);
     setMegaOpen(null);
   }, [location]);
-
-  const handleAdminLogout = () => {
-    localStorage.removeItem('adminToken');
-    setIsAdmin(false);
-  };
-
-  const handleAdminClick = () => {
-    localStorage.setItem('showAdminModal', 'true');
-    window.dispatchEvent(new Event('adminModalRequested'));
-  };
-
-  const isBlogPage = location.pathname === '/blog';
 
   const handleMouseEnter = (label) => {
     clearTimeout(timeoutRef.current);
@@ -163,21 +150,6 @@ export default function Navbar() {
 
           {/* Right side */}
           <div className="nav__actions">
-            {/* Admin button - only on blog page */}
-            {isBlogPage && (
-              <>
-                {isAdmin ? (
-                  <button className="nav__admin-btn nav__admin-btn--active" onClick={handleAdminLogout}>
-                    Logout
-                  </button>
-                ) : (
-                  <button className="nav__admin-btn" onClick={handleAdminClick}>
-                    Admin
-                  </button>
-                )}
-              </>
-            )}
-
             {/* Language toggle */}
             <div className="nav__lang" onMouseEnter={() => setLangOpen(true)} onMouseLeave={() => setLangOpen(false)}>
               <button className="nav__lang-btn" onClick={() => setLangOpen(!langOpen)}>

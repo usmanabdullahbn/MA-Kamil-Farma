@@ -72,8 +72,8 @@ function FeedCalculator() {
     <div className="calc">
       <div className="calc__header">
         <span className="section-eyebrow">Interactive Tool</span>
-        <h3 className="calc__title">Feed Additive Calculator</h3>
-        <p className="calc__desc">Estimate dosage requirements for your flock or herd.</p>
+        <h3 className="calc__title">Medicine Calculator</h3>
+        <p className="calc__desc">Estimate dosage and treatment requirements for veterinary medicines.</p>
       </div>
       <div className="calc__form">
         <div className="calc__field">
@@ -251,7 +251,6 @@ export default function Home() {
           {[
             { icon: '🐔', label: 'Poultry' },
             { icon: '🐄', label: 'Dairy' },
-            { icon: '🐟', label: 'Aqua' },
             { icon: '🐾', label: 'Pets' },
           ].map(s => (
             <div key={s.label} className="hero__species-item">
@@ -263,7 +262,7 @@ export default function Home() {
       </section>
 
       {/* ── Stats ── */}
-      <section className="stats-section">
+      {/* <section className="stats-section">
         <div className="container stats-grid">
           {STATS.map(s => (
             <div key={s.label} className="stat">
@@ -272,7 +271,7 @@ export default function Home() {
             </div>
           ))}
         </div>
-      </section>
+      </section> */}
 
       {/* ── Products ── */}
       <section className="section products-section">
@@ -322,7 +321,7 @@ export default function Home() {
               At M.A. Kamil Farma Pvt. Ltd., we are guided by the Divine Providence of Allah and aligned with the <strong>One Health vision</strong> — the inseparable connection between human, animal, and environmental health.
             </p>
             <p className="heritage-text">
-              What began as a small pharmacy driven by passion has evolved over <strong>ten decades</strong> into a leading name in Pakistan's veterinary pharmaceutical industry. Our journey from Colootola to global markets reflects our commitment to Excellence, Dependability, and Security.
+              What began as a small pharmacy driven by passion has evolved over <strong>ten decades</strong> into a leading name in Pakistan's veterinary pharmaceutical industry. Our journey from Kolkata to global markets reflects our commitment to Excellence, Dependability, and Security.
             </p>
             <div className="heritage-values">
               {['Quality & Safety', 'Innovation', 'Compassion', 'Integrity', 'Sustainability', 'Animal Welfare'].map(v => (
@@ -338,7 +337,7 @@ export default function Home() {
               <div className="heritage-year-label">Year Founded</div>
             </div>
             <div className="heritage-ceo-quote">
-              <p>"Our future strategy includes replacing traditional antibiotic products with green alternatives that are not only effective but also environmentally sustainable."</p>
+              <p>"At M.A. Kamil Farma Pvt. Ltd., we are guided by the Divine Providence of Allah and committed to the One Health vision. We believe the future of animal health lies in balancing proven therapeutic solutions with innovation, responsibility, and sustainability. Through responsible stewardship and continuous improvement, we strive to advance veterinary healthcare while creating lasting value for our communities and future generations."</p>
               <span>— CEO, M.A. Kamil Farma</span>
             </div>
           </div>
@@ -365,32 +364,42 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Calculator + Science ── */}
+      {/* ── Calculator + Ecosystem ── */}
       <section className="section calc-science-section">
         <div className="container calc-science-grid">
           <div className="calc-col">
             <FeedCalculator />
           </div>
           <div className="science-col">
-            <span className="section-eyebrow">Science & Innovation</span>
-            <h2 className="section-title">Research-Backed Results</h2>
+            <span className="section-eyebrow">Our Business Ecosystem</span>
+            <h2 className="section-title">A Connected Value Chain for Animal Health</h2>
             <div className="divider" />
-            <div className="science-results">
-              {[
-                { metric: '18%', label: 'FCR Improvement', sub: 'Rotamin broiler trial — 5,000 birds, 42 days' },
-                { metric: '12%', label: 'Milk Yield Gain', sub: 'Rota Plus dairy trial — 120 Holstein cows' },
-                { metric: '35%', label: 'Mortality Reduction', sub: 'ImmunoBoost field study — 3 farms' },
-              ].map(r => (
-                <div key={r.label} className="science-result">
-                  <span className="science-result__metric">{r.metric}</span>
-                  <div>
-                    <div className="science-result__label">{r.label}</div>
-                    <div className="science-result__sub">{r.sub}</div>
+            <p className="ecosystem-intro">
+              M.A. Kamil Farma brings manufacturing, formulation, compliance, technical support and international partnership capabilities together in a single integrated ecosystem — built to deliver reliable veterinary solutions across Pakistan and emerging markets.
+            </p>
+            <div className="ecosystem-panel">
+              <div className="ecosystem-center">
+                <span>Core</span>
+                <h3>M.A. Kamil Farma</h3>
+              </div>
+              <div className="ecosystem-nodes">
+                {[
+                  'Manufacturing',
+                  'Feed Additives',
+                  'Veterinary Pharmaceuticals',
+                  'Contract Manufacturing',
+                  'International Partnerships',
+                  'Technical Support',
+                  'Regulatory Affairs',
+                  'Research & Development',
+                ].map(node => (
+                  <div key={node} className="ecosystem-node">
+                    {node}
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-            <Link to="/science" className="btn btn--primary">View All Trial Results</Link>
+            <Link to="/about" className="btn btn--primary">Explore Our Network</Link>
           </div>
         </div>
       </section>

@@ -20,6 +20,7 @@
     radial-gradient(ellipse at 18% 60%, rgba(0,64,128,0.55) 0%, transparent 55%),
     radial-gradient(ellipse at 78% 22%, rgba(46,139,87,0.20) 0%, transparent 45%),
     radial-gradient(ellipse at 92% 78%, rgba(201,166,53,0.10) 0%, transparent 40%);
+  animation: meshDrift 18s ease-in-out infinite alternate;
 }
 .blog-hero__pattern {
   position: absolute; inset: 0; opacity: 0.08;
@@ -33,7 +34,7 @@
 .blog-hero__inner {
   position: relative; z-index: 2;
 }
-.blog-hero__content { max-width: 760px; }
+.blog-hero__content { max-width: 760px; animation: fadeUpSoft 0.85s ease both; }
 .blog-hero__eyebrow::before { background: var(--gold); }
 .blog-hero__title {
   font-family: var(--font-display);
@@ -63,6 +64,7 @@
   border-bottom: 1px solid rgba(255,255,255,0.12);
   padding: 24px 0;
   max-width: 720px;
+  animation: fadeUpSoft 0.9s ease 0.12s both;
 }
 .blog-hero__stat {
   flex: 1;
@@ -104,6 +106,7 @@
   margin-bottom: 36px;
   padding-bottom: 24px;
   border-bottom: 1px solid var(--gray-100);
+  animation: fadeUpSoft 0.9s ease 0.15s both;
 }
 .blog-toolbar__left { flex-shrink: 0; padding-top: 14px; }
 .blog-toolbar__label {
@@ -156,14 +159,14 @@
   overflow: hidden;
   border: 1px solid var(--gray-100);
   margin-bottom: 72px;
-  transition: all var(--t-mid);
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
   background: var(--white);
   position: relative;
-  animation: fadeUp 0.7s ease both;
+  animation: fadeUpSoft 0.75s ease both;
 }
 .blog-featured:hover {
   box-shadow: var(--shadow-xl);
-  transform: translateY(-3px);
+  transform: translateY(-4px);
   border-color: var(--gray-200);
 }
 .blog-featured__img {
@@ -205,7 +208,9 @@
   flex-direction: column;
   gap: 16px;
   justify-content: center;
+  transition: transform 0.35s ease;
 }
+.blog-featured:hover .blog-featured__body { transform: translateY(-3px); }
 .blog-featured__meta {
   display: flex;
   align-items: center;
@@ -275,10 +280,11 @@
   overflow: hidden;
   border: 1px solid var(--gray-100);
   background: var(--white);
-  transition: all var(--t-mid);
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
   display: flex;
   flex-direction: column;
-  animation: fadeUp 0.6s ease both;
+  animation: fadeUpSoft 0.7s ease both;
+  will-change: transform, opacity;
 }
 .blog-card-item:hover {
   transform: translateY(-6px);
@@ -464,6 +470,16 @@
   background: linear-gradient(90deg, var(--gray-100) 25%, var(--gray-200) 50%, var(--gray-100) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
+}
+
+/* ── Keyframes ─────────────────────────────────────────── */
+@keyframes fadeUpSoft {
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes meshDrift {
+  from { transform: translateY(0) scale(1); }
+  to { transform: translateY(-18px) scale(1.02); }
 }
 
 /* ── Pagination ──────────────────────────────────────────── */
