@@ -9,7 +9,7 @@ import './Home.css';
 // ── Expo Countdown ──────────────────────────────────────────
 function ExpoCountdown() {
   const target = new Date('2025-10-20T00:00:00');
-  const [time, setTime] = useState({ d:0, h:0, m:0, s:0 });
+  const [time, setTime] = useState({ d: 0, h: 0, m: 0, s: 0 });
   useEffect(() => {
     const tick = () => {
       const diff = Math.max(0, target - Date.now());
@@ -32,9 +32,9 @@ function ExpoCountdown() {
           <span className="expo-banner__text">M.A. Kamil Farma at VIV Asia 2025 — Bangkok</span>
         </div>
         <div className="expo-countdown">
-          {[['d','Days'],['h','Hrs'],['m','Min'],['s','Sec']].map(([k,l]) => (
+          {[['d', 'Days'], ['h', 'Hrs'], ['m', 'Min'], ['s', 'Sec']].map(([k, l]) => (
             <div key={k} className="expo-countdown__unit">
-              <span className="expo-countdown__num">{String(time[k]).padStart(2,'0')}</span>
+              <span className="expo-countdown__num">{String(time[k]).padStart(2, '0')}</span>
               <span className="expo-countdown__label">{l}</span>
             </div>
           ))}
@@ -119,7 +119,7 @@ function FeedCalculator() {
 }
 
 // ── Stats counter ───────────────────────────────────────────
-function StatCounter({ end, suffix='' }) {
+function StatCounter({ end, suffix = '' }) {
   const [val, setVal] = useState(0);
   const ref = useRef();
   useEffect(() => {
@@ -149,14 +149,30 @@ const STATS = [
 
 const PRODUCTS = [
   {
-    icon: '💊', tag: 'Kamil Farma', color: '#1e6b40',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 3.5 5.5 7v10L12 20.5 18.5 17V7L12 3.5Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+        <path d="M12 8v8M8.8 9.8 15.2 14.2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+        <path d="M8.8 14.2 15.2 9.8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+      </svg>
+    ),
+    tag: 'Kamil Farma',
+    color: '#1e6b40',
     title: 'Veterinary Pharmaceuticals',
     desc: 'Antibiotics, anti-virals, phytogenics, additives, and premixes for poultry and livestock.',
     to: '/products/kamil-farma',
     items: ['Antibiotics', 'Anti-Virals', 'Phytogenics', 'Premixes'],
   },
   {
-    icon: '�', tag: 'Feed Additives', color: '#2E8B57',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M6 13.5c0-2.5 2-4.5 4.5-4.5h3c2.5 0 4.5 2 4.5 4.5v1.5a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3V13.5Z" stroke="currentColor" strokeWidth="1.6" />
+        <path d="M8 12V7.5A2.5 2.5 0 0 1 10.5 5H13.5A2.5 2.5 0 0 1 16 7.5V12" stroke="currentColor" strokeWidth="1.6" />
+        <path d="M7.5 18h9" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+      </svg>
+    ),
+    tag: 'Feed Additives',
+    color: '#2E8B57',
     title: 'Feed Additive Solutions',
     desc: 'Binders, premixes, enzymes, and nutritional additives designed to improve feed efficiency and animal performance.',
     to: '/products',
@@ -165,9 +181,45 @@ const PRODUCTS = [
 ];
 
 const INDUSTRIES = [
-  { icon: '🌾', title: 'Feed Mills', color: '#2E8B57', desc: 'Binders and Rotamin portfolio for optimal pellet quality and nutritional value.', focus: 'Rotamin · Binders · Premixes' },
-  { icon: '🐄', title: 'Farms & Doctors', color: '#003366', desc: 'Antibiotics, phytogenics, and herd health management solutions.', focus: 'Antibiotics · Phytogenics · Anti-Virals' },
-  { icon: '🐟', title: 'Aquaculture', color: '#1a5c99', desc: 'Tailored solutions for sustainable aquaculture operations.', focus: 'Coming Soon' },
+  {
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M3.5 18.5h17V9.2L12 4.5 3.5 9.2v9.3Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+        <path d="M9 18.5v-4h6v4" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+        <path d="M12 4.5v14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+      </svg>
+    ),
+    title: 'Feed Mills',
+    color: '#2E8B57',
+    desc: 'Binders and Rotamin portfolio for optimal pellet quality and nutritional value.',
+    focus: 'Rotamin · Binders · Premixes'
+  },
+  {
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 3.5c-2.3 0-4.2 1.9-4.2 4.2v2.7H7.3a1.8 1.8 0 0 0-1.8 1.8v6.5h13.9v-6.5a1.8 1.8 0 0 0-1.8-1.8h-.5V7.7C16.1 5.4 14.3 3.5 12 3.5Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+        <path d="M9.2 10.4V7.7a2.8 2.8 0 1 1 5.6 0v2.7" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+        <path d="M9.5 15.2h5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+      </svg>
+    ),
+    title: 'Farms & Doctors',
+    color: '#003366',
+    desc: 'Antibiotics, phytogenics, and herd health management solutions.',
+    focus: 'Antibiotics · Phytogenics · Anti-Virals'
+  },
+  {
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 3.8c3.4 0 6.2 2.7 6.2 6.2 0 3.4-2.7 6.2-6.2 6.2S5.8 13.4 5.8 10c0-3.5 2.8-6.2 6.2-6.2Z" stroke="currentColor" strokeWidth="1.6" />
+        <path d="M9.5 10.5c.3.8.9 1.4 1.8 1.7.9.3 1.9.2 2.7-.3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+        <path d="M8 18.5c1.5-1.6 3.2-2.4 4-2.4s2.5.8 4 2.4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+      </svg>
+    ),
+    title: 'Aquaculture',
+    color: '#1a5c99',
+    desc: 'Tailored solutions for sustainable aquaculture operations.',
+    focus: 'Coming Soon'
+  },
 ];
 
 const TESTIMONIALS = [
@@ -224,9 +276,9 @@ export default function Home() {
             <span>Est. 1923 · Pakistan</span>
             <span className="hero__est-line" />
           </div>
-          <TypingTitle 
-            text={t('tagline').replace(/,/g, ' ')} 
-            speed={25} 
+          <TypingTitle
+            text={t('tagline').replace(/,/g, ' ')}
+            speed={25}
             className="hero__title animate-fade-up-d1"
           />
           <p className="hero__sub animate-fade-up-d2">{t('heroDesc')}</p>
@@ -249,9 +301,35 @@ export default function Home() {
         {/* Species icons */}
         <div className="hero__species">
           {[
-            { icon: '🐔', label: 'Poultry' },
-            { icon: '🐄', label: 'Dairy' },
-            { icon: '🐾', label: 'Pets' },
+            {
+              icon: (
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M9.2 4.8c1.4.5 2.4 1.8 2.6 3.2.2 1.5-.7 3-2.1 3.7-1.5.8-3.3.6-4.6-.5-1.3-1.1-1.6-3-.9-4.4.7-1.4 2.2-2.2 3.8-1.9Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+                  <path d="M14.8 5.5c1.8.2 3.3 1.4 3.8 3.1.5 1.7-.1 3.7-1.4 5-1.3 1.2-3.3 1.7-5.1 1.1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  <path d="M7.5 15.7c1.4 1.1 3.2 1.6 5 1.4 2-.2 3.8-.9 5.2-2.1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                </svg>
+              ),
+              label: 'Poultry'
+            },
+            {
+              icon: (
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M7.5 18.5V9.7c0-2.7 2.2-4.9 5-4.9s5 2.2 5 4.9v8.8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  <path d="M5.5 18.5h13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  <path d="M10 12h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                </svg>
+              ),
+              label: 'Dairy'
+            },
+            {
+              icon: (
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M10.7 5.5 7.2 10a2 2 0 0 0-.3 1.9l1.2 3.7a1 1 0 0 0 .9.7h6.2a1 1 0 0 0 .9-.7l1.2-3.7a2 2 0 0 0-.3-1.9l-3.5-4.5a1.7 1.7 0 0 0-2.6 0Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+                  <path d="M12 14.5v4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                </svg>
+              ),
+              label: 'Pets'
+            },
           ].map(s => (
             <div key={s.label} className="hero__species-item">
               <span className="hero__species-icon">{s.icon}</span>
@@ -286,7 +364,7 @@ export default function Home() {
               <Link key={p.title} to={p.to} className="product-card card">
                 <div className="product-card__top" style={{ background: p.color + '12' }}>
                   <div className="product-card__icon" style={{ background: p.color + '20', color: p.color }}>
-                    <span>{p.icon}</span>
+                    {p.icon}
                   </div>
                   <span className="tag tag--navy product-card__tag">{p.tag}</span>
                 </div>
@@ -298,7 +376,7 @@ export default function Home() {
                   </div>
                   <span className="product-card__cta">
                     {t('learnMore')}
-                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
                   </span>
                 </div>
               </Link>
@@ -371,17 +449,14 @@ export default function Home() {
             <FeedCalculator />
           </div>
           <div className="science-col">
-            <span className="section-eyebrow">Our Business Ecosystem</span>
-            <h2 className="section-title">A Connected Value Chain for Animal Health</h2>
-            <div className="divider" />
-            <p className="ecosystem-intro">
-              M.A. Kamil Farma brings manufacturing, formulation, compliance, technical support and international partnership capabilities together in a single integrated ecosystem — built to deliver reliable veterinary solutions across Pakistan and emerging markets.
-            </p>
+
             <div className="ecosystem-panel">
-              <div className="ecosystem-center">
+              <span style={{marginTop: "15px"}} className="section-eyebrow">Our Business Ecosystem</span>
+
+              {/* <div className="ecosystem-center">
                 <span>Core</span>
                 <h3>M.A. Kamil Farma</h3>
-              </div>
+              </div> */}
               <div className="ecosystem-nodes">
                 {[
                   'Manufacturing',
@@ -398,8 +473,8 @@ export default function Home() {
                   </div>
                 ))}
               </div>
+            <Link to="/about" style={{ marginBottom: "3px" }} className="btn btn--primary">Explore Our Network</Link>
             </div>
-            <Link to="/about" className="btn btn--primary">Explore Our Network</Link>
           </div>
         </div>
       </section>
@@ -418,7 +493,7 @@ export default function Home() {
                 <p className="testimonial-text">"{t.text}"</p>
                 <div className="testimonial-footer">
                   <div className="testimonial-author">
-                    <div className="testimonial-avatar">{t.name.split(' ').map(n=>n[0]).join('').slice(0,2)}</div>
+                    <div className="testimonial-avatar">{t.name.split(' ').map(n => n[0]).join('').slice(0, 2)}</div>
                     <div>
                       <div className="testimonial-name">{t.name}</div>
                       <div className="testimonial-role">{t.role}</div>
@@ -470,7 +545,7 @@ export default function Home() {
       </section>
 
       {/* ── Feed Additives CTA ── */}
-      <section className="fa-cta-section">
+      {/* <section className="fa-cta-section">
         <div className="container">
           <div className="fa-cta-card">
             <div className="fa-cta-card__left">
@@ -485,7 +560,7 @@ export default function Home() {
             </a>
           </div>
         </div>
-      </section>
+      </section> */}
     </div>
   );
 }
