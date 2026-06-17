@@ -20,7 +20,7 @@ const NAV = [
       {
         title: 'By Brand',
         links: [
-          { label: 'M.A. Kamil Farma Line', to: '/products/kamil-farma' },
+          { label: 'Farma Line', to: '/products/kamil-farma' },
         ]
       },
       {

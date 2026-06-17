@@ -207,19 +207,19 @@ const INDUSTRIES = [
     desc: 'Antibiotics, phytogenics, and herd health management solutions.',
     focus: 'Antibiotics · Phytogenics · Anti-Virals'
   },
-  {
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M12 3.8c3.4 0 6.2 2.7 6.2 6.2 0 3.4-2.7 6.2-6.2 6.2S5.8 13.4 5.8 10c0-3.5 2.8-6.2 6.2-6.2Z" stroke="currentColor" strokeWidth="1.6" />
-        <path d="M9.5 10.5c.3.8.9 1.4 1.8 1.7.9.3 1.9.2 2.7-.3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-        <path d="M8 18.5c1.5-1.6 3.2-2.4 4-2.4s2.5.8 4 2.4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-      </svg>
-    ),
-    title: 'Aquaculture',
-    color: '#1a5c99',
-    desc: 'Tailored solutions for sustainable aquaculture operations.',
-    focus: 'Coming Soon'
-  },
+  // {
+  //   icon: (
+  //     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+  //       <path d="M12 3.8c3.4 0 6.2 2.7 6.2 6.2 0 3.4-2.7 6.2-6.2 6.2S5.8 13.4 5.8 10c0-3.5 2.8-6.2 6.2-6.2Z" stroke="currentColor" strokeWidth="1.6" />
+  //       <path d="M9.5 10.5c.3.8.9 1.4 1.8 1.7.9.3 1.9.2 2.7-.3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+  //       <path d="M8 18.5c1.5-1.6 3.2-2.4 4-2.4s2.5.8 4 2.4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+  //     </svg>
+  //   ),
+  //   title: 'Aquaculture',
+  //   color: '#1a5c99',
+  //   desc: 'Tailored solutions for sustainable aquaculture operations.',
+  //   focus: 'Coming Soon'
+  // },
 ];
 
 const TESTIMONIALS = [
