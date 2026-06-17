@@ -622,7 +622,7 @@ export default function Products() {
           <span className="section-eyebrow">Products & Solutions</span>
           <h1 className="section-title section-title--white">Complete Pharmaceutical Range</h1>
           <p className="section-lead" style={{ color: 'rgba(255,255,255,0.65)', maxWidth: 620 }}>
-            {ALL_PRODUCTS.length} veterinary products across 9 categories — sourced directly from our official E-Catalog. DRAP registered. GMP manufactured. Serving poultry and livestock since 1923.
+            {ALL_PRODUCTS.length} veterinary products across 9 categories — sourced directly from our official E-Catalog. DRAP registered. GMP manufactured.
           </p>
           {/* Category stat chips */}
           <div className="products-hero-stats">
