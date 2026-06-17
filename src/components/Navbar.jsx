@@ -12,6 +12,7 @@ const LANGS = [
 ];
 
 const NAV = [
+  { label: 'Home', to: '/' },
   { label: 'About', to: '/about' },
   {
     label: 'Products',
