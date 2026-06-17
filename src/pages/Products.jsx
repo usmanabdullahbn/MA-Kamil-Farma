@@ -1,854 +1,679 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import './Products.css';
-import mak_mox_C_20 from '../assert/product/Mak Amox C-20.jpg';
-import mak_amox_C_50 from '../assert/product/Mak Amox C-50.jpg';
-import colikam from '../assert/product/COLIKAM.jpg';
-import colikam_50 from '../assert/product/COLIKAM-50.jpg';
-import chlorkam_200 from '../assert/product/CHLORKAM-200.jpg';
-import neokam_72 from '../assert/product/NEOKAM-72.jpg';
-import neokam_100 from '../assert/product/NEOKAM-100.jpg';
-import oxykam_95 from '../assert/product/OXYKAM-95.jpg';
-import floxy_n_mak from '../assert/product/FLOXY-N MAK.jpg';
-import tylokam_100 from '../assert/product/TYLOKAM-100 (Cayan).jpg';
-import moxclav_powder from '../assert/product/MOXCLAV POWDER.jpg';
-import mox_ls from '../assert/product/MOX-LS Powder.jpg';
-import sintolin_plus from '../assert/product/Sintolin Plus Oral Powder.jpg';
-import xinkmak_wsp from '../assert/product/XINKMAK Water Soluble Powder.jpg';
-import enrokam_c10 from '../assert/product/ENROKAM C-10 Oral Solution Label Final.jpg';
-import makflor_23 from '../assert/product/MAKFLOR-23 Liquid.jpg';
-import enrokam_c20 from '../assert/product/ENROKAM C-20 Oral Solution.jpg';
-import c_kam_100 from '../assert/product/C-KAM-100 (new).jpg';
-import c_kam_250 from '../assert/product/C-KAM 250 Powder.jpg';
-import hepakam from '../assert/product/HEPAKAM Liquid.jpg';
-import mak_fivevit from '../assert/product/MAK FIVEVIT WSP.jpg';
-import mak_ze_sel from '../assert/product/MAK ZE-SEL Liquid.jpg';
-import mprokam_90 from '../assert/product/MPROKAM-90.jpg';
-import ofloxkam_10 from '../assert/product/OFLOXKAM-10.jpg';
-import pefloxkam_10 from '../assert/product/PEFLOXKAM-10.jpg';
-import tilkam_25 from '../assert/product/TILKAM-25 Solution.jpg';
-import makflor_25 from '../assert/product/MAKFLOR-25.jpg';
-import mprokam_50 from '../assert/product/MPROKAM-50.jpg';
-import doxykam_50 from '../assert/product/DOXYKAM-50.jpg';
-import doxykam_80 from '../assert/product/DOXYKAM-80.jpg';
+
 // ─────────────────────────────────────────────────────────────────────────────
-// ALL 80 PRODUCTS — sourced from M.A. Kamil Farma product literature PDFs
+// ALL PRODUCTS FROM M.A. KAMIL FARMA E-CATALOG
+// Data sourced directly from official product catalogue PDF
 // ─────────────────────────────────────────────────────────────────────────────
 const ALL_PRODUCTS = [
 
-  // ── ANTIBIOTICS ────────────────────────────────────────────────────────────
-  /* NO IMAGE - COMMENTED OUT
+  // ── POWDER ANTIBIOTICS ─────────────────────────────────────────────────────
   {
-    id: 1,
-    name: 'Mak Amox C-15',
-    fullName: 'MAK AMOX C-15 Water Soluble Powder',
-    category: 'antibiotics',
-    form: 'Powder',
-    species: 'Poultry',
-    composition: 'Amoxicillin Trihydrate 150mg + Colistin Sulphate 0.5 MIU / gram',
-    indications: 'Colibacillosis, salmonellosis, alimentary, urogenital and respiratory tract infections.',
-    dosage: 'Prevention: 1g/4L drinking water. Treatment: 1g/2–3L for 3–5 days.',
-    packaging: '1kg, 5kg',
-    desc: 'Broad-spectrum WSP combining Amoxicillin + Colistin for gram +ve and gram −ve bacterial infections in poultry.',
-  },
-  */
-  {
-    id: 2,
-    name: 'Mak Amox C-20',
-    fullName: 'MAK AMOX C-20 Water Soluble Powder',
-    category: 'antibiotics',
-    form: 'Powder',
-    species: 'Poultry',
-    composition: 'Amoxicillin Trihydrate 200mg + Colistin Sulphate 0.8 MIU / gram',
-    indications: 'Colibacillosis, salmonellosis causing diarrhoea, alimentary, urogenital & respiratory tract infections.',
-    dosage: 'Prevention: 1g/4L. Treatment: 1g/2–3L for 3–5 days.',
-    packaging: '1kg, 5kg',
-    desc: 'Higher-strength dual-action WSP. Amoxicillin inhibits cell wall synthesis; Colistin disrupts gram −ve membranes.',
-    image: mak_mox_C_20,
+    id: 1, category: 'powder-antibiotic', form: 'Powder', species: 'Poultry',
+    name: 'T Foskam', fullName: 'T Foskam Oral Powder',
+    composition: 'Fosfomycin as Calcium 200mg · Tylosin as Tartrate 100mg · Fructose 1,6-Diphosphate 180mg · Sodium Phosphate 150mg · Magnesium Sulphate 100mg per gram',
+    dosage: 'Treatment: 1g in 2L drinking water for 3–5 days. Prevention: 1g in 4L for 3–5 days.',
+    benefits: 'Broad-spectrum antibiotic effective against Mycoplasma, E. coli, and Salmonella. Treats CRD, Coryza, Typhoid, and Fowl Cholera. Controls Staphylococcus and Streptococcus infections. Supports rapid recovery from bacterial diseases in poultry.',
   },
   {
-    id: 3,
-    name: 'Mak Amox C-50',
-    fullName: 'MAK AMOX C-50 Water Soluble Powder',
-    category: 'antibiotics',
-    form: 'Powder',
-    species: 'Poultry',
-    composition: 'Amoxicillin Trihydrate 500mg + Colistin Sulphate 0.5 MIU / gram',
-    indications: 'Colibacillosis, salmonellosis, alimentary, urogenital and respiratory tract infections.',
-    dosage: 'Prevention: 1g/4L. Treatment: 1g/2–3L for 3–5 days.',
-    packaging: '1kg, 5kg',
-    desc: 'High-potency Amoxicillin + Colistin combination for severe gram +ve/−ve infections in poultry flocks.',
-    image: mak_amox_C_50,
-  },
-  /* NO IMAGE - COMMENTED OUT
-  {
-    id: 4,
-    name: 'Mak Amox-50',
-    fullName: 'MAK AMOX-50 Powder',
-    category: 'antibiotics',
-    form: 'Powder',
-    species: 'Poultry',
-    composition: 'Amoxicillin Trihydrate 500mg / gram (BP)',
-    indications: 'CRD, pneumonia, fowl cholera, fowl typhoid, coryza, colibacillosis, infectious enteritis, staphylococcosis.',
-    dosage: 'As directed by veterinarian.',
-    packaging: '1kg, 5kg',
-    desc: 'Pure Amoxicillin WSP for broad-spectrum treatment of respiratory and enteric bacterial infections in poultry.',
-  },
-  */
-  /* NO IMAGE - COMMENTED OUT
-  {
-    id: 5,
-    name: 'Mak Amox-80',
-    fullName: 'MAK AMOX-80 Powder',
-    category: 'antibiotics',
-    form: 'Powder',
-    species: 'Poultry',
-    composition: 'Amoxicillin Trihydrate 800mg (equiv. 700mg base) / gram (BP)',
-    indications: 'CRD, pneumonia, fowl cholera, fowl typhoid, coryza, colibacillosis, infectious enteritis, staphylococcosis.',
-    dosage: 'As directed by veterinarian.',
-    packaging: '1kg, 5kg',
-    desc: 'High-concentration Amoxicillin powder for severe bacterial infections requiring maximum bactericidal activity.',
-  },
-  */
-  {
-    id: 6,
-    name: 'Doxykam-50',
-    fullName: 'DOXYKAM-50 Powder',
-    category: 'antibiotics',
-    form: 'Powder',
-    species: 'Poultry',
-    composition: 'Doxycycline Hyclate 500mg / gram',
-    indications: 'GI & respiratory infections caused by E.coli, Salmonella, Pasteurella, Mycoplasma, Rickettsia, Haemophilus.',
-    dosage: 'As directed by veterinarian.',
-    packaging: '1kg, 5kg',
-    desc: 'Tetracycline-class antibiotic that inhibits bacterial protein synthesis at the 30S ribosomal subunit.',
-    image: doxykam_50,
+    id: 2, category: 'powder-antibiotic', form: 'Powder', species: 'Poultry',
+    name: 'Xinmak', fullName: 'Xinmak Water Soluble Powder',
+    composition: 'Tylosin (as Tartrate) 200mg · Doxycycline as HCl 400mg · Colistin Sulphate 1 MIU · Bromhexine HCl 10mg per gram',
+    dosage: 'Treatment: 1g in 4L drinking water for 3–5 days. Prevention: 1g in 8L for 3–5 days.',
+    benefits: 'Treats CRD, CCRD, Mycoplasmosis, and other respiratory infections. Effective against gram-positive and gram-negative bacteria including E. coli, Salmonella, Clostridium, Pasteurella, Staphylococcus, and Streptococcus. Controls Coryza, Fowl Typhoid, and bacterial enteritis. Bromhexine acts as a mucolytic, improving drug penetration and reducing mucus viscosity.',
   },
   {
-    id: 7,
-    name: 'Doxykam-80',
-    fullName: 'DOXYKAM-80 Powder',
-    category: 'antibiotics',
-    form: 'Powder',
-    species: 'Poultry',
-    composition: 'Doxycycline Hyclate 800mg / gram',
-    indications: 'Respiratory infections, enteritis, chlamydiosis, mycoplasmosis in poultry.',
-    dosage: 'As directed by veterinarian.',
-    packaging: '1kg, 5kg',
-    desc: 'High-strength Doxycycline for severe bacterial infections. Broad-spectrum tetracycline-class coverage.',
-    image: doxykam_80,
-  },
-  /* NO IMAGE - COMMENTED OUT
-  {
-    id: 8,
-    name: 'Tylokam-10',
-    fullName: 'TYLOKAM-10 Oral Powder',
-    category: 'antibiotics',
-    form: 'Powder',
-    species: 'Poultry',
-    composition: 'Tylosin Tartrate 100mg / gram',
-    indications: 'CRD caused by Mycoplasma gallisepticum, weight gain promotion, improved feed efficiency.',
-    dosage: 'As directed by veterinarian.',
-    packaging: '1kg, 5kg',
-    desc: 'Macrolide antibiotic binding the 50S ribosomal subunit. Effective for CRD control and FCR improvement.',
-  },
-  */
-  {
-    id: 9,
-    name: 'Tylokam-100',
-    fullName: 'TYLOKAM-100 Soluble Powder',
-    category: 'antibiotics',
-    form: 'Powder',
-    species: 'Poultry',
-    composition: 'Tylosin Tartrate 1000mg / gram',
-    indications: 'Mycoplasma, CRD, CCRD, sinusitis, airsacculitis, gastrointestinal infections.',
-    dosage: 'As directed by veterinarian.',
-    packaging: '1kg, 5kg',
-    desc: 'Maximum-strength Tylosin soluble powder for severe Mycoplasma infections and chronic respiratory disease.',
-    image: tylokam_100,
+    id: 3, category: 'powder-antibiotic', form: 'Powder', species: 'Poultry',
+    name: 'Floxy N-Mak', fullName: 'Floxy N-Mak Water Soluble Powder',
+    composition: 'Neomycin Sulphate 150mg · Florfenicol 100mg · Oxytetracycline HCl 300mg per gram',
+    dosage: 'Treatment: 1g in 4L drinking water for 4–5 days. Prevention: 1g in 6L for 4–5 days.',
+    benefits: 'Effective against gram-positive and gram-negative bacteria including E. coli and Pasteurella. Treats colisepticemia, synovitis, typhoid, and bacterial enteritis. Controls early chick mortality, cholera, and coryza. Manages respiratory infections like CRD, CCRD, airsacculitis, and Mycoplasmosis.',
   },
   {
-    id: 10,
-    name: 'Colikam Powder',
-    fullName: 'COLIKAM Powder',
-    category: 'antibiotics',
-    form: 'Powder',
-    species: 'Poultry',
-    composition: 'Colistin Sulphate 5,000,000 IU / gram',
-    indications: 'Colibacillosis (E. coli), Salmonella, Pseudomonas, Pasteurella, Shigella and Proteus infections.',
-    dosage: 'As directed by veterinarian.',
-    packaging: '1kg, 5kg',
-    desc: 'Pure Colistin powder. Disrupts gram −ve bacterial cell membranes by binding to lipopolysaccharides.',
-    image: colikam,
+    id: 4, category: 'powder-antibiotic', form: 'Powder', species: 'Poultry',
+    name: 'Tylokam-10', fullName: 'Tylokam-10 Oral Powder',
+    composition: 'Tylosin (as Tartrate) 100mg per gram',
+    dosage: 'Mycoplasma +ve flocks: 500g/1000kg feed. Mycoplasma −ve flocks: 220g/1000kg feed. Broiler: 50g/1000kg feed.',
+    benefits: 'Prevents and treats Mycoplasma, CRD, and CCRD in poultry. Effective against sinusitis and airsacculitis. Supports respiratory health and improves recovery during outbreaks.',
   },
   {
-    id: 11,
-    name: 'Colikam-50 WSP',
-    fullName: 'COLIKAM-50 Water Soluble Powder',
-    category: 'antibiotics',
-    form: 'Powder',
-    species: 'Poultry',
-    composition: 'Colistin Sulphate 500mg / gram',
-    indications: 'Colibacillosis, Salmonella, respiratory infections caused by gram −ve bacteria.',
-    dosage: 'As directed by veterinarian.',
-    packaging: '1kg, 5kg',
-    desc: 'Water-soluble Colistin for simple mixing in drinking water. Effective against gram −ve pathogens.',
-    image: colikam_50,
+    id: 5, category: 'powder-antibiotic', form: 'Powder', species: 'Poultry',
+    name: 'Tylokam-100', fullName: 'Tylokam-100 Soluble Powder',
+    composition: 'Tylosin (as Tartrate) 1000mg per gram',
+    dosage: '1g per 2 litres of water for 3–5 days. In feed: 300–500g per 1000kg feed for 3–5 days.',
+    benefits: 'Prevents and treats Mycoplasma, CRD, and CCRD in poultry. Effective against sinusitis and airsacculitis. Supports respiratory health and improves recovery during outbreaks.',
   },
   {
-    id: 12,
-    name: 'Chlorkam-200',
-    fullName: 'CHLORKAM-200 Water Soluble Powder',
-    category: 'antibiotics',
-    form: 'Powder',
-    species: 'Livestock',
-    composition: 'Chlortetracycline HCl (USP)',
-    indications: 'Gram +ve & −ve bacteria, Chlamydia, Mycoplasma, E. coli, Klebsiella, Pasteurella, Salmonella, Staphylococcus, Streptococcus.',
-    dosage: 'As directed by veterinarian.',
-    packaging: '1kg, 5kg',
-    desc: 'Broad-spectrum tetracycline inhibiting bacterial protein synthesis. Active against anaerobes and atypical pathogens.',
-    image: chlorkam_200,
+    id: 6, category: 'powder-antibiotic', form: 'Powder', species: 'Poultry',
+    name: 'Doxykam-50', fullName: 'Doxykam-50 Powder',
+    composition: 'Doxycycline as Hyclate 500mg per gram',
+    dosage: '1g per 5–10 litres drinking water for 3–5 days. Use medicated water within 24 hours.',
+    benefits: 'Treats gastrointestinal and respiratory infections in poultry. Effective against gram-positive and gram-negative bacteria. Controls infections caused by E. coli, Salmonella, Pasteurella, and Mycoplasma. Also targets Rickettsia, Haemophilus, Staphylococcus, Streptococcus, Campylobacter, and Chlamydia spp.',
   },
   {
-    id: 13,
-    name: 'Neokam-72',
-    fullName: 'NEOKAM-72 Powder',
-    category: 'antibiotics',
-    form: 'Powder',
-    species: 'Livestock',
-    composition: 'Neomycin Sulphate 720mg / gram',
-    indications: 'Bacterial infections including skin infections, GI disorders, urinary tract infections.',
-    dosage: 'As directed by veterinarian.',
-    packaging: '1kg, 5kg',
-    desc: 'Aminoglycoside antibiotic with bactericidal activity primarily against gram −ve bacteria. Broad-spectrum coverage.',
-    image: neokam_72,
+    id: 7, category: 'powder-antibiotic', form: 'Powder', species: 'Poultry',
+    name: 'Doxykam-80', fullName: 'Doxykam-80 Powder',
+    composition: 'Doxycycline as Hyclate 800mg per gram',
+    dosage: '1g per 8–16 litres drinking water for 3–5 days. Use medicated water within 24 hours.',
+    benefits: 'Treats gastrointestinal and respiratory infections in poultry. Effective against gram-positive and gram-negative bacteria. Controls infections caused by E. coli, Salmonella, Pasteurella, and Mycoplasma. Also targets Rickettsia, Haemophilus, Staphylococcus, Streptococcus, Campylobacter, and Chlamydia spp.',
   },
   {
-    id: 14,
-    name: 'Neokam-100',
-    fullName: 'NEOKAM-100 Powder',
-    category: 'antibiotics',
-    form: 'Powder',
-    species: 'Livestock',
-    composition: 'Neomycin Sulphate 1000mg / gram',
-    indications: 'Skin infections, gastrointestinal disorders, urinary tract infections in poultry and livestock.',
-    dosage: 'As directed by veterinarian.',
-    packaging: '1kg, 5kg',
-    desc: 'High-potency Neomycin powder for comprehensive treatment of bacterial infections in poultry and livestock.',
-    image: neokam_100,
+    id: 8, category: 'powder-antibiotic', form: 'Powder', species: 'Poultry',
+    name: 'Colikam', fullName: 'Colikam Powder',
+    composition: 'Colistin Sulphate 5,000,000 IU per gram',
+    dosage: '1g in 10 litres of drinking water for 3–5 days.',
+    benefits: 'Treats E. coli and Salmonella infections. Effective against Pseudomonas and Pasteurella. Controls Shigella and Proteus species. Supports quick recovery and reduces mortality.',
   },
   {
-    id: 15,
-    name: 'Oxykam-95 WSP',
-    fullName: 'OXYKAM-95% Water Soluble Powder',
-    category: 'antibiotics',
-    form: 'Powder',
-    species: 'Poultry',
-    composition: 'Oxytetracycline HCl 950mg / gram (USP)',
-    indications: 'E. coli, Clostridium, Pasteurella, Colisepticemia, Cholera, Coryza, Typhoid, CRD, CCRD, bacterial enteritis, early chick mortality, mycoplasmosis.',
-    dosage: 'As directed by veterinarian.',
-    packaging: '1kg, 5kg',
-    desc: '95% Oxytetracycline — broad-spectrum tetracycline antibiotic interfering with bacterial protein synthesis.',
-    image: oxykam_95,
+    id: 9, category: 'powder-antibiotic', form: 'Powder', species: 'Poultry',
+    name: 'Colikam-50', fullName: 'Colikam-50 Water Soluble Powder',
+    composition: 'Colistin Sulphate 500mg per gram',
+    dosage: '1g in 10–20 litres of drinking water for 3–5 days.',
+    benefits: 'Treats E. coli and Salmonella infections. Effective against Pseudomonas and Pasteurella. Controls Shigella and Proteus species. Supports quick recovery and reduces mortality.',
   },
   {
-    id: 16,
-    name: 'Floxy N-Mak WSP',
-    fullName: 'FLOXY N-MAK Water Soluble Powder',
-    category: 'antibiotics',
-    form: 'Powder',
-    species: 'Poultry',
-    composition: 'Neomycin Sulphate + Oxytetracycline HCl / gram',
-    indications: 'Necrotic enteritis (Clostridium perfringens), colibacillosis, salmonellosis, respiratory infections.',
-    dosage: 'As directed by veterinarian.',
-    packaging: '1kg, 5kg',
-    desc: 'Dual aminoglycoside + tetracycline combination. Synergistic action against enteric and respiratory pathogens.',
-    image: floxy_n_mak,
+    id: 10, category: 'powder-antibiotic', form: 'Powder', species: 'Poultry',
+    name: 'Neokam-72', fullName: 'Neokam-72 Powder',
+    composition: 'Neomycin Sulphate 720mg per gram',
+    dosage: '1g per 5 litres of drinking water for 3–7 days (30mg neomycin per kg bodyweight).',
+    benefits: 'Prevents and treats GIT infections caused by E. coli and Salmonella spp. Specifically targets organisms sensitive to neomycin. Safe for use in broilers, layers, and breeders. Acts locally in the gut — not absorbed systemically.',
   },
   {
-    id: 17,
-    name: 'Moxclav Powder',
-    fullName: 'MOXCLAV Powder',
-    category: 'antibiotics',
-    form: 'Powder',
-    species: 'Poultry',
-    composition: 'Amoxicillin Trihydrate 160mg + Clavulanic Acid (Potassium Clavulanate) 40mg / gram',
-    indications: 'Beta-lactamase-producing bacteria, respiratory and enteric infections resistant to standard penicillins.',
-    dosage: 'As directed by veterinarian.',
-    packaging: '1kg',
-    desc: 'Amoxicillin–Clavulanate combination. Clavulanic acid protects Amoxicillin from beta-lactamase degradation.',
-    image: moxclav_powder,
+    id: 11, category: 'powder-antibiotic', form: 'Powder', species: 'Poultry',
+    name: 'Neokam-100', fullName: 'Neokam-100 Powder',
+    composition: 'Neomycin Sulphate 1000mg per gram',
+    dosage: '1g per 6–10 litres of drinking water for 3 to 5 days. 160–320g per ton of feed for 3–5 days.',
+    benefits: 'Prevents and treats GIT infections caused by E. coli and Salmonella spp. Specifically targets organisms sensitive to neomycin. Safe for use in broilers, layers, and breeders. Acts locally in the gut — not absorbed systemically.',
   },
   {
-    id: 18,
-    name: 'Mox-LS',
-    fullName: 'MOX-LS Powder',
-    category: 'antibiotics',
-    form: 'Powder',
-    species: 'Poultry',
-    composition: 'Amoxicillin Trihydrate 200mg + Lincomycin HCl 88mg + Spectinomycin Sulphate 88mg + Vitamin E Acetate 30mg / gram',
-    indications: 'Respiratory, enteric and systemic bacterial infections — broad gram +ve & −ve coverage.',
-    dosage: 'As directed by veterinarian.',
-    packaging: '1kg',
-    desc: 'Triple-antibiotic combination (Amoxicillin + Lincomycin + Spectinomycin) with vitamin E support.',
-    image: mox_ls,
+    id: 12, category: 'powder-antibiotic', form: 'Powder', species: 'Poultry',
+    name: 'Oxykam-95%', fullName: 'Oxykam-95% Water Soluble Powder',
+    composition: 'Oxytetracycline HCl 950mg per gram',
+    dosage: 'Treatment: 1g per 4 litres of drinking water. Prevention: 1g per 8 litres.',
+    benefits: 'Effective against gram-positive and gram-negative bacteria. Treats E. coli, Pasteurella, and Colisepticemia. Controls Cholera, Coryza, Typhoid, CRD, and CCRD. Manages bacterial enteritis and Mycoplasmosis.',
   },
   {
-    id: 19,
-    name: 'Sintolin Plus',
-    fullName: 'SINTOLIN PLUS Oral Powder',
-    category: 'antibiotics',
-    form: 'Powder',
-    species: 'Poultry',
-    composition: 'Lincomycin HCl + Spectinomycin HCl + Spiramycin Adipate / gram',
-    indications: 'Respiratory, skin & soft tissue infections; E. coli, Pasteurella multocida; urinary & reproductive tract infections.',
-    dosage: 'As directed by veterinarian.',
-    packaging: '1kg',
-    desc: 'Three-way antibiotic combination covering gram +ve (Lincomycin), gram −ve (Spectinomycin), and broad-spectrum (Spiramycin).',
-    image: sintolin_plus,
+    id: 13, category: 'powder-antibiotic', form: 'Powder', species: 'Poultry',
+    name: 'Mprokam-50', fullName: 'Mprokam-50 Powder',
+    composition: 'Amprolium HCl 500mg per gram',
+    dosage: '1g per 3–5 litres of drinking water daily for 5 days.',
+    benefits: 'Treatment of intestinal coccidiosis caused by Eimeria spp. susceptible to Amprolium.',
   },
   {
-    id: 20,
-    name: 'XINKMAK WSP',
-    fullName: 'XINMAK Water Soluble Powder',
-    category: 'antibiotics',
-    form: 'Powder',
-    species: 'Poultry',
-    composition: 'Tylosin Tartrate 200mg + Doxycycline HCl 400mg + Colistin Sulphate 1 MIU + Bromhexine HCl 10mg / gram',
-    indications: 'Mycoplasma, respiratory infections, enteric infections, chlamydiosis — with mucolytic support.',
-    dosage: 'As directed by veterinarian.',
-    packaging: '1kg, 5kg',
-    desc: 'Comprehensive 4-in-1 formula: macrolide + tetracycline + polymyxin + mucolytic for complex respiratory disease.',
-    image: xinkmak_wsp,
+    id: 14, category: 'powder-antibiotic', form: 'Powder', species: 'Poultry',
+    name: 'Mprokam-90', fullName: 'Mprokam-90 Powder',
+    composition: 'Amprolium HCl 900mg per gram',
+    dosage: 'Prevention: 1g per 16 litres. Treatment: 1g per 8 litres of drinking water.',
+    benefits: 'Treatment of intestinal coccidiosis caused by Eimeria spp. susceptible to Amprolium.',
+  },
+  {
+    id: 15, category: 'powder-antibiotic', form: 'Powder', species: 'Poultry',
+    name: 'Chlorkam-200', fullName: 'Chlorkam-200 Water Soluble Powder',
+    composition: 'Chlortetracycline HCl 200mg per gram',
+    dosage: '100g per 75–100 litres of drinking water daily for 5 days.',
+    benefits: 'Treats colibacillosis, especially secondary to infectious bursal disease. Controls CRD caused by Mycoplasma gallisepticum and E. coli. Effective against Salmonella enteritidis and S. typhimurium. Manages Pasteurella multocida infections in poultry.',
+  },
+  {
+    id: 16, category: 'powder-antibiotic', form: 'Powder', species: 'Poultry',
+    name: 'Sintolin Plus', fullName: 'Sintolin Plus Oral Powder',
+    composition: 'Lincomycin as HCl 50mg · Spectinomycin as HCl 75mg · Spiramycin Adipate 25mg · Bromhexine HCl 5mg per gram',
+    dosage: 'Treatment: 1g per 2 litres for 3–5 days. Prevention: 1g per 4 litres for 3–5 days.',
+    benefits: 'Effectively treats Mycoplasma, E. coli, Coryza, and Typhoid infections. Controls respiratory and gastrointestinal infections in poultry. Manages secondary bacterial infections during viral outbreaks. Supports fast recovery and improves flock health and performance.',
+  },
+  {
+    id: 17, category: 'powder-antibiotic', form: 'Powder', species: 'Poultry',
+    name: 'Sintolin-40', fullName: 'Sintolin-40 Oral Powder',
+    composition: 'Lincomycin as HCl 400mg per gram',
+    dosage: 'Administer 3–6mg per kg bodyweight for 7 consecutive days (approx. 17mg per litre of drinking water). Mycoplasma: 75g per 1000 litres for 7 days.',
+    benefits: 'Effectively treats Mycoplasma infections including CRD and CCRD. Controls necrotic enteritis caused by Clostridium perfringens. Manages dermatitis and skin infections caused by Staphylococcus. Supports faster recovery and improved flock performance.',
+  },
+  {
+    id: 18, category: 'powder-antibiotic', form: 'Powder', species: 'Poultry',
+    name: 'Sintolin-44', fullName: 'Sintolin-44 Powder',
+    composition: 'Lincomycin as HCl 44mg per gram',
+    dosage: 'Weight gain: 50g per ton of feed. Necrotic enteritis and CRD control: 100g per ton. Severe CRD: 250–500g per ton of feed.',
+    benefits: 'Improves feed conversion ratio (FCR) for better growth performance. Reduces mortality in poultry flocks. Easily mixable in feed, ensuring convenient administration. Highly palatable, promoting consistent feed intake.',
+  },
+  {
+    id: 19, category: 'powder-antibiotic', form: 'Powder', species: 'Poultry',
+    name: 'Sintolin-110', fullName: 'Sintolin-110 Powder',
+    composition: 'Lincomycin as HCl 110mg per gram',
+    dosage: '20–40g of Sintolin-110 to be mixed per ton of feed.',
+    benefits: 'Improves feed conversion ratio (FCR) for better growth performance. Reduces mortality in poultry flocks. Easily mixable in feed, ensuring convenient administration. Highly palatable, promoting consistent feed intake.',
+  },
+  {
+    id: 20, category: 'powder-antibiotic', form: 'Powder', species: 'Poultry',
+    name: 'Tmulinkam-45', fullName: 'Tmulinkam-45 Oral Powder',
+    composition: 'Tiamulin Hydrogen Fumerate equivalent to Tiamulin base 450mg per gram',
+    dosage: 'Poultry: 1g per 2 litres of drinking water for 5 days. Feed: 1g per 1kg of feed for 5 days. Use medicated water within 24 hours.',
+    benefits: 'Effectively treats respiratory infections including bacterial and enzootic pneumonia. Combats Mycoplasmosis, ensuring better respiratory performance. Reduces mortality and enhances recovery. Effective against chlamydiosis and other tiamulin-sensitive infections. Supports rapid recovery and improved productivity in affected flocks.',
   },
 
-  // ── FLUOROQUINOLONES ───────────────────────────────────────────────────────
+  // ── LIQUID ANTIBIOTICS ─────────────────────────────────────────────────────
   {
-    id: 21,
-    name: 'Enrokam C-10',
-    fullName: 'ENROKAM C-10 Oral Solution',
-    category: 'fluoroquinolones',
-    form: 'Liquid',
-    species: 'Poultry',
-    composition: 'Enrofloxacin + Colistin Sulphate / ml',
-    indications: 'Respiratory and enteric bacterial infections caused by gram −ve bacteria.',
-    dosage: 'As directed by veterinarian.',
-    packaging: '1L, 5L',
-    desc: 'Fluoroquinolone + Polymyxin combination. Enrofloxacin inhibits DNA gyrase; Colistin disrupts cell membranes.',
-    image: enrokam_c10,
+    id: 21, category: 'liquid-antibiotic', form: 'Liquid', species: 'Poultry',
+    name: 'Pefloxkam-10', fullName: 'Pefloxkam-10 Solution',
+    composition: 'Pefloxacin Methanesulfonate 139.6mg (equiv. Pefloxacin 100mg) per ml',
+    dosage: 'Administer 1ml per 1–2 litres of drinking water for 3–4 days (10mg/kg B.W.). Dilute 5–10ml with 10L drinking water and administer orally for 3–4 days.',
+    benefits: 'Effectively treats CRD, CCRD, and infectious coryza. Controls pullorum disease, fowl typhoid, and colibacillosis. Manages fowl cholera and staphylococcal infections. Supports rapid recovery and reduces mortality in poultry.',
   },
   {
-    id: 22,
-    name: 'Enrokam C-20',
-    fullName: 'ENROKAM C-20 Water Soluble Powder',
-    category: 'fluoroquinolones',
-    form: 'Powder',
-    species: 'Poultry',
-    composition: 'Enrofloxacin 200mg + Colistin Sulphate 0.50 MIU / gram',
-    indications: 'Respiratory and enteric bacterial infections. Broad gram +ve & −ve spectrum.',
-    dosage: 'As directed by veterinarian.',
-    packaging: '1kg, 5kg',
-    desc: 'High-strength Enrofloxacin WSP with Colistin. Fluoroquinolone class with enhanced gram −ve coverage.',
-    image: enrokam_c20,
-  },
-  /* NO IMAGE - COMMENTED OUT
-  {
-    id: 23,
-    name: 'Makflor-23',
-    fullName: 'MAKFLOR-23 Oral Liquid',
-    category: 'fluoroquinolones',
-    form: 'Liquid',
-    species: 'Poultry',
-    composition: 'Florfenicol 230mg / ml',
-    indications: 'Pneumonia, Mycoplasma, CRD, CCRD, fowl cholera, fowl typhoid, coryza, broad gram +ve & −ve coverage.',
-    dosage: 'As directed by veterinarian.',
-    packaging: '1L, 5L',
-    desc: 'Florfenicol broad-spectrum antibiotic. Inhibits bacterial protein synthesis at the 50S ribosomal subunit.',
-  },
-  */
-  {
-    id: 24,
-    name: 'Makflor-25',
-    fullName: 'MAKFLOR-25 Oral Liquid',
-    category: 'fluoroquinolones',
-    form: 'Liquid',
-    species: 'Poultry',
-    composition: 'Florfenicol 250mg / ml',
-    indications: 'Respiratory and gastrointestinal infections in poultry. Hepatitis hydropericardium.',
-    dosage: 'As directed by veterinarian.',
-    packaging: '1L, 5L',
-    desc: 'Higher-strength Florfenicol oral liquid for severe respiratory infections with GI complications.',
-    image: makflor_25,
+    id: 22, category: 'liquid-antibiotic', form: 'Liquid', species: 'Poultry',
+    name: 'Ofloxkam-10', fullName: 'Ofloxkam-10 Oral Solution',
+    composition: 'Ofloxacin 100mg per ml',
+    dosage: 'Poultry: 5ml per 10 litres of drinking water. Dose can be doubled in severe cases.',
+    benefits: 'Treats septicemia, arthritis, meningitis, and secondary bacterial infections. Effective against respiratory diseases like pneumonia, bronchitis, and sinusitis. Controls gastrointestinal infections such as enteritis and peritonitis. Manages urogenital infections including nephritis and metritis in sensitive species.',
   },
   {
-    id: 25,
-    name: 'Ofloxkam-10',
-    fullName: 'OFLOXKAM-10 Oral Solution',
-    category: 'fluoroquinolones',
-    form: 'Liquid',
-    species: 'Poultry',
-    composition: 'Ofloxacin 100mg / ml',
-    indications: 'Respiratory infections, urinary tract infections, skin infections caused by gram +ve & −ve bacteria.',
-    dosage: 'As directed by veterinarian.',
-    packaging: '1L, 5L',
-    desc: 'Fluoroquinolone. Inhibits bacterial DNA gyrase and topoisomerase IV, stopping DNA replication.',
-    image: ofloxkam_10,
+    id: 23, category: 'liquid-antibiotic', form: 'Liquid', species: 'Poultry',
+    name: 'Makflor-25', fullName: 'Makflor-25 Oral Liquid',
+    composition: 'Florfenicol 250mg per ml',
+    dosage: 'As directed by a veterinarian. Suitable for drinking water administration.',
+    benefits: 'Broad-spectrum antibiotic effective against respiratory infections, CRD, CCRD, Mycoplasma, Fowl Cholera, and Coryza. Inhibits bacterial protein synthesis at the 50S ribosomal subunit.',
   },
   {
-    id: 26,
-    name: 'Pefloxkam-10',
-    fullName: 'PEFLOXKAM-10 Solution',
-    category: 'fluoroquinolones',
-    form: 'Liquid',
-    species: 'Poultry',
-    composition: 'Pefloxacin Methanesulfonate 139.6mg (equiv. Pefloxacin 100mg) / ml',
-    indications: 'Urinary tract, respiratory, skin and soft tissue infections in poultry.',
-    dosage: 'As directed by veterinarian.',
-    packaging: '1L, 5L',
-    desc: 'Potent fluoroquinolone. Inhibits DNA gyrase and topoisomerase IV across broad gram −ve & +ve spectrum.',
-    image: pefloxkam_10,
+    id: 24, category: 'liquid-antibiotic', form: 'Liquid', species: 'Poultry',
+    name: 'Makflor-23', fullName: 'Makflor-23 Oral Liquid',
+    composition: 'Florfenicol 230mg per ml',
+    dosage: 'As directed by a veterinarian.',
+    benefits: 'Effective against pneumonia, Mycoplasma, CRD, CCRD, Fowl Cholera, Fowl Typhoid, and Coryza. Broad-spectrum bacteriostatic activity against gram-positive and gram-negative bacteria.',
   },
   {
-    id: 27,
-    name: 'Tilkam-25',
-    fullName: 'TILKAM-25 Solution',
-    category: 'fluoroquinolones',
-    form: 'Liquid',
-    species: 'Poultry',
-    composition: 'Tilmicosin Phosphate 250mg / ml',
-    indications: 'Respiratory tract infections: Mycoplasma spp., Pasteurella multocida.',
-    dosage: 'As directed by veterinarian.',
-    packaging: '1L',
-    desc: 'Macrolide antibiotic for respiratory Mycoplasma infections. Improves flock health and productivity.',
-    image: tilkam_25,
-  },
-
-  // ── ANTICOCCIDIALS ─────────────────────────────────────────────────────────
-  {
-    id: 28,
-    name: 'Mprokam-50',
-    fullName: 'MPROKAM-50 Powder',
-    category: 'anticoccidials',
-    form: 'Powder',
-    species: 'Poultry',
-    composition: 'Amprolium HCl 500mg / gram (USP)',
-    indications: 'Intestinal coccidiosis caused by Eimeria spp.',
-    dosage: 'As directed by veterinarian.',
-    packaging: '1kg, 5kg',
-    desc: 'Coccidiostat that inhibits growth and reproduction of coccidia. Supports optimal growth and feed efficiency.',
-    image: mprokam_50,
+    id: 25, category: 'liquid-antibiotic', form: 'Liquid', species: 'Poultry',
+    name: 'Makflor-20', fullName: 'Makflor-20 Oral Liquid',
+    composition: 'Florfenicol 200mg per ml',
+    dosage: 'As directed by a veterinarian.',
+    benefits: 'Standard Florfenicol oral liquid for respiratory and enteric bacterial infections in poultry.',
   },
   {
-    id: 29,
-    name: 'Mprokam-90',
-    fullName: 'MPROKAM-90 Powder',
-    category: 'anticoccidials',
-    form: 'Powder',
-    species: 'Poultry',
-    composition: 'Amprolium HCl 900mg / gram (USP)',
-    indications: 'Intestinal coccidiosis caused by Eimeria spp. — high-load challenge.',
-    dosage: 'As directed by veterinarian.',
-    packaging: '1kg, 5kg',
-    desc: 'High-concentration Amprolium for severe coccidiosis challenge. Maximum coccidiostat activity.',
-    image: mprokam_90,
+    id: 26, category: 'liquid-antibiotic', form: 'Liquid', species: 'Poultry',
+    name: 'Makflor C-25', fullName: 'Makflor C-25 Liquid',
+    composition: 'Florfenicol 250mg · Colistin Sulphate 0.50 MIU per ml',
+    dosage: 'Prevention: 1ml in 2–3 litres for 3–5 days. Treatment: 1ml in 1–2 litres for 3–5 days.',
+    benefits: 'Treats gram-positive and gram-negative bacterial infections in poultry. Effective against respiratory diseases like CRD, CCRD, pneumonia, and Mycoplasma. Manages systemic infections including omphalitis, perihepatitis, pericarditis, and endocarditis. Supports faster recovery and improves overall flock health.',
+  },
+  {
+    id: 27, category: 'liquid-antibiotic', form: 'Liquid', species: 'Poultry',
+    name: 'Makflor C-23', fullName: 'Makflor C-23 Liquid',
+    composition: 'Florfenicol 230mg · Colistin Sulphate 0.50 MIU per ml',
+    dosage: 'Prevention: 1ml per 4 litres for 3–5 days. Treatment: 1ml per 2 litres for 3–5 days.',
+    benefits: 'Dual-action Florfenicol + Colistin combination. Effective against respiratory and enteric bacterial infections in poultry.',
+  },
+  {
+    id: 28, category: 'liquid-antibiotic', form: 'Liquid', species: 'Poultry',
+    name: 'Makflor C-10', fullName: 'Makflor C-10 Liquid',
+    composition: 'Florfenicol 100mg · Colistin Sulphate 0.50 MIU per ml',
+    dosage: '1ml in 1 litre of drinking water for 3–5 days.',
+    benefits: 'Standard-concentration Florfenicol + Colistin for poultry respiratory and enteric infections.',
+  },
+  {
+    id: 29, category: 'liquid-antibiotic', form: 'Liquid', species: 'Poultry',
+    name: 'Xinmak Oral', fullName: 'Xinmak Oral Liquid',
+    composition: 'Tylosin Tartrate · Doxycycline HCl · Colistin Sulphate · Bromhexine HCl per ml',
+    dosage: 'As directed by a veterinarian.',
+    benefits: 'Liquid version of Xinmak. Treats CRD, CCRD, Mycoplasmosis, respiratory and enteric infections with mucolytic support via Bromhexine.',
+  },
+  {
+    id: 30, category: 'liquid-antibiotic', form: 'Liquid', species: 'Poultry',
+    name: 'Sulpha T-Mak', fullName: 'Sulpha T-Mak Suspension',
+    composition: 'Sulphadiazine 400mg · Trimethoprim 80mg per ml',
+    dosage: 'Poultry: 1ml per 5 litres of drinking water for 3–5 days. Recommended dose: 15mg active ingredients per 1kg bodyweight daily.',
+    benefits: 'Treats gastrointestinal and respiratory infections. Effective against a wide range of susceptible bacteria. Controls general infections in poultry. Supports faster recovery and improved health.',
+  },
+  {
+    id: 31, category: 'liquid-antibiotic', form: 'Liquid', species: 'Poultry',
+    name: 'Tilkam-25', fullName: 'Tilkam-25 Solution',
+    composition: 'Tilmicosin Phosphate 250mg per ml',
+    dosage: 'As directed by a veterinarian.',
+    benefits: 'Effective treatment for respiratory tract infections caused by Mycoplasma spp. and Pasteurella multocida. Improves respiratory health and reduces flock mortality.',
+  },
+  {
+    id: 32, category: 'liquid-antibiotic', form: 'Liquid', species: 'Poultry',
+    name: 'Enrokam C-20', fullName: 'Enrokam C-20 Oral Solution',
+    composition: 'Enrofloxacin 200mg · Colistin Sulfate 0.5 MIU per ml',
+    dosage: '1ml per 2 litres of drinking water for 3–5 days.',
+    benefits: 'Treats gram-positive and gram-negative bacterial infections in poultry. Effective against respiratory and gastrointestinal diseases. Controls colibacillosis and CRD. Manages Pasteurella, Salmonella, and Staphylococcus infections efficiently.',
+  },
+  {
+    id: 33, category: 'liquid-antibiotic', form: 'Liquid', species: 'Poultry',
+    name: 'Enrokam C-10', fullName: 'Enrokam C-10 Oral Solution',
+    composition: 'Enrofloxacin 100mg · Colistin Sulfate 500,000 IU per ml',
+    dosage: '1ml in 2 litres of drinking water for 3 days (5 days for salmonellosis).',
+    benefits: 'Treats gram-positive and gram-negative bacterial infections in poultry. Effective against respiratory and gastrointestinal diseases. Controls colibacillosis and CRD. Manages Pasteurella, Salmonella, and Staphylococcus infections efficiently.',
+  },
+  {
+    id: 34, category: 'liquid-antibiotic', form: 'Liquid', species: 'Poultry',
+    name: 'Enrokam AG-10', fullName: 'Enrokam AG-10 Oral Liquid',
+    composition: 'Enrofloxacin 100mg per ml',
+    dosage: 'As directed by a veterinarian.',
+    benefits: 'Pure Enrofloxacin oral liquid for poultry. Broad-spectrum fluoroquinolone effective against respiratory and enteric bacterial infections.',
+  },
+  {
+    id: 35, category: 'liquid-antibiotic', form: 'Liquid', species: 'Poultry',
+    name: 'Bromokam-5', fullName: 'Bromokam-5 Oral Liquid',
+    composition: 'Bromhexine HCl 50mg per ml',
+    dosage: '1ml per 20 litres of drinking water for 3–5 days.',
+    benefits: 'Acts as a mucolytic expectorant, reducing mucus viscosity. Treats respiratory diseases like bronchitis, emphysema, and chronic lung inflammation. Effective in relieving cold, sneezing, coughing, and wheezing in poultry. Supports clear airways and improves respiratory comfort and recovery.',
+  },
+  {
+    id: 36, category: 'liquid-antibiotic', form: 'Liquid', species: 'Poultry',
+    name: 'Bronchoment-50', fullName: 'Bronchoment-50 Oral Liquid',
+    composition: 'Bromhexine HCl 50mg · Menthol 40mg per ml',
+    dosage: 'As directed by a veterinarian.',
+    benefits: 'Dual mucolytic and bronchodilator action. Treats respiratory diseases with combined expectorant and airway-opening properties of Bromhexine and Menthol.',
+  },
+  {
+    id: 37, category: 'liquid-antibiotic', form: 'Liquid', species: 'Poultry',
+    name: 'Bronchoment-20', fullName: 'Bronchoment-20 Oral Liquid',
+    composition: 'Bromhexine HCl 20mg · Menthol 40mg per ml',
+    dosage: 'As directed by a veterinarian.',
+    benefits: 'Mucolytic expectorant with additional Menthol bronchodilation. Effective for respiratory congestion, bronchitis, and chronic lung disease in poultry.',
+  },
+  {
+    id: 38, category: 'liquid-antibiotic', form: 'Liquid', species: 'Poultry',
+    name: 'Bronchoment-10', fullName: 'Bronchoment-10 Oral Liquid',
+    composition: 'Bromhexine HCl 10mg · Menthol 40mg per ml',
+    dosage: 'As directed by a veterinarian.',
+    benefits: 'Standard-strength Bromhexine + Menthol combination for poultry respiratory support.',
   },
 
-  // ── VITAMINS & SUPPLEMENTS ─────────────────────────────────────────────────
-  /* NO IMAGE - COMMENTED OUT
+  // ── PENICILLIN ─────────────────────────────────────────────────────────────
   {
-    id: 30,
-    name: 'Mak Fourvit',
-    fullName: 'MAK FOURVIT Oral Liquid',
-    category: 'vitamins',
-    form: 'Liquid',
-    species: 'Poultry',
-    composition: 'Vitamin A 10,000 IU + Vitamin D3 2,000 IU + Vitamin E 41mg + Vitamin K3 6.2mg / ml',
-    indications: 'Vitamin A, D3, E, K3 deficiency; immunity support, bone development, egg production.',
-    dosage: '1ml/2L drinking water.',
-    packaging: '1L, 5L',
-    desc: 'Four-vitamin oral liquid for immunity, bone health, feather quality and reproductive performance.',
-  },
-  */
-  {
-    id: 31,
-    name: 'Mak Fivevit',
-    fullName: 'MAK FIVEVIT Powder',
-    category: 'vitamins',
-    form: 'Powder',
-    species: 'Poultry',
-    composition: 'Vitamin A 20,000 IU + Vitamin D3 2,000 IU + Vitamin E + Vitamin K3 + Vitamin C / gram',
-    indications: 'Multi-vitamin deficiency; immunity, bone development, antioxidant support.',
-    dosage: 'As directed by veterinarian.',
-    packaging: '1kg',
-    desc: 'Five-vitamin combination powder. Comprehensive multi-vitamin support for optimal flock health.',
-    image: mak_fivevit,
+    id: 39, category: 'penicillin', form: 'Powder', species: 'Poultry',
+    name: 'Moxclav', fullName: 'Moxclav Powder',
+    composition: 'Amoxicillin as Trihydrate 160mg · Clavulanic Acid (as Potassium salt) 40mg per gram',
+    dosage: 'As directed by a veterinarian.',
+    benefits: 'Beta-lactamase-inhibiting combination antibiotic. Effective against bacteria resistant to standard penicillins. Broad-spectrum coverage for respiratory and enteric infections.',
   },
   {
-    id: 32,
-    name: 'C-Kam 100',
-    fullName: 'C-KAM 100 Powder',
-    category: 'vitamins',
-    form: 'Powder',
-    species: 'Livestock',
-    composition: 'Ascorbic Acid 1000mg / gram (BP)',
-    indications: 'Vitamin C deficiency, heat stress, overcrowding, vaccination stress, eggshell quality, egg production.',
-    dosage: 'Poultry: 0.5g/L drinking water. Cattle: 8–12g/animal/day.',
-    packaging: '1kg',
-    desc: 'High-potency Vitamin C powder. Collagen synthesis support, antioxidant protection, immune boost under stress.',
-    image: c_kam_100,
+    id: 40, category: 'penicillin', form: 'Powder', species: 'Poultry',
+    name: 'Moxclav-C', fullName: 'Moxclav-C Water Soluble Powder',
+    composition: 'Amoxicillin as Trihydrate · Clavulanic Acid · Colistin per gram',
+    dosage: 'As directed by a veterinarian.',
+    benefits: 'Triple combination: Amoxicillin + Clavulanate (beta-lactamase protection) + Colistin for gram-negative coverage.',
   },
   {
-    id: 33,
-    name: 'C-Kam 250',
-    fullName: 'C-KAM 250',
-    category: 'vitamins',
-    form: 'Powder',
-    species: 'Livestock',
-    composition: 'Ascorbic Acid 250mg / gram (BP)',
-    indications: 'Vitamin C deficiency, illness, injury recovery, stress conditions.',
-    dosage: 'Poultry: 0.5g/L. Lambs/Kids/Calves: 1g/animal/day for 7–10 days.',
-    packaging: '1kg',
-    desc: 'Standard-strength Vitamin C supplement for stress recovery, wound healing and immune support.',
-    image: c_kam_250,
+    id: 41, category: 'penicillin', form: 'Powder', species: 'Poultry',
+    name: 'Mak Amox-50', fullName: 'Mak Amox-50 Powder',
+    composition: 'Amoxicillin as Trihydrate 500mg per gram',
+    dosage: '10–20mg per kg bodyweight for 3–5 days. 1g per 5 litres of drinking water for 3–5 days.',
+    benefits: 'Treats pneumonia and coryza. Controls fowl cholera and typhoid. Manages colibacillosis and enteritis. Effective against staphylococcosis. Supports quick recovery and immunity.',
   },
   {
-    id: 34,
-    name: 'Hepakam',
-    fullName: 'HEPAKAM Oral Liquid',
-    category: 'vitamins',
-    form: 'Liquid',
-    species: 'Poultry',
-    composition: 'DL-Methionine 5mg + L-Lysine + Choline Chloride 190mg + Vitamin B12 0.01mg + Sorbitol 100mg / ml',
-    indications: 'Amino acid and liver tonic supplementation; feather growth, protein synthesis, immune function.',
-    dosage: 'As directed by veterinarian.',
-    packaging: '1L, 5L',
-    desc: 'Hepatoprotective oral liquid with essential amino acids and liver-supportive nutrients for poultry.',
-    image: hepakam,
+    id: 42, category: 'penicillin', form: 'Powder', species: 'Poultry',
+    name: 'Mak Amox-80', fullName: 'Mak Amox-80 Powder',
+    composition: 'Amoxicillin Trihydrate 800mg (equiv. Amoxicillin base 700mg) per gram',
+    dosage: 'Under 4 weeks: 6–12g per 100L drinking water for 3–5 days. Over 4 weeks: 10–12g per 100L for 3–5 days.',
+    benefits: 'Treats pneumonia and coryza. Controls fowl cholera and typhoid. Manages colibacillosis and enteritis. Effective against staphylococcosis. Supports quick recovery and immunity.',
   },
-  /* NO IMAGE - COMMENTED OUT
   {
-    id: 35,
-    name: 'Makliv Solution',
-    fullName: 'MAKLIV Solution',
-    category: 'vitamins',
-    form: 'Liquid',
-    species: 'Poultry',
-    composition: 'L-Carnitine 50mg + Betaine HCl 20mg + Inositol 7mg + Choline Chloride 100mg + Sorbitol 200mg + Magnesium Sulphate 10mg / ml',
-    indications: 'Liver protection, fat metabolism, energy support, continuous dietary supplementation.',
-    dosage: 'Prevention: 1ml/4L. Treatment: 1ml/2L.',
-    packaging: '1L, 5L',
-    desc: 'Liver tonic and metabolic support. L-Carnitine for fat transport; Choline + Betaine for liver function.',
+    id: 43, category: 'penicillin', form: 'Powder', species: 'Poultry',
+    name: 'Mak Amox C-15', fullName: 'Mak Amox C-15 Water Soluble Powder',
+    composition: 'Amoxicillin as Trihydrate 150mg · Colistin Sulphate 0.50 MIU per gram',
+    dosage: 'Prevention: 1g per 4L. Treatment: 1g per 2–3L for 3–5 days.',
+    benefits: 'Dual Amoxicillin + Colistin combination. Treats colibacillosis, salmonellosis, alimentary, urogenital, and respiratory tract infections.',
   },
-  */
   {
-    id: 36,
-    name: 'Mak Ze-Sel',
-    fullName: 'MAK ZE-SEL Solution',
-    category: 'vitamins',
-    form: 'Liquid',
-    species: 'Poultry',
-    composition: 'Vitamin E + Sorbitol + Choline Chloride + Selenium (Sodium Selenite) + Zinc (Zinc Sulphate) / ml',
-    indications: 'Vitamin E and selenium deficiency; antioxidant support, immune function, reproductive performance.',
-    dosage: '1ml/10L drinking water.',
-    packaging: '1L',
-    desc: 'Vitamin E + Selenium + Zinc combination for antioxidant protection and mineral supplementation.',
-    image: mak_ze_sel,
+    id: 44, category: 'penicillin', form: 'Powder', species: 'Poultry',
+    name: 'Mak Amox C-20', fullName: 'Mak Amox C-20 Water Soluble Powder',
+    composition: 'Amoxicillin as Trihydrate 200mg · Colistin Sulphate 0.80 MIU per gram',
+    dosage: 'Prevention: 1g per 4L. Treatment: 1g per 2–3L for 3–5 days.',
+    benefits: 'Treats colibacillosis, salmonellosis, and alimentary, urogenital and respiratory tract infections.',
+  },
+  {
+    id: 45, category: 'penicillin', form: 'Powder', species: 'Poultry',
+    name: 'Mak Amox C-50', fullName: 'Mak Amox C-50 Water Soluble Powder',
+    composition: 'Amoxicillin as Trihydrate 500mg · Colistin Sulphate 0.50 MIU per gram',
+    dosage: 'Prevention: 1g per 4L. Treatment: 1g per 2–3L for 3–5 days.',
+    benefits: 'High-potency Amoxicillin + Colistin combination for severe colibacillosis, salmonellosis, and respiratory tract infections.',
+  },
+  {
+    id: 46, category: 'penicillin', form: 'Powder', species: 'Poultry',
+    name: 'Moxikam-LS', fullName: 'Moxikam-LS Water Soluble Powder',
+    composition: 'Amoxicillin · Lincomycin · Spectinomycin · Vitamin E per gram',
+    dosage: 'As directed by a veterinarian.',
+    benefits: 'Triple antibiotic combination with vitamin E support. Broad coverage for respiratory, enteric, and systemic bacterial infections.',
+  },
+  {
+    id: 47, category: 'penicillin', form: 'Powder', species: 'Poultry',
+    name: 'Mox-LS', fullName: 'Mox-LS Oral Powder',
+    composition: 'Amoxicillin · Lincomycin · Spectinomycin per gram',
+    dosage: 'As directed by a veterinarian.',
+    benefits: 'Amoxicillin + Lincomycin + Spectinomycin triple combination for broad-spectrum bacterial coverage in poultry.',
+  },
+  {
+    id: 48, category: 'penicillin', form: 'Powder', species: 'Poultry',
+    name: 'Mak Amox-BLC', fullName: 'Mak Amox-BLC Water Soluble Powder',
+    composition: 'Lincomycin as HCl 50mg · Colistin Sulphate 0.50 MIU · Amoxicillin as Trihydrate 100mg · Bromhexine HCl 5mg per gram',
+    dosage: '1g per 1–2 litres of drinking water for 3–5 days.',
+    benefits: 'Highly effective against Mycoplasma, pneumonia, enteritis, E. coli, typhoid, and Pasteurellosis. Used in gastrointestinal, respiratory, and secondary bacterial infections during viral diseases.',
+  },
+  {
+    id: 49, category: 'penicillin', form: 'Powder', species: 'Poultry',
+    name: 'Mak Phenox', fullName: 'Mak Phenox Water Soluble Powder',
+    composition: 'Phenoxymethylpenicillin (Penicillin V) per gram',
+    dosage: 'As directed by a veterinarian.',
+    benefits: 'Oral Penicillin V for treatment of infections susceptible to penicillin-sensitive bacteria in poultry.',
+  },
+  {
+    id: 50, category: 'penicillin', form: 'Powder', species: 'Poultry',
+    name: 'Mak P Strep', fullName: 'Mak P Strep Powder',
+    composition: 'Procaine Penicillin G · Streptomycin Sulphate per gram',
+    dosage: 'As directed by a veterinarian.',
+    benefits: 'Classic Penicillin + Streptomycin combination for gram-positive and gram-negative bacterial infections in poultry.',
+  },
+  {
+    id: 51, category: 'penicillin', form: 'Powder', species: 'Poultry',
+    name: 'Lyzomox-g', fullName: 'Lyzomox-g Water Soluble Powder',
+    composition: 'Amoxicillin · Lysozyme per gram',
+    dosage: 'As directed by a veterinarian.',
+    benefits: 'Amoxicillin enhanced with Lysozyme for improved mucosal protection and antibacterial efficacy in poultry.',
   },
 
-  // ── RESPIRATORY & MUCOLYTICS ───────────────────────────────────────────────
-  /* NO IMAGE - COMMENTED OUT
+  // ── DIURETICS ──────────────────────────────────────────────────────────────
   {
-    id: 37,
-    name: 'Bromokam-5',
-    fullName: 'BROMOKAM-5 Oral Liquid',
-    category: 'respiratory',
-    form: 'Liquid',
-    species: 'Poultry',
-    composition: 'Bromhexine HCl 50mg / ml',
-    indications: 'Respiratory congestion, airsacculitis, respiratory infections — mucolytic and expectorant.',
-    dosage: '1ml/20L drinking water.',
-    packaging: '1L, 5L',
-    desc: 'Expectorant with mucolytic action. Reduces mucus viscosity and supports respiratory function.',
+    id: 52, category: 'diuretics', form: 'Powder', species: 'Poultry',
+    name: 'Frusamak', fullName: 'Frusamak Water Soluble Powder',
+    composition: 'Furosemide 25mg · Sodium Chloride 35mg · Magnesium Sulphate 35mg · Manganese Sulphate 1mg · Potassium Chloride 4mg · Calcium Carbonate 45mg per gram',
+    dosage: 'Prevention: 5g in 5–6 litres. Treatment: 5g in 2–3 litres of drinking water.',
+    benefits: 'Effectively reduces fluid retention and edema in poultry. Manages ascites associated with heart, liver, and kidney disorders. Promotes safe and controlled diuresis without disturbing physiological balance. Helps maintain electrolyte balance. Supports respiratory comfort by reducing fluid pressure on organs.',
   },
-  */
-  /* NO IMAGE - COMMENTED OUT
   {
-    id: 38,
-    name: 'Bronchoment-20',
-    fullName: 'BRONCHOMENT-20 Oral Liquid',
-    category: 'respiratory',
-    form: 'Liquid',
-    species: 'Poultry',
-    composition: 'Bromhexine HCl 20mg + Menthol 40mg / ml',
-    indications: 'Chronic lung disease, infectious bronchitis, respiratory infections, airsacculitis, respiratory congestion.',
-    dosage: 'As directed by veterinarian.',
-    packaging: '1L, 5L',
-    desc: 'Bromhexine + Menthol dual mucolytic/bronchodilator. Menthol provides additional airway-opening action.',
+    id: 53, category: 'diuretics', form: 'Powder', species: 'Poultry',
+    name: 'Frualex Elite', fullName: 'Frualex Elite Water Soluble Powder',
+    composition: 'Furosemide 20mg · Sodium Chloride 35mg · Magnesium Sulphate 35mg · Manganese Sulphate 1mg · Potassium Chloride 4mg · Calcium Carbonate 45mg per gram',
+    dosage: 'Prevention: 1g in 1 litre. Treatment: 2g in 1 litre of drinking water.',
+    benefits: 'Effectively reduces fluid retention and edema in poultry. Manages ascites associated with heart, liver, and kidney disorders. Promotes safe and controlled diuresis. Helps maintain electrolyte balance during treatment. Supports respiratory comfort by reducing fluid pressure on organs. Improves overall health and performance in affected birds.',
   },
-  */
 
-  // ── SPECIALTY PRODUCTS ─────────────────────────────────────────────────────
-  /* NO IMAGE - COMMENTED OUT
+  // ── FLUSHER ────────────────────────────────────────────────────────────────
   {
-    id: 39,
-    name: 'Mak Gumbonil',
-    fullName: 'MAK GUMBONIL Powder',
-    category: 'specialty',
-    form: 'Powder',
-    species: 'Poultry',
-    composition: 'Potassium Citrate + Sodium Citrate + Vitamin B1 + Vitamin B2 + Nicotinamide + Vitamin K3 + Vitamin C / gram',
-    indications: 'IBD/Gumboro disease support; urinary alkalinisation, prevention of urinary stones, metabolic support.',
-    dosage: 'As directed by veterinarian.',
-    packaging: '1kg',
-    desc: 'IBD/Gumboro supportive therapy. Alkalinising agents + B-vitamin complex for metabolic recovery.',
+    id: 54, category: 'flusher', form: 'Powder', species: 'Poultry',
+    name: 'Flushkam', fullName: 'Flushkam Water Soluble Powder',
+    composition: 'Methenamine · Vitamin B1 · Vitamin B2 · Vitamin K3 per gram',
+    dosage: 'As directed by a veterinarian.',
+    benefits: 'Urinary antiseptic and flusher for poultry. Methenamine releases formaldehyde in acidic urine providing antibacterial action. B-vitamin support for metabolic function.',
   },
-  */
-  /* NO IMAGE - COMMENTED OUT
+
+  // ── HEPATOPROTECTIVE ───────────────────────────────────────────────────────
   {
-    id: 40,
-    name: 'Flushkam WSP',
-    fullName: 'FLUSHKAM Water Soluble Powder',
-    category: 'specialty',
-    form: 'Powder',
-    species: 'Poultry',
-    composition: 'Methenamine + Vitamin B1 + Vitamin B2 + Vitamin K3 / gram',
-    indications: 'Urinary tract infections, prevention of UTI, neurological and metabolic support.',
-    dosage: 'As directed by veterinarian.',
-    packaging: '1kg',
-    desc: 'Urinary antiseptic (Methenamine releases formaldehyde in acidic urine) + B-vitamin metabolic support.',
+    id: 55, category: 'hepatoprotective', form: 'Powder', species: 'Poultry',
+    name: 'Diurikam', fullName: 'Diurikam Powder',
+    composition: 'Liver-supportive and diuretic herbal/mineral complex per gram',
+    dosage: 'As directed by a veterinarian.',
+    benefits: 'Hepatoprotective powder for liver support and diuretic effect in poultry.',
   },
-  */
   {
-    id: 41,
-    name: 'Makflor-23 Oral',
-    fullName: 'MAKFLOR-23 Oral Liquid',
-    category: 'specialty',
-    form: 'Liquid',
-    species: 'Poultry',
-    composition: 'Florfenicol 230mg / ml',
-    indications: 'Pneumonia, Mycoplasma, CRD, CCRD, fowl cholera, fowl typhoid.',
-    dosage: 'As directed by veterinarian.',
-    packaging: '1L, 5L',
-    desc: 'Broad-spectrum florfenicol oral liquid. 50S ribosomal subunit inhibitor for respiratory and enteric pathogens.',
-    image: makflor_23,
+    id: 56, category: 'hepatoprotective', form: 'Powder', species: 'Poultry',
+    name: 'Dl-Chol', fullName: 'Dl-Chol Powder',
+    composition: 'DL-Methionine · Choline Chloride per gram',
+    dosage: 'As directed by a veterinarian.',
+    benefits: 'Essential amino acid and lipotropic combination. Prevents fatty liver syndrome and supports methyl group metabolism.',
+  },
+  {
+    id: 57, category: 'hepatoprotective', form: 'Liquid', species: 'Poultry',
+    name: 'Makliv', fullName: 'Makliv Solution',
+    composition: 'L-Carnitine 50mg · Betaine HCl 20mg · Inositol 7mg · Choline Chloride 100mg · Sorbitol 200mg · Magnesium Sulphate 10mg per ml',
+    dosage: 'Prevention: 1ml per 4 litres. Treatment: 1ml per 2 litres of drinking water.',
+    benefits: 'Treats fatty liver syndrome, hepatitis, and metabolic disorders. Protects the liver from damage caused by toxins, antibiotics, and anthelmintics. Promotes growth and weight gain, enhancing overall productivity. Balances fat deposition and acts as a diuretic, improving digestion during high-energy feeding.',
+  },
+  {
+    id: 58, category: 'hepatoprotective', form: 'Liquid', species: 'Poultry',
+    name: 'Hepakam', fullName: 'Hepakam Oral Liquid',
+    composition: 'DL-Methionine 5mg · L-Lysine · Choline Chloride 190mg · Vitamin B12 0.01mg · Sorbitol 100mg per ml',
+    dosage: 'As directed by a veterinarian.',
+    benefits: 'Liver tonic with essential amino acids. Supports feather growth, protein synthesis, and immune function. Hepatoprotective action against toxin-induced liver damage.',
+  },
+
+  // ── IMMUNE BOOSTERS ────────────────────────────────────────────────────────
+  {
+    id: 59, category: 'immune-booster', form: 'Powder', species: 'Poultry',
+    name: 'C-Kam 100', fullName: 'C-Kam 100 Powder',
+    composition: 'Ascorbic Acid (Vitamin C) 1000mg per gram',
+    dosage: 'As directed by a veterinarian.',
+    benefits: 'High-potency Vitamin C supplementation. Reduces oxidative stress, supports immunity, and aids recovery from illness, injury, heat stress, and vaccinations.',
+  },
+  {
+    id: 60, category: 'immune-booster', form: 'Powder', species: 'Poultry',
+    name: 'C-Kam 250', fullName: 'C-Kam 250 Powder',
+    composition: 'Ascorbic Acid (Vitamin C) 250mg per gram',
+    dosage: 'As directed by a veterinarian.',
+    benefits: 'Standard Vitamin C supplementation for immune support, antioxidant protection, and stress management in poultry.',
+  },
+  {
+    id: 61, category: 'immune-booster', form: 'Powder', species: 'Poultry',
+    name: 'Mak Gumbonil', fullName: 'Mak Gumbonil Powder',
+    composition: 'Potassium Citrate · Sodium Citrate · Vitamin B1 · B2 · Nicotinamide · Vitamin K3 · Vitamin C per gram',
+    dosage: 'As directed by a veterinarian.',
+    benefits: 'IBD/Gumboro disease supportive therapy. Urinary alkalinisation, prevention of urinary stones, and B-vitamin metabolic support for recovery.',
+  },
+  {
+    id: 62, category: 'immune-booster', form: 'Powder', species: 'Poultry',
+    name: 'Mak Fivevit', fullName: 'Mak Fivevit Water Soluble Powder',
+    composition: 'Vitamin A 20,000 IU · Vitamin D3 2,000 IU · Vitamin E 6mg · Vitamin K3 5mg · Vitamin C 5mg per gram',
+    dosage: '1g in 1–4 litres of drinking water for 7 days. Dose may vary based on flock condition.',
+    benefits: 'Reduces all types of stress in poultry especially during and after illness or vaccinations. Supports recovery after coccidiosis, worm infestations, and bacterial/viral infections. Enhances growth in broilers and improves egg production and hatchability in layers. Improves fertility and reduces infertility issues in breeding flocks. Controls blood loss during debeaking and supports faster recovery. Boosts immunity and resistance against infections and parasitic infestations.',
+  },
+  {
+    id: 63, category: 'immune-booster', form: 'Liquid', species: 'Poultry',
+    name: 'Mak Fourvit', fullName: 'Mak Fourvit Oral Liquid',
+    composition: 'Vitamin A 10,000 IU · Vitamin D3 2,000 IU · Vitamin E 41mg · Vitamin K3 6.2mg per ml',
+    dosage: '1ml per 2 litres of drinking water for 7 days.',
+    benefits: 'Four-vitamin oral liquid. Supports bone development, immunity, feather quality, and reproductive performance. Prevents deficiencies of Vitamins A, D3, E, and K3.',
+  },
+  {
+    id: 64, category: 'immune-booster', form: 'Liquid', species: 'Poultry',
+    name: 'Mak Ze-Sel Forte', fullName: 'Mak Ze-Sel Forte Oral Liquid',
+    composition: 'Vitamin E · Zinc · Selenium (Sodium Selenite) · Choline per ml',
+    dosage: 'As directed by a veterinarian.',
+    benefits: 'High-strength Vitamin E + Selenium + Zinc antioxidant combination. Enhances immune function, reproductive performance, and protects against oxidative stress.',
+  },
+  {
+    id: 65, category: 'immune-booster', form: 'Liquid', species: 'Poultry',
+    name: 'Mak Ze-Sel', fullName: 'Mak Ze-Sel Oral Liquid',
+    composition: 'Vitamin E · Zinc Sulphate · Sodium Selenite · Choline per ml',
+    dosage: 'As directed by a veterinarian.',
+    benefits: 'Standard Vitamin E + Selenium + Zinc supplement. Antioxidant protection, immune enhancement, and reproductive support in poultry.',
+  },
+
+  // ── IMMUNE + HEPATOPROTECTIVE ──────────────────────────────────────────────
+  {
+    id: 66, category: 'immune-hepato', form: 'Liquid', species: 'Poultry',
+    name: 'Mak Ze-Sel Sol', fullName: 'Mak Ze Sel Solution',
+    composition: 'Vitamin E · Selenium · Zinc · Betaine · Choline per ml',
+    dosage: 'As directed by a veterinarian.',
+    benefits: 'Combined immune booster and hepatoprotective solution. Vitamin E + Selenium antioxidant protection with liver-supportive Betaine and Choline.',
+  },
+
+  // ── DRENCHES ───────────────────────────────────────────────────────────────
+  {
+    id: 67, category: 'drenches', form: 'Liquid', species: 'Livestock',
+    name: 'Nilzakam', fullName: 'Nilzakam Drench',
+    composition: 'Levamisole HCl 15mg · Oxyclozanide 30mg · Cobalt Sulphate Heptahydrate 3.82mg per ml',
+    dosage: '1ml per 2kg bodyweight for small and large animals.',
+    benefits: 'Effective against a broad range of gastrointestinal and pulmonary parasites in cattle, calves, sheep, and goats. Targets adult and immature stages of Haemonchus, Trichostrongylus, Ostertagia, and Nematodirus spp. Provides strong control against lungworms (Dictyocaulus) and liver flukes (Fasciola). Useful in treating inhibited larvae of Ostertagia, Haemonchus, and Trichostrongylus axei in sheep. Controls mixed parasitic infestations.',
+  },
+  {
+    id: 68, category: 'drenches', form: 'Liquid', species: 'Livestock',
+    name: 'Mak Ivtrizole', fullName: 'Mak Ivtrizole Suspension',
+    composition: 'Ivermectin · Triclabendazole per ml',
+    dosage: 'As directed by a veterinarian.',
+    benefits: 'Dual antiparasitic suspension combining Ivermectin (endectocide) and Triclabendazole (flukicide) for comprehensive internal and external parasite control in livestock.',
+  },
+  {
+    id: 69, category: 'drenches', form: 'Liquid', species: 'Livestock',
+    name: 'Misoletrikam', fullName: 'Misoletrikam Suspension',
+    composition: 'Albendazole · Triclabendazole per ml',
+    dosage: 'As directed by a veterinarian.',
+    benefits: 'Broad-spectrum anthelmintic and flukicide suspension for comprehensive worm control in livestock. Treats nematodes, cestodes, and trematodes.',
+  },
+  {
+    id: 70, category: 'drenches', form: 'Liquid', species: 'Livestock',
+    name: 'Mak Soloxy SC', fullName: 'Mak Soloxy SC-Liquid',
+    composition: 'Oxytetracycline · Vitamin complex per ml',
+    dosage: 'As directed by a veterinarian.',
+    benefits: 'Oxytetracycline solution with vitamin support for treatment of bacterial infections in livestock. Broad-spectrum activity against gram-positive and gram-negative bacteria.',
   },
 ];
 
+// ─────────────────────────────────────────────────────────────────────────────
+// CATEGORY CONFIG
+// ─────────────────────────────────────────────────────────────────────────────
 const CATEGORIES = [
-  { key: '',                label: 'All Products', count: ALL_PRODUCTS.length },
-  { key: 'antibiotics',    label: 'Antibiotics', count: ALL_PRODUCTS.filter(p=>p.category==='antibiotics').length },
-  { key: 'fluoroquinolones', label: 'Fluoroquinolones & Macrolides', count: ALL_PRODUCTS.filter(p=>p.category==='fluoroquinolones').length },
-  { key: 'anticoccidials', label: 'Anticoccidials', count: ALL_PRODUCTS.filter(p=>p.category==='anticoccidials').length },
-  { key: 'vitamins',       label: 'Vitamins & Supplements', count: ALL_PRODUCTS.filter(p=>p.category==='vitamins').length },
-  { key: 'respiratory',    label: 'Respiratory / Mucolytics', count: ALL_PRODUCTS.filter(p=>p.category==='respiratory').length },
-  { key: 'specialty',      label: 'Specialty Products', count: ALL_PRODUCTS.filter(p=>p.category==='specialty').length },
+  { key: '',                label: 'All Products',              icon: '💊', color: '#003366' },
+  { key: 'powder-antibiotic', label: 'Powder Antibiotics',      icon: '🧪', color: '#003366' },
+  { key: 'liquid-antibiotic', label: 'Liquid Antibiotics',      icon: '🧴', color: '#1e4d8c' },
+  { key: 'penicillin',        label: 'Penicillin Range',        icon: '💉', color: '#5c1a8c' },
+  { key: 'diuretics',         label: 'Diuretics',               icon: '💧', color: '#0e6b7a' },
+  { key: 'flusher',           label: 'Flusher',                 icon: '🔄', color: '#3d7a4a' },
+  { key: 'hepatoprotective',  label: 'Hepatoprotective',        icon: '🫀', color: '#7a4a0e' },
+  { key: 'immune-booster',    label: 'Immune Boosters',         icon: '🛡️', color: '#1e6b40' },
+  { key: 'immune-hepato',     label: 'Immune + Hepato',         icon: '✨', color: '#4a6b1e' },
+  { key: 'drenches',          label: 'Drenches',                icon: '🌿', color: '#6b4a1e' },
 ];
 
-const CAT_COLORS = {
-  antibiotics:      '#003366',
-  fluoroquinolones: '#1e4d8c',
-  anticoccidials:   '#7b3f00',
-  vitamins:         '#1e6b40',
-  respiratory:      '#5c3d87',
-  specialty:        '#8b4513',
-};
+const getColor = (cat) => CATEGORIES.find(c => c.key === cat)?.color || '#003366';
+const getIcon  = (cat) => CATEGORIES.find(c => c.key === cat)?.icon  || '💊';
+const getLabel = (cat) => CATEGORIES.find(c => c.key === cat)?.label || cat;
 
-const CAT_ICONS = {
-  antibiotics:      '💊',
-  fluoroquinolones: '🔬',
-  anticoccidials:   '🛡️',
-  vitamins:         '🌿',
-  respiratory:      '🫁',
-  specialty:        '⚗️',
-};
-
-const FORM_COLORS = {
-  Powder: '#003366',
-  Liquid: '#1e6b40',
-  Granule: '#8b4513',
-};
-
-// ProductModal component
+// ─────────────────────────────────────────────────────────────────────────────
+// PRODUCT MODAL
+// ─────────────────────────────────────────────────────────────────────────────
 function ProductModal({ product, onClose }) {
   if (!product) return null;
-  const color = CAT_COLORS[product.category] || '#003366';
+  const color = getColor(product.category);
   return (
-    <div className="prod-modal-backdrop" onClick={onClose}>
-      <div className="prod-modal" onClick={e => e.stopPropagation()}>
-        <button className="prod-modal__close" onClick={onClose}>✕</button>
-        <div className="prod-modal__header" style={{ borderTop: `4px solid ${color}` }}>
-          <div className="prod-modal__icon" style={{ background: color + '15', color }}>
-            {CAT_ICONS[product.category] || '💊'}
+    <div className="modal-backdrop" onClick={onClose}>
+      <div className="modal-box" onClick={e => e.stopPropagation()}>
+        <button className="modal-close" onClick={onClose}>✕</button>
+        <div className="modal-header" style={{ borderTop: `4px solid ${color}` }}>
+          <div className="modal-header__icon" style={{ background: color + '15', color }}>
+            {getIcon(product.category)}
           </div>
           <div>
-            <div className="prod-modal__cat" style={{ color }}>{CATEGORIES.find(c=>c.key===product.category)?.label}</div>
-            <h2 className="prod-modal__name">{product.fullName}</h2>
-            <div className="prod-modal__badges">
-              <span className="tag" style={{ background: FORM_COLORS[product.form]+'18', color: FORM_COLORS[product.form] }}>
-                {product.form}
-              </span>
-              <span className="tag" style={{ background: '#2E8B5710', color: '#1e6b40' }}>{product.species}</span>
+            <div className="modal-header__cat" style={{ color }}>{getLabel(product.category)}</div>
+            <h2 className="modal-header__name">{product.fullName}</h2>
+            <div className="modal-header__tags">
+              <span className="tag modal-tag" style={{ background: `${color}18`, color }}>{product.form}</span>
+              <span className="tag modal-tag" style={{ background: '#2E8B5710', color: '#1e6b40' }}>{product.species}</span>
             </div>
           </div>
         </div>
-        <div className="prod-modal__body">
-          <div className="prod-modal__row">
-            <div className="prod-modal__label">Composition</div>
-            <div className="prod-modal__val">{product.composition}</div>
+        <div className="modal-body">
+          <div className="modal-row">
+            <div className="modal-row__label">Composition</div>
+            <div className="modal-row__val">{product.composition}</div>
           </div>
-          <div className="prod-modal__row">
-            <div className="prod-modal__label">Indications</div>
-            <div className="prod-modal__val">{product.indications}</div>
+          <div className="modal-row">
+            <div className="modal-row__label">Dosage</div>
+            <div className="modal-row__val">{product.dosage}</div>
           </div>
-          <div className="prod-modal__row">
-            <div className="prod-modal__label">Dosage</div>
-            <div className="prod-modal__val">{product.dosage}</div>
-          </div>
-          {product.packaging && (
-            <div className="prod-modal__row">
-              <div className="prod-modal__label">Packaging</div>
-              <div className="prod-modal__val">{product.packaging}</div>
+          <div className="modal-row">
+            <div className="modal-row__label">Benefits</div>
+            <div className="modal-row__val">
+              {product.benefits.split('. ').filter(Boolean).map((b, i) => (
+                <div key={i} className="modal-benefit">✓ {b.trim().replace(/\.$/, '')}.</div>
+              ))}
             </div>
-          )}
+          </div>
+        </div>
+        <div className="modal-footer">
+          <a href="https://wa.me/923352249111" target="_blank" rel="noopener noreferrer"
+            className="prod-item__wa modal-wa">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+            Enquire on WhatsApp
+          </a>
         </div>
       </div>
     </div>
   );
 }
 
-// ─── Main Component ────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// MAIN COMPONENT
+// ─────────────────────────────────────────────────────────────────────────────
 export default function Products() {
   const [activeCategory, setActiveCategory] = useState('');
   const [activeForm, setActiveForm] = useState('All');
-  const [activeSpecies, setActiveSpecies] = useState('');
-  const [activeFormCard, setActiveFormCard] = useState('');
   const [search, setSearch] = useState('');
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [searchParams] = useSearchParams();
-
-  useEffect(() => {
-    const speciesParam = searchParams.get('species');
-    const formParam = searchParams.get('form');
-    
-    if (speciesParam) {
-      const speciesMap = {
-        'poultry': 'Poultry',
-        'livestock': 'Livestock'
-      };
-      setActiveSpecies(speciesMap[speciesParam] || '');
-    }
-    
-    if (formParam) {
-      const formMap = {
-        'powder': 'Powder',
-        'liquid': 'Liquid'
-      };
-      setActiveFormCard(formMap[formParam] || '');
-    }
-  }, [searchParams]);
+  const [selected, setSelected] = useState(null);
 
   const filtered = ALL_PRODUCTS.filter(p => {
     const matchCat  = !activeCategory || p.category === activeCategory;
     const matchForm = activeForm === 'All' || p.form === activeForm;
-    const matchFormCard = !activeFormCard || p.form === activeFormCard;
-    const matchSpecies = !activeSpecies || p.species.includes(activeSpecies);
     const q = search.toLowerCase();
     const matchSearch = !search ||
       p.name.toLowerCase().includes(q) ||
       p.fullName.toLowerCase().includes(q) ||
-      p.desc.toLowerCase().includes(q) ||
-      p.indications.toLowerCase().includes(q) ||
-      p.composition.toLowerCase().includes(q);
-    return matchCat && matchForm && matchFormCard && matchSpecies && matchSearch;
+      p.composition.toLowerCase().includes(q) ||
+      p.benefits.toLowerCase().includes(q);
+    return matchCat && matchForm && matchSearch;
   });
 
   return (
     <div className="products-page">
+
       {/* Hero */}
       <div className="products-hero">
         <div className="container">
           <span className="section-eyebrow">Products & Solutions</span>
-          <h1 className="section-title section-title--white">Poultry Pharmaceutical Range</h1>
-          <p className="section-lead" style={{ color: 'rgba(255,255,255,0.65)' }}>
-            {ALL_PRODUCTS.length} registered veterinary products — antibiotics, vitamins, anticoccidials, and specialty formulations. DRAP approved.
+          <h1 className="section-title section-title--white">Complete Pharmaceutical Range</h1>
+          <p className="section-lead" style={{ color: 'rgba(255,255,255,0.65)', maxWidth: 620 }}>
+            {ALL_PRODUCTS.length} veterinary products across 9 categories — sourced directly from our official E-Catalog. DRAP registered. GMP manufactured. Serving poultry and livestock since 1923.
           </p>
+          {/* Category stat chips */}
           <div className="products-hero-stats">
-            {CATEGORIES.slice(1).map(c => (
-              <div key={c.key} className="products-hero-stat">
-                <span>{CAT_ICONS[c.key]}</span>
-                <span className="products-hero-stat__num">{c.count}</span>
-                <span className="products-hero-stat__label">{c.label}</span>
-              </div>
-            ))}
+            {CATEGORIES.slice(1).map(c => {
+              const cnt = ALL_PRODUCTS.filter(p => p.category === c.key).length;
+              return (
+                <button key={c.key}
+                  className={`hero-stat-chip ${activeCategory === c.key ? 'active' : ''}`}
+                  onClick={() => setActiveCategory(activeCategory === c.key ? '' : c.key)}>
+                  {c.icon} <strong>{cnt}</strong> {c.label}
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>
 
-      {/* Category filter bar */}
+      {/* Category bar */}
       <div className="products-cat-bar">
         <div className="container products-cat-bar__inner">
-          {CATEGORIES.map(c => (
-            <button
-              key={c.key}
-              className={`pf-btn ${activeCategory === c.key ? 'active' : ''}`}
-              onClick={() => setActiveCategory(c.key)}>
-              {c.label}
-              <span className="pf-btn__count">{c.count}</span>
-            </button>
-          ))}
+          {CATEGORIES.map(c => {
+            const cnt = c.key ? ALL_PRODUCTS.filter(p => p.category === c.key).length : ALL_PRODUCTS.length;
+            return (
+              <button key={c.key}
+                className={`pf-btn ${activeCategory === c.key ? 'active' : ''}`}
+                onClick={() => setActiveCategory(c.key)}>
+                {c.label}
+                <span className="pf-btn__count">{cnt}</span>
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      {/* Sub-filters + search */}
+      {/* Sub filters */}
       <div className="products-filters">
         <div className="container products-filters-inner">
+          <div className="products-filter-species">
+            <span className="products-filter-label">Form:</span>
+            {['All', 'Powder', 'Liquid'].map(f => (
+              <button key={f}
+                className={`pf-btn ${activeForm === f ? 'active' : ''}`}
+                onClick={() => setActiveForm(f)}>{f}</button>
+            ))}
+          </div>
           <input
             className="products-search"
-            placeholder="Search by name, composition, or indication…"
+            placeholder="Search by name, composition, or benefit…"
             value={search}
             onChange={e => setSearch(e.target.value)}
           />
-        </div>
-      </div>
-
-      {/* Filter cards - By Species & By Form */}
-      <div className="products-filter-cards">
-        <div className="container">
-          <div className="filter-cards-grid">
-            {/* By Species */}
-            <div className="filter-card-group">
-              <h3 className="filter-group-title">Filter by Species</h3>
-              <div className="filter-card-list">
-                {['Poultry', 'Livestock'].map(sp => (
-                  <button 
-                    key={sp}
-                    className={`filter-card-btn ${sp === activeSpecies ? 'active' : ''}`}
-                    onClick={() => setActiveSpecies(sp)}
-                  >
-                    <span className="filter-card-icon">{sp === 'Poultry' ? '🐔' : '🐄'}</span>
-                    <span className="filter-card-text">{sp}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* By Form */}
-            <div className="filter-card-group">
-              <h3 className="filter-group-title">Filter by Form</h3>
-              <div className="filter-card-list">
-                {['Powder', 'Liquid'].map(f => (
-                  <button 
-                    key={f}
-                    className={`filter-card-btn ${f === activeFormCard ? 'active' : ''}`}
-                    onClick={() => setActiveFormCard(f)}
-                  >
-                    <span className="filter-card-icon">{f === 'Powder' ? '🧂' : '💧'}</span>
-                    <span className="filter-card-text">{f}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -856,8 +681,9 @@ export default function Products() {
       <div className="container products-grid-wrap">
         <p className="products-count">
           Showing <strong>{filtered.length}</strong> of {ALL_PRODUCTS.length} products
-          {(activeCategory || activeForm !== 'All' || search || activeSpecies || activeFormCard) && (
-            <button className="products-clear-btn" onClick={() => { setActiveCategory(''); setActiveForm('All'); setSearch(''); setActiveSpecies(''); setActiveFormCard(''); }}>
+          {(activeCategory || activeForm !== 'All' || search) && (
+            <button className="products-clear-btn"
+              onClick={() => { setActiveCategory(''); setActiveForm('All'); setSearch(''); }}>
               Clear filters ✕
             </button>
           )}
@@ -872,32 +698,37 @@ export default function Products() {
         ) : (
           <div className="products-grid-full">
             {filtered.map(p => {
-              const color = CAT_COLORS[p.category] || '#003366';
+              const color = getColor(p.category);
               return (
-                <div key={p.id} className="prod-item" onClick={() => setSelectedProduct(p)}>
-                  <div className="prod-item__img" style={{ background: p.image ? 'transparent' : color + '10' }}>
-                    {p.image ? (
-                      <img className="prod-item__photo" src={p.image} alt={p.name} />
-                    ) : (
-                      <>
-                        <div className="prod-item__cat-icon" style={{ color }}>{CAT_ICONS[p.category] || '💊'}</div>
-                        <div className="prod-item__color-bar" style={{ background: color }} />
-                      </>
-                    )}
+                <div key={p.id} className="prod-item" onClick={() => setSelected(p)}>
+                  <div className="prod-item__img" style={{ background: color + '0e' }}>
+                    <span className="prod-item__cat-icon">{getIcon(p.category)}</span>
                     <div className="prod-item__badges">
-                      <span className="tag" style={{ background: p.image ? FORM_COLORS[p.form] : FORM_COLORS[p.form]+'18', color: p.image ? '#fff' : FORM_COLORS[p.form], fontSize:'10px', fontWeight: '600' }}>
+                      <span className="tag"
+                        style={{ background: color + '18', color, fontSize: '9px', letterSpacing: '0.08em' }}>
                         {p.form}
                       </span>
                     </div>
+                    <div className="prod-item__color-bar" style={{ background: color }} />
                   </div>
                   <div className="prod-item__body">
                     <div className="prod-item__species">{p.species}</div>
                     <h3>{p.name}</h3>
                     <div className="prod-item__composition">{p.composition}</div>
-                    <p>{p.desc}</p>
-                    <button className="prod-item__details-btn" onClick={e => { e.stopPropagation(); setSelectedProduct(p); }}>
-                      View Details
-                    </button>
+                    <p>{p.benefits.split('.')[0]}.</p>
+                    <div className="prod-item__actions">
+                      <button className="prod-item__details-btn"
+                        onClick={e => { e.stopPropagation(); setSelected(p); }}>
+                        Full Details
+                      </button>
+                      <a href="https://wa.me/923352249111" target="_blank" rel="noopener noreferrer"
+                        className="prod-item__wa" onClick={e => e.stopPropagation()}>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                        </svg>
+                        Enquire
+                      </a>
+                    </div>
                   </div>
                 </div>
               );
@@ -906,10 +737,7 @@ export default function Products() {
         )}
       </div>
 
-      {/* Product Detail Modal */}
-      {selectedProduct && (
-        <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />
-      )}
+      {selected && <ProductModal product={selected} onClose={() => setSelected(null)} />}
     </div>
   );
 }
