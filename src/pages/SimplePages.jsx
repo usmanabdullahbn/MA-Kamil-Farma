@@ -135,70 +135,165 @@ export function About() {
 }
 
 export function Science() {
+  const [openFaq, setOpenFaq] = useState(null);
+
+  const focusAreas = [
+    {
+      title: 'Veterinary Pharmaceuticals',
+      text: 'Development and optimization of animal health formulations designed to meet the evolving needs of modern livestock and poultry production.'
+    },
+    {
+      title: 'Feed Additives',
+      text: 'Focus on gut health, toxin management, probiotics, enzymes, phytogenic solutions, and nutritional technologies.'
+    },
+    {
+      title: 'Animal Nutrition',
+      text: 'Scientific approaches that support animal health, productivity, and performance.'
+    },
+    {
+      title: 'One Health',
+      text: 'Supporting animal health, food security, and sustainable livestock production through responsible innovation.'
+    },
+  ];
+
+  const developmentAreas = [
+    'AGP Alternative Technologies',
+    'Gut Health Solutions',
+    'Phytogenic Feed Additives',
+    'Probiotic Systems',
+    'Toxin Management Solutions',
+    'Water-Soluble Nutritional Products'
+  ];
+
+  const researchResources = [
+    'Technical Bulletins',
+    'Product Information Sheets',
+    'Trial Reports',
+    'Research Publications'
+  ];
+
+  const faqItems = [
+    {
+      q: 'Does M.A. Kamil Farma conduct research and development activities?',
+      a: 'Yes. Research and development is an important part of our long-term strategy, supporting innovation in veterinary pharmaceuticals, feed additives, nutritional solutions, and sustainable animal health technologies.'
+    },
+    {
+      q: 'Do you perform field trials on your products?',
+      a: 'Yes. Field evaluations and performance studies may be conducted in collaboration with veterinarians, farms, consultants, and industry partners where appropriate.'
+    },
+    {
+      q: 'Are technical papers and research publications available?',
+      a: 'Technical papers, trial summaries, white papers, and research publications will be published as they become available.'
+    },
+    {
+      q: 'Can universities or researchers collaborate with M.A. Kamil Farma?',
+      a: 'Yes. We welcome collaboration opportunities with universities, research institutions, veterinarians, consultants, and industry specialists.'
+    },
+    {
+      q: 'What areas of research are currently important to M.A. Kamil Farma?',
+      a: 'Current focus areas include veterinary pharmaceuticals, feed additives, nutritional technologies, gut health, performance optimization, toxin management, and sustainable production systems.'
+    },
+    {
+      q: 'Do you develop alternatives to traditional antibiotic programs?',
+      a: 'Our long-term innovation strategy includes evaluating nutritional, phytogenic, probiotic, and other science-based approaches that support responsible animal production.'
+    },
+    {
+      q: 'Can I request scientific or technical information regarding a product?',
+      a: 'Yes. Available technical information may be requested through our technical and commercial teams.'
+    },
+    {
+      q: 'Will research results be published on the website?',
+      a: 'Yes. As validated studies, technical papers, and performance data become available, they will be published through the Science section and Technical Library.'
+    },
+  ];
+
   return (
     <div className="simple-page">
       <div className="simple-hero">
         <div className="container">
           <span className="section-eyebrow">Science & Innovation</span>
-          <h1 className="section-title section-title--white">Science-Driven Solutions</h1>
-          <p className="section-lead" style={{ color:'rgba(255,255,255,0.65)' }}>
-            Leveraging scientific expertise, industry knowledge, and strategic partnerships to deliver effective veterinary healthcare solutions for modern animal production.
+          <h1 className="section-title section-title--white">Advancing Animal Health Through Science</h1>
+          <p className="section-lead" style={{ color: 'rgba(255,255,255,0.65)' }}>
+            Research, product development, and technical expertise supporting veterinary pharmaceuticals, feed additives, and nutritional solutions.
           </p>
         </div>
       </div>
+
       <div className="container simple-body">
-        {/* Trial results */}
-        <section style={{ marginBottom:64 }}>
-          <span className="section-eyebrow">Trial Results</span>
-          <h2 className="section-title">Proven Performance Data</h2>
-          <div className="trials-grid">
-            {[
-              { metric:'18%', label:'FCR Improvement', product:'Rotamin Binder Pro', detail:'Controlled trial: 5,000 broilers, 42 days, 3 farms in Punjab. Compared to untreated control group.', status:'Published' },
-              { metric:'12%', label:'Milk Yield Increase', product:'Rota Plus Dairy', detail:'Field study: 120 Holstein cows, 90-day lactation period. Karachi dairy farms.', status:'Published' },
-              { metric:'35%', label:'Mortality Reduction', product:'ImmunoBoost Liquid', detail:'Post-vaccination stress management study: 3 farms, 15,000 birds per farm.', status:'Published' },
-              { metric:'22%', label:'Egg Production Gain', product:'Kamil Layer Pack', detail:'Layer flock study: 8,000 birds, 16-week production period.', status:'Ongoing' },
-            ].map(t => (
-              <div key={t.label} className="trial-card">
-                <div className="trial-metric">{t.metric}</div>
-                <div className="trial-label">{t.label}</div>
-                <div className="trial-product">{t.product}</div>
-                <p className="trial-detail">{t.detail}</p>
-                <span className={`tag ${t.status==='Published'?'tag--green':'tag--gold'}`}>{t.status}</span>
+        <section className="science-section">
+          <span className="section-eyebrow">Our Scientific Focus</span>
+          <h2 className="section-title">Our Scientific Focus</h2>
+          <div className="science-focus-grid">
+            {focusAreas.map(area => (
+              <article key={area.title} className="science-card">
+                <h3>{area.title}</h3>
+                <p>{area.text}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="science-section">
+          <span className="section-eyebrow">Current Development Areas</span>
+          <h2 className="section-title">Current Development Areas</h2>
+          <div className="science-dev-grid">
+            {developmentAreas.map(item => (
+              <div key={item} className="science-dev-card">
+                <span className="science-dev-card__icon">✓</span>
+                <span>{item}</span>
               </div>
             ))}
           </div>
         </section>
 
-        {/* Technology */}
-        <section style={{ marginBottom:64 }}>
-          <span className="section-eyebrow">Technology & R&D</span>
-          <h2 className="section-title">Advanced Farming Technologies</h2>
-          <div className="tech-grid">
-            {[
-              { icon:'🤖', title:'Robotics & Automation', desc:'AI-powered robotic systems for data-driven broiler production decisions and 24/7 remote monitoring.' },
-              { icon:'🎯', title:'Precision Farming', desc:'Target-weight feeding systems that regulate individual feed release to minimise waste and maximise FCR.' },
-              { icon:'👁️', title:'Computer Vision', desc:'Deep learning algorithms for accurate body weight estimation and flock health monitoring.' },
-              { icon:'📡', title:'IoT Integration', desc:'Smart sensor modules for temperature, humidity, fan control, water management, and alert notifications.' },
-            ].map(t => (
-              <div key={t.title} className="tech-card">
-                <span className="tech-icon">{t.icon}</span>
-                <h3>{t.title}</h3>
-                <p>{t.desc}</p>
-              </div>
-            ))}
+        <section className="science-section">
+          <span className="section-eyebrow">Scientific Resources</span>
+          <h2 className="section-title">Scientific Resources</h2>
+          <div className="science-resources-card">
+            <ul>
+              {researchResources.map(resource => (
+                <li key={resource}>{resource}</li>
+              ))}
+            </ul>
+            <p>Resources will be continuously updated as new information becomes available.</p>
           </div>
         </section>
 
-        {/* Downloads */}
-        <section className="downloads-section">
-          <span className="section-eyebrow">Literature Downloads</span>
-          <h2 className="section-title">Technical Documentation</h2>
-          <div className="downloads-grid">
-            {['Product Brochures','Product Information Sheets (PIS)','Trial Data Reports','Safety Data Sheets','Certifications (DRAP)'].map(d=>(
-              <a key={d} href="#" className="download-item">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-                <span>{d}</span>
-              </a>
+        <section className="science-section science-section--last">
+          <span className="section-eyebrow">Research & Collaboration</span>
+          <h2 className="section-title">Research & Collaboration</h2>
+          <div className="science-collab-card">
+            <p>
+              M.A. Kamil Farma actively collaborates with manufacturers, veterinarians, nutritionists,
+              technical experts, and industry partners to support innovation and the advancement of
+              animal health solutions.
+            </p>
+            <a href="/contact" className="btn btn--gold">Contact Scientific Affairs</a>
+          </div>
+        </section>
+
+        <section className="faq-section">
+          <div className="faq-section__header">
+            <span className="section-eyebrow">Science & Research FAQs</span>
+            <h2 className="section-title">Science & Research FAQs</h2>
+          </div>
+          <div className="faq-list">
+            {faqItems.map((item, index) => (
+              <div key={item.q} className={`faq-item ${openFaq === index ? 'faq-item--open' : ''}`}>
+                <button
+                  type="button"
+                  className="faq-item__question"
+                  onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                >
+                  <span>{item.q}</span>
+                  <span className="faq-item__icon">{openFaq === index ? '−' : '+'}</span>
+                </button>
+                {openFaq === index && (
+                  <div className="faq-item__answer">
+                    <p>{item.a}</p>
+                  </div>
+                )}
+              </div>
             ))}
           </div>
         </section>
@@ -208,6 +303,23 @@ export function Science() {
 }
 
 export function Industries() {
+  const [openFaq, setOpenFaq] = useState(null);
+
+  const faqItems = [
+    {
+      q: 'Which industries does M.A. Kamil Farma currently serve?',
+      a: 'We currently serve poultry, livestock, feed additive, and animal nutrition sectors.'
+    },
+    {
+      q: 'Do you supply feed mills?',
+      a: 'Yes. We work with feed manufacturers through selected nutritional and feed additive solutions.'
+    },
+    {
+      q: 'Do you work with large integrated farming operations?',
+      a: 'Yes. Our products and technical support solutions are designed to support commercial-scale animal production operations.'
+    },
+  ];
+
   const industries = [
     {
       icon: '🐔',
@@ -335,12 +447,63 @@ export function Industries() {
             </Link>
           </div>
         </section>
+
+        <section className="faq-section">
+          <div className="faq-section__header">
+            <span className="section-eyebrow">Industry Frequently Asked Questions</span>
+            <h2 className="section-title">Industry Frequently Asked Questions</h2>
+          </div>
+          <div className="faq-list">
+            {faqItems.map((item, index) => (
+              <div key={item.q} className={`faq-item ${openFaq === index ? 'faq-item--open' : ''}`}>
+                <button
+                  type="button"
+                  className="faq-item__question"
+                  onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                >
+                  <span>{item.q}</span>
+                  <span className="faq-item__icon">{openFaq === index ? '−' : '+'}</span>
+                </button>
+                {openFaq === index && (
+                  <div className="faq-item__answer">
+                    <p>{item.a}</p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
     </div>
   );
 }
 
 export function Contact() {
+  const [openFaq, setOpenFaq] = useState(null);
+
+  const faqItems = [
+    {
+      q: 'How quickly can I expect a response?',
+      a: 'Most inquiries receive a response within 1–3 business days.'
+    },
+    {
+      q: 'Can I request a meeting?',
+      a: 'Yes. Meetings may be arranged upon request.'
+    },
+    {
+      q: 'Can I request technical documentation?',
+      a: 'Yes. Available documentation may be provided after review of the inquiry.'
+    },
+    {
+      q: 'Who should contact M.A. Kamil Farma?',
+      a: 'Distributors, veterinarians, researchers, universities, feed manufacturers, commercial partners, and international collaborators.'
+    },
+    {
+      q: 'Do you respond to international inquiries?',
+      a: 'Yes. We actively welcome inquiries from international companies, distributors, and strategic partners.'
+    },
+  ];
+
   return (
     <div className="simple-page">
       <div className="simple-hero">
@@ -405,12 +568,63 @@ export function Contact() {
             </div>
           </div>
         </div>
+
+        <section className="faq-section">
+          <div className="faq-section__header">
+            <span className="section-eyebrow">Contact FAQs</span>
+            <h2 className="section-title">Contact FAQs</h2>
+          </div>
+          <div className="faq-list">
+            {faqItems.map((item, index) => (
+              <div key={item.q} className={`faq-item ${openFaq === index ? 'faq-item--open' : ''}`}>
+                <button
+                  type="button"
+                  className="faq-item__question"
+                  onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                >
+                  <span>{item.q}</span>
+                  <span className="faq-item__icon">{openFaq === index ? '−' : '+'}</span>
+                </button>
+                {openFaq === index && (
+                  <div className="faq-item__answer">
+                    <p>{item.a}</p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
     </div>
   );
 }
 
 export function Join() {
+  const [openFaq, setOpenFaq] = useState(null);
+
+  const faqItems = [
+    {
+      q: 'Do you offer distribution opportunities?',
+      a: 'Yes. We welcome discussions with qualified distributors and commercial partners.'
+    },
+    {
+      q: 'Are international partnerships possible?',
+      a: 'Yes. We actively explore technology-sharing, licensing, contract manufacturing, and distribution collaborations.'
+    },
+    {
+      q: 'Can foreign companies work with M.A. Kamil Farma?',
+      a: 'Yes. We welcome discussions with manufacturers, research organizations, and technology providers worldwide.'
+    },
+    {
+      q: 'Do you provide contract manufacturing services?',
+      a: 'Available opportunities may be discussed based on product category, regulatory requirements, and manufacturing capacity.'
+    },
+    {
+      q: 'How can I submit a partnership proposal?',
+      a: 'Please contact us through the Join Us page or Contact section.'
+    },
+  ];
+
   const partners = [
     {
       title: 'Distribution Opportunities',
@@ -468,6 +682,32 @@ export function Join() {
                 <div style={{ marginTop: 12 }}>
                   <Link to={p.cta.to} className="btn btn--gold">{p.cta.label}</Link>
                 </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="faq-section">
+          <div className="faq-section__header">
+            <span className="section-eyebrow">Partnership FAQs</span>
+            <h2 className="section-title">Partnership FAQs</h2>
+          </div>
+          <div className="faq-list">
+            {faqItems.map((item, index) => (
+              <div key={item.q} className={`faq-item ${openFaq === index ? 'faq-item--open' : ''}`}>
+                <button
+                  type="button"
+                  className="faq-item__question"
+                  onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                >
+                  <span>{item.q}</span>
+                  <span className="faq-item__icon">{openFaq === index ? '−' : '+'}</span>
+                </button>
+                {openFaq === index && (
+                  <div className="faq-item__answer">
+                    <p>{item.a}</p>
+                  </div>
+                )}
               </div>
             ))}
           </div>

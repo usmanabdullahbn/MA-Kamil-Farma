@@ -480,6 +480,7 @@ export default function Home() {
       </section>
 
       {/* ── Testimonials ── */}
+      {/*
       <section className="testimonials-section">
         <div className="container">
           <div className="section-header section-header--center">
@@ -511,8 +512,10 @@ export default function Home() {
           </div>
         </div>
       </section>
+      */}
 
       {/* ── Blog ── */}
+      {/*
       <section className="section blog-section">
         <div className="container">
           <div className="section-header blog-header">
@@ -543,6 +546,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      */}
 
       {/* ── Feed Additives CTA ── */}
       {/* <section className="fa-cta-section">

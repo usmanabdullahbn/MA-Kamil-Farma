@@ -2,6 +2,34 @@ import { useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import './Products.css';
 
+const productImageFiles = import.meta.glob('../assert/new products/*.png', {
+  eager: true,
+  import: 'default'
+});
+
+const normalizeSlug = value =>
+  String(value || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
+const getProductImage = product => {
+  const candidates = [product.name, product.fullName];
+
+  for (const candidate of candidates) {
+    const slug = normalizeSlug(candidate);
+    const match = Object.entries(productImageFiles).find(([filePath]) => {
+      const fileName = filePath.split('/').pop().replace(/^\d+_p\d+_/, '').replace(/\.png$/, '');
+      const fileSlug = normalizeSlug(fileName);
+      return fileSlug.includes(slug) || slug.includes(fileSlug);
+    });
+
+    if (match) return match[1];
+  }
+
+  return null;
+};
+
 // ─────────────────────────────────────────────────────────────────────────────
 // ALL PRODUCTS FROM M.A. KAMIL FARMA E-CATALOG
 // Data sourced directly from official product catalogue PDF
@@ -600,6 +628,30 @@ export default function Products() {
   const [activeForm, setActiveForm] = useState('All');
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState(null);
+  const [openFaq, setOpenFaq] = useState(null);
+
+  const faqItems = [
+    {
+      q: 'How can I obtain product literature?',
+      a: 'Product brochures, technical sheets, and supporting information can be requested through our contact channels.'
+    },
+    {
+      q: 'Do you provide technical support?',
+      a: 'Yes. Technical assistance is available through our sales and technical teams.'
+    },
+    {
+      q: 'Are your products manufactured according to GMP requirements?',
+      a: 'Products are manufactured in compliance with applicable GMP standards and regulatory requirements.'
+    },
+    {
+      q: 'Can products be customized for specific market requirements?',
+      a: 'Customization opportunities may be discussed depending on regulatory and commercial requirements.'
+    },
+    {
+      q: 'How can I become a distributor?',
+      a: 'Please contact our business development team through the Join Us or Contact page.'
+    },
+  ];
 
   const filtered = ALL_PRODUCTS.filter(p => {
     const matchCat  = !activeCategory || p.category === activeCategory;
@@ -699,10 +751,15 @@ export default function Products() {
           <div className="products-grid-full">
             {filtered.map(p => {
               const color = getColor(p.category);
+              const imageUrl = getProductImage(p);
               return (
                 <div key={p.id} className="prod-item" onClick={() => setSelected(p)}>
                   <div className="prod-item__img" style={{ background: color + '0e' }}>
-                    <span className="prod-item__cat-icon">{getIcon(p.category)}</span>
+                    {imageUrl ? (
+                      <img className="prod-item__photo" src={imageUrl} alt={p.name} />
+                    ) : (
+                      <span className="prod-item__cat-icon">{getIcon(p.category)}</span>
+                    )}
                     <div className="prod-item__badges">
                       <span className="tag"
                         style={{ background: color + '18', color, fontSize: '9px', letterSpacing: '0.08em' }}>
@@ -736,6 +793,34 @@ export default function Products() {
           </div>
         )}
       </div>
+
+      <section className="faq-section">
+        <div className="container">
+          <div className="faq-section__header">
+            <span className="section-eyebrow">Frequently Asked Questions</span>
+            <h2 className="section-title">Frequently Asked Questions</h2>
+          </div>
+          <div className="faq-list">
+            {faqItems.map((item, index) => (
+              <div key={item.q} className={`faq-item ${openFaq === index ? 'faq-item--open' : ''}`}>
+                <button
+                  type="button"
+                  className="faq-item__question"
+                  onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                >
+                  <span>{item.q}</span>
+                  <span className="faq-item__icon">{openFaq === index ? '−' : '+'}</span>
+                </button>
+                {openFaq === index && (
+                  <div className="faq-item__answer">
+                    <p>{item.a}</p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {selected && <ProductModal product={selected} onClose={() => setSelected(null)} />}
     </div>

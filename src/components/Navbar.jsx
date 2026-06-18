@@ -50,7 +50,7 @@ const NAV = [
     ]
   },
   { label: 'Industries', to: '/industries' },
-  // { label: 'Science', to: '/science' },
+  { label: 'Science', to: '/science' },
   { label: 'Blog', to: '/blog' },
   { label: 'Join Us', to: '/join' },
   { label: 'Contact', to: '/contact' },
