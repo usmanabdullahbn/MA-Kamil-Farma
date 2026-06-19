@@ -582,6 +582,7 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  /* width: 500px   */
 }
 
 .industry-card:hover {
