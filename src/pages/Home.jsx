@@ -192,7 +192,7 @@ const INDUSTRIES = [
     title: 'Feed Mills',
     color: '#2E8B57',
     desc: 'Binders and Rotamin portfolio for optimal pellet quality and nutritional value.',
-    focus: 'Rotamin · Binders · Premixes'
+    items: ['Rotamin', 'Binders', 'Premixes']
   },
   {
     icon: (
@@ -205,7 +205,7 @@ const INDUSTRIES = [
     title: 'Farms & Doctors',
     color: '#003366',
     desc: 'Antibiotics, phytogenics, and herd health management solutions.',
-    focus: 'Antibiotics · Phytogenics · Anti-Virals'
+    items: ['Antibiotics', 'Phytogenics', 'Anti-Virals']
   },
   // {
   //   icon: (
@@ -431,11 +431,19 @@ export default function Home() {
           </div>
           <div className="industries-grid">
             {INDUSTRIES.map(ind => (
-              <div key={ind.title} className="industry-card" style={{ '--ind-color': ind.color }}>
-                <div className="industry-card__icon">{ind.icon}</div>
-                <h3>{ind.title}</h3>
-                <p>{ind.desc}</p>
-                <div className="industry-card__focus">{ind.focus}</div>
+              <div key={ind.title} className="industry-card card">
+                <div className="product-card__top" style={{ background: ind.color + '12' }}>
+                  <div className="product-card__icon" style={{ background: ind.color + '20', color: ind.color }}>
+                    {ind.icon}
+                  </div>
+                </div>
+                <div className="product-card__body">
+                  <h3>{ind.title}</h3>
+                  <p>{ind.desc}</p>
+                  <div className="product-card__items">
+                    {ind.items.map(item => <span key={item} className="product-card__item">{item}</span>)}
+                  </div>
+                </div>
               </div>
             ))}
           </div>

@@ -29,7 +29,6 @@ const NAV = [
         links: [
           { label: 'Poultry', to: '/products?species=poultry' },
           { label: 'Dairy & Livestock', to: '/products?species=dairy' },
-          { label: 'Aquaculture', to: '/products?species=aqua' },
           { label: 'Pet Animals', to: '/products?species=pets' },
         ]
       },
