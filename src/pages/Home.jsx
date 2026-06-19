@@ -431,7 +431,7 @@ export default function Home() {
           </div>
           <div className="industries-grid">
             {INDUSTRIES.map(ind => (
-              <div key={ind.title} className="industry-card card">
+              <div key={ind.title} className="product-card industry-card card">
                 <div className="product-card__top" style={{ background: ind.color + '12' }}>
                   <div className="product-card__icon" style={{ background: ind.color + '20', color: ind.color }}>
                     {ind.icon}
