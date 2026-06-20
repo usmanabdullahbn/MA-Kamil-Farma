@@ -570,9 +570,11 @@
 /* ── Industries ───────────────────────────────── */
 .industries-section {
   background: var(--off-white);
+  padding: 24px 24px 20px;
+
 }
 
-.industries-grid {
+.industries-gride {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 22px;

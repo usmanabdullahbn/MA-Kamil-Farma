@@ -423,21 +423,21 @@ export default function Home() {
       </section>
 
       {/* ── Industries ── */}
-      <section className="section industries-section">
+      <section className="industries-section">
         <div className="container">
           <div className="section-header">
             <span className="section-eyebrow">Industries Served</span>
             <h2 className="section-title">Tailored Solutions for Every Sector</h2>
           </div>
-          <div className="industries-grid">
+          <div className="industries-gride">
             {INDUSTRIES.map(ind => (
-              <div key={ind.title} className="product-card industry-card card">
+              <div key={ind.title} className="industry-card card">
                 <div className="product-card__top" style={{ background: ind.color + '12' }}>
-                  <div className="product-card__icon" style={{ background: ind.color + '20', color: ind.color }}>
+                  <div className="industry-card__icon" style={{ background: ind.color + '20', color: ind.color }}>
                     {ind.icon}
                   </div>
                 </div>
-                <div className="product-card__body">
+                <div className="industry-card__body product-card__body">
                   <h3>{ind.title}</h3>
                   <p>{ind.desc}</p>
                   <div className="product-card__items">
