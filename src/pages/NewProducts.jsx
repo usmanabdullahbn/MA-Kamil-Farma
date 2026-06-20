@@ -1,44 +1,12 @@
-import { useState } from 'react';
-import { Link, useParams, useSearchParams } from 'react-router-dom';
-import './Products.css';
-
-// Legacy products page kept for reference.
-// The active route now uses the rebuilt page in NewProducts.jsx.
-
-const productImageFiles = import.meta.glob('../assert/new products/*.png', {
-  eager: true,
-  import: 'default'
-});
-
-const normalizeSlug = value =>
-  String(value || '')
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-
-const getProductImage = product => {
-  const candidates = [product.name, product.fullName];
-
-  for (const candidate of candidates) {
-    const slug = normalizeSlug(candidate);
-    const match = Object.entries(productImageFiles).find(([filePath]) => {
-      const fileName = filePath.split('/').pop().replace(/^\d+_p\d+_/, '').replace(/\.png$/, '');
-      const fileSlug = normalizeSlug(fileName);
-      return fileSlug.includes(slug) || slug.includes(fileSlug);
-    });
-
-    if (match) return match[1];
-  }
-
-  return null;
-};
+import { useMemo, useState } from 'react';
+import { useParams, useSearchParams } from 'react-router-dom';
+import './NewProducts.css';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ALL PRODUCTS FROM M.A. KAMIL FARMA E-CATALOG
 // Data sourced directly from official product catalogue PDF
 // ─────────────────────────────────────────────────────────────────────────────
-export const ALL_PRODUCTS = [
-
+const ALL_PRODUCTS = [
   // ── POWDER ANTIBIOTICS ─────────────────────────────────────────────────────
   {
     id: 1, category: 'powder-antibiotic', form: 'Powder', species: 'Poultry',
@@ -551,70 +519,75 @@ export const ALL_PRODUCTS = [
 // ─────────────────────────────────────────────────────────────────────────────
 // CATEGORY CONFIG
 // ─────────────────────────────────────────────────────────────────────────────
-export const PRODUCT_CATEGORIES = [
-  { key: '',                label: 'All Products',              icon: '💊', color: '#003366' },
-  { key: 'powder-antibiotic', label: 'Powder Antibiotics',      icon: '🧪', color: '#003366' },
-  { key: 'liquid-antibiotic', label: 'Liquid Antibiotics',      icon: '🧴', color: '#1e4d8c' },
-  { key: 'penicillin',        label: 'Penicillin Range',        icon: '💉', color: '#5c1a8c' },
-  { key: 'diuretics',         label: 'Diuretics',               icon: '💧', color: '#0e6b7a' },
-  { key: 'flusher',           label: 'Flusher',                 icon: '🔄', color: '#3d7a4a' },
-  { key: 'hepatoprotective',  label: 'Hepatoprotective',        icon: '🫀', color: '#7a4a0e' },
-  { key: 'immune-booster',    label: 'Immune Boosters',         icon: '🛡️', color: '#1e6b40' },
-  { key: 'immune-hepato',     label: 'Immune + Hepato',         icon: '✨', color: '#4a6b1e' },
-  { key: 'drenches',          label: 'Drenches',                icon: '🌿', color: '#6b4a1e' },
+const PRODUCT_CATEGORIES = [
+  { key: '', label: 'All Products', icon: '💊', color: '#003366' },
+  { key: 'powder-antibiotic', label: 'Powder Antibiotics', icon: '🧪', color: '#003366' },
+  { key: 'liquid-antibiotic', label: 'Liquid Antibiotics', icon: '🧴', color: '#1e4d8c' },
+  { key: 'penicillin', label: 'Penicillin Range', icon: '💉', color: '#5c1a8c' },
+  { key: 'diuretics', label: 'Diuretics', icon: '💧', color: '#0e6b7a' },
+  { key: 'flusher', label: 'Flusher', icon: '🔄', color: '#3d7a4a' },
+  { key: 'hepatoprotective', label: 'Hepatoprotective', icon: '🫀', color: '#7a4a0e' },
+  { key: 'immune-booster', label: 'Immune Boosters', icon: '🛡️', color: '#1e6b40' },
+  { key: 'immune-hepato', label: 'Immune + Hepato', icon: '✨', color: '#4a6b1e' },
+  { key: 'drenches', label: 'Drenches', icon: '🌿', color: '#6b4a1e' },
 ];
 
-export const getColor = (cat) => PRODUCT_CATEGORIES.find(c => c.key === cat)?.color || '#003366';
-export const getIcon  = (cat) => PRODUCT_CATEGORIES.find(c => c.key === cat)?.icon  || '💊';
-export const getLabel = (cat) => PRODUCT_CATEGORIES.find(c => c.key === cat)?.label || cat;
+const getColor = cat => PRODUCT_CATEGORIES.find(c => c.key === cat)?.color || '#003366';
+const getIcon = cat => PRODUCT_CATEGORIES.find(c => c.key === cat)?.icon || '💊';
+const getLabel = cat => PRODUCT_CATEGORIES.find(c => c.key === cat)?.label || cat;
 
-// ─────────────────────────────────────────────────────────────────────────────
-// PRODUCT MODAL
-// ─────────────────────────────────────────────────────────────────────────────
 function ProductModal({ product, onClose }) {
   if (!product) return null;
+
   const color = getColor(product.category);
+
   return (
-    <div className="modal-backdrop" onClick={onClose}>
-      <div className="modal-box" onClick={e => e.stopPropagation()}>
-        <button className="modal-close" onClick={onClose}>✕</button>
-        <div className="modal-header" style={{ borderTop: `4px solid ${color}` }}>
-          <div className="modal-header__icon" style={{ background: color + '15', color }}>
+    <div className="new-modal-backdrop" onClick={onClose}>
+      <div className="new-modal" onClick={e => e.stopPropagation()}>
+        <button className="new-modal__close" onClick={onClose} aria-label="Close product details">
+          ×
+        </button>
+
+        <div className="new-modal__header" style={{ borderTopColor: color }}>
+          <div className="new-modal__icon" style={{ background: `${color}18`, color }}>
             {getIcon(product.category)}
           </div>
           <div>
-            <div className="modal-header__cat" style={{ color }}>{getLabel(product.category)}</div>
-            <h2 className="modal-header__name">{product.fullName}</h2>
-            <div className="modal-header__tags">
-              <span className="tag modal-tag" style={{ background: `${color}18`, color }}>{product.form}</span>
-              <span className="tag modal-tag" style={{ background: '#2E8B5710', color: '#1e6b40' }}>{product.species}</span>
+            <p className="new-modal__category" style={{ color }}>{getLabel(product.category)}</p>
+            <h2>{product.fullName}</h2>
+            <div className="new-modal__tags">
+              <span className="new-tag" style={{ background: `${color}16`, color }}>{product.form}</span>
+              <span className="new-tag new-tag--green">{product.species}</span>
             </div>
           </div>
         </div>
-        <div className="modal-body">
-          <div className="modal-row">
-            <div className="modal-row__label">Composition</div>
-            <div className="modal-row__val">{product.composition}</div>
+
+        <div className="new-modal__body">
+          <div className="new-modal__row">
+            <span>Composition</span>
+            <p>{product.composition}</p>
           </div>
-          <div className="modal-row">
-            <div className="modal-row__label">Dosage</div>
-            <div className="modal-row__val">{product.dosage}</div>
+          <div className="new-modal__row">
+            <span>Dosage</span>
+            <p>{product.dosage}</p>
           </div>
-          <div className="modal-row">
-            <div className="modal-row__label">Benefits</div>
-            <div className="modal-row__val">
-              {product.benefits.split('. ').filter(Boolean).map((b, i) => (
-                <div key={i} className="modal-benefit">✓ {b.trim().replace(/\.$/, '')}.</div>
+          <div className="new-modal__row">
+            <span>Benefits</span>
+            <div>
+              {product.benefits.split('. ').filter(Boolean).map((item, index) => (
+                <p key={index} className="new-modal__benefit">• {item.trim().replace(/\.$/, '')}.</p>
               ))}
             </div>
           </div>
         </div>
-        <div className="modal-footer">
-          <a href="https://wa.me/923352249111" target="_blank" rel="noopener noreferrer"
-            className="prod-item__wa modal-wa">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-            </svg>
+
+        <div className="new-modal__footer">
+          <a
+            href="https://wa.me/923352249111"
+            target="_blank"
+            rel="noreferrer"
+            className="new-modal__wa"
+          >
             Enquire on WhatsApp
           </a>
         </div>
@@ -623,206 +596,146 @@ function ProductModal({ product, onClose }) {
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// MAIN COMPONENT
-// ─────────────────────────────────────────────────────────────────────────────
-export default function Products() {
-  const [activeCategory, setActiveCategory] = useState('');
-  const [activeForm, setActiveForm] = useState('All');
+export default function NewProducts() {
+  const { brand } = useParams();
+  const [searchParams] = useSearchParams();
+  const [activeCategory, setActiveCategory] = useState(searchParams.get('category') || (brand ? brand : ''));
+  const [activeForm, setActiveForm] = useState(searchParams.get('form') || 'All');
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState(null);
-  const [openFaq, setOpenFaq] = useState(null);
 
-  const faqItems = [
-    {
-      q: 'How can I obtain product literature?',
-      a: 'Product brochures, technical sheets, and supporting information can be requested through our contact channels.'
-    },
-    {
-      q: 'Do you provide technical support?',
-      a: 'Yes. Technical assistance is available through our sales and technical teams.'
-    },
-    {
-      q: 'Are your products manufactured according to GMP requirements?',
-      a: 'Products are manufactured in compliance with applicable GMP standards and regulatory requirements.'
-    },
-    {
-      q: 'Can products be customized for specific market requirements?',
-      a: 'Customization opportunities may be discussed depending on regulatory and commercial requirements.'
-    },
-    {
-      q: 'How can I become a distributor?',
-      a: 'Please contact our business development team through the Join Us or Contact page.'
-    },
-  ];
+  const categories = PRODUCT_CATEGORIES;
 
-  const filtered = ALL_PRODUCTS.filter(p => {
-    const matchCat  = !activeCategory || p.category === activeCategory;
-    const matchForm = activeForm === 'All' || p.form === activeForm;
+  const filteredProducts = useMemo(() => {
     const q = search.toLowerCase();
-    const matchSearch = !search ||
-      p.name.toLowerCase().includes(q) ||
-      p.fullName.toLowerCase().includes(q) ||
-      p.composition.toLowerCase().includes(q) ||
-      p.benefits.toLowerCase().includes(q);
-    return matchCat && matchForm && matchSearch;
-  });
+
+    return ALL_PRODUCTS.filter(product => {
+      const matchCategory = !activeCategory || product.category === activeCategory;
+      const matchForm = activeForm === 'All' || product.form === activeForm;
+      const matchSearch = !q || [product.name, product.fullName, product.composition, product.benefits]
+        .join(' ')
+        .toLowerCase()
+        .includes(q);
+
+      return matchCategory && matchForm && matchSearch;
+    });
+  }, [activeCategory, activeForm, search]);
+
+  const clearFilters = () => {
+    setActiveCategory('');
+    setActiveForm('All');
+    setSearch('');
+  };
 
   return (
-    <div className="products-page">
-
-      {/* Hero */}
-      <div className="products-hero">
+    <div className="new-products-page">
+      <section className="new-products-hero">
         <div className="container">
           <span className="section-eyebrow">Products & Solutions</span>
           <h1 className="section-title section-title--white">Complete Pharmaceutical Range</h1>
-          <p className="section-lead" style={{ color: 'rgba(255,255,255,0.65)', maxWidth: 620 }}>
-            {ALL_PRODUCTS.length} veterinary products across 9 categories — sourced directly from our official E-Catalog. DRAP registered. GMP manufactured.
+          <p className="section-lead new-products-hero__lead">
+            {ALL_PRODUCTS.length} veterinary products across {categories.length - 1} categories.
           </p>
-          {/* Category stat chips */}
-          <div className="products-hero-stats">
-            {CATEGORIES.slice(1).map(c => {
-              const cnt = ALL_PRODUCTS.filter(p => p.category === c.key).length;
-              return (
-                <button key={c.key}
-                  className={`hero-stat-chip ${activeCategory === c.key ? 'active' : ''}`}
-                  onClick={() => setActiveCategory(activeCategory === c.key ? '' : c.key)}>
-                  {c.icon} <strong>{cnt}</strong> {c.label}
-                </button>
-              );
-            })}
-          </div>
         </div>
-      </div>
+      </section>
 
-      {/* Category bar */}
-      <div className="products-cat-bar">
-        <div className="container products-cat-bar__inner">
-          {CATEGORIES.map(c => {
-            const cnt = c.key ? ALL_PRODUCTS.filter(p => p.category === c.key).length : ALL_PRODUCTS.length;
-            return (
-              <button key={c.key}
-                className={`pf-btn ${activeCategory === c.key ? 'active' : ''}`}
-                onClick={() => setActiveCategory(c.key)}>
-                {c.label}
-                <span className="pf-btn__count">{cnt}</span>
+      <section className="new-products-toolbar">
+        <div className="container new-products-toolbar__inner">
+          {categories.map(category => (
+            <button
+              key={category.key}
+              type="button"
+              className={`new-products-pill ${activeCategory === category.key ? 'active' : ''}`}
+              onClick={() => setActiveCategory(category.key)}
+            >
+              <span>{category.icon} {category.label}</span>
+              <strong>{category.key ? ALL_PRODUCTS.filter(product => product.category === category.key).length : ALL_PRODUCTS.length}</strong>
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <section className="new-products-controls">
+        <div className="container new-products-controls__inner">
+          <div className="new-products-form-filters">
+            {['All', 'Powder', 'Liquid'].map(form => (
+              <button
+                key={form}
+                type="button"
+                className={`new-products-form-btn ${activeForm === form ? 'active' : ''}`}
+                onClick={() => setActiveForm(form)}
+              >
+                {form}
               </button>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Sub filters */}
-      <div className="products-filters">
-        <div className="container products-filters-inner">
-          <div className="products-filter-species">
-            <span className="products-filter-label">Form:</span>
-            {['All', 'Powder', 'Liquid'].map(f => (
-              <button key={f}
-                className={`pf-btn ${activeForm === f ? 'active' : ''}`}
-                onClick={() => setActiveForm(f)}>{f}</button>
             ))}
           </div>
           <input
-            className="products-search"
-            placeholder="Search by name, composition, or benefit…"
+            className="new-products-search"
+            type="search"
+            placeholder="Search products, composition or benefits"
             value={search}
             onChange={e => setSearch(e.target.value)}
           />
         </div>
-      </div>
+      </section>
 
-      {/* Grid */}
-      <div className="container products-grid-wrap">
-        <p className="products-count">
-          Showing <strong>{filtered.length}</strong> of {ALL_PRODUCTS.length} products
+      <section className="container new-products-content">
+        <div className="new-products-summary">
+          <p>
+            Showing <strong>{filteredProducts.length}</strong> of <strong>{ALL_PRODUCTS.length}</strong> products
+          </p>
           {(activeCategory || activeForm !== 'All' || search) && (
-            <button className="products-clear-btn"
-              onClick={() => { setActiveCategory(''); setActiveForm('All'); setSearch(''); }}>
-              Clear filters ✕
+            <button type="button" className="new-products-clear" onClick={clearFilters}>
+              Clear filters
             </button>
           )}
-        </p>
+        </div>
 
-        {filtered.length === 0 ? (
-          <div className="products-empty">
-            <div className="products-empty__icon">🔍</div>
+        {filteredProducts.length === 0 ? (
+          <div className="new-products-empty">
             <h3>No products found</h3>
-            <p>Try adjusting your search or filters.</p>
+            <p>Try a different keyword or reset the filters.</p>
           </div>
         ) : (
-          <div className="products-grid-full">
-            {filtered.map(p => {
-              const color = getColor(p.category);
-              const imageUrl = getProductImage(p);
+          <div className="new-products-grid">
+            {filteredProducts.map(product => {
+              const color = getColor(product.category);
+
               return (
-                <div key={p.id} className="prod-item" onClick={() => setSelected(p)}>
-                  <div className="prod-item__img" style={{ background: color + '0e' }}>
-                    {imageUrl ? (
-                      <img className="prod-item__photo" src={imageUrl} alt={p.name} />
-                    ) : (
-                      <span className="prod-item__cat-icon">{getIcon(p.category)}</span>
-                    )}
-                    <div className="prod-item__badges">
-                      <span className="tag"
-                        style={{ background: color + '18', color, fontSize: '9px', letterSpacing: '0.08em' }}>
-                        {p.form}
-                      </span>
+                <article
+                  key={product.id}
+                  className="new-product-card"
+                  onClick={() => setSelected(product)}
+                >
+                  <div className="new-product-card__top" style={{ background: `${color}12` }}>
+                    <div className="new-product-card__icon-wrap" style={{ background: `${color}18`, color }}>
+                      {getIcon(product.category)}
                     </div>
-                    <div className="prod-item__color-bar" style={{ background: color }} />
+                    <span className="new-product-card__badge" style={{ background: `${color}18`, color }}>
+                      {product.form}
+                    </span>
                   </div>
-                  <div className="prod-item__body">
-                    <div className="prod-item__species">{p.species}</div>
-                    <h3>{p.name}</h3>
-                    <div className="prod-item__composition">{p.composition}</div>
-                    <p>{p.benefits.split('.')[0]}.</p>
-                    <div className="prod-item__actions">
-                      <button className="prod-item__details-btn"
-                        onClick={e => { e.stopPropagation(); setSelected(p); }}>
-                        Full Details
-                      </button>
-                      <a href="https://wa.me/923352249111" target="_blank" rel="noopener noreferrer"
-                        className="prod-item__wa" onClick={e => e.stopPropagation()}>
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                        </svg>
-                        Enquire
-                      </a>
-                    </div>
+                  <div className="new-product-card__body">
+                    <p className="new-product-card__species">{product.species}</p>
+                    <h3>{product.name}</h3>
+                    <p className="new-product-card__composition">{product.composition}</p>
+                    <p className="new-product-card__benefit">{product.benefits.split('.')[0]}. </p>
+                    <button
+                      type="button"
+                      className="new-product-card__button"
+                      onClick={e => {
+                        e.stopPropagation();
+                        setSelected(product);
+                      }}
+                    >
+                      View details
+                    </button>
                   </div>
-                </div>
+                </article>
               );
             })}
           </div>
         )}
-      </div>
-
-      <section className="faq-section">
-        <div className="container">
-          <div className="faq-section__header">
-            <span className="section-eyebrow">Frequently Asked Questions</span>
-            <h2 className="section-title">Frequently Asked Questions</h2>
-          </div>
-          <div className="faq-list">
-            {faqItems.map((item, index) => (
-              <div key={item.q} className={`faq-item ${openFaq === index ? 'faq-item--open' : ''}`}>
-                <button
-                  type="button"
-                  className="faq-item__question"
-                  onClick={() => setOpenFaq(openFaq === index ? null : index)}
-                >
-                  <span>{item.q}</span>
-                  <span className="faq-item__icon">{openFaq === index ? '−' : '+'}</span>
-                </button>
-                {openFaq === index && (
-                  <div className="faq-item__answer">
-                    <p>{item.a}</p>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
       </section>
 
       {selected && <ProductModal product={selected} onClose={() => setSelected(null)} />}

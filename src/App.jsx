@@ -4,7 +4,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import WhatsApp from './components/WhatsApp';
 import Home from './pages/Home';
-import Products from './pages/Products';
+import NewProducts from './pages/NewProducts';
 import { Blog, BlogPost } from './pages/Blog';
 import { About, Science, Industries, Contact, Join, Expo2025 } from './pages/SimplePages';
 import './App.css';
@@ -37,8 +37,8 @@ export default function App() {
         <main>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/products/:brand" element={<Products />} />
+            <Route path="/products" element={<NewProducts />} />
+            <Route path="/products/:brand" element={<NewProducts />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/about" element={<About />} />
