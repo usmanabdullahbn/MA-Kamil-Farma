@@ -450,6 +450,97 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── Nationwide Distribution Network ── */}
+      <section className="distribution-section">
+        <div className="container distribution-grid">
+          <div className="distribution-left">
+            <span className="section-eyebrow">Nationwide Distribution Network</span>
+            <h2 className="section-title">Delivering Excellence Across Pakistan</h2>
+            <p className="section-lead">Supporting customers across Pakistan through an expanding network of distributors, commercial partners, veterinarians, feed mills, and animal health professionals.</p>
+
+            <ul className="distribution-features">
+              <li>
+                <strong>Strong Regional Presence</strong>
+                <span>Strategic partners and stockists in all major regions</span>
+              </li>
+              <li>
+                <strong>Reliable Supply Chain</strong>
+                <span>Efficient logistics ensuring on-time delivery and product availability</span>
+              </li>
+              <li>
+                <strong>Trusted Partnerships</strong>
+                <span>Working with distributors, veterinarians &amp; farmers nationwide</span>
+              </li>
+              <li>
+                <strong>Quality Commitment</strong>
+                <span>Maintaining product integrity across every mile</span>
+              </li>
+            </ul>
+
+            <p className="distribution-note">With decades of industry experience and strong commercial relationships, M.A. Kamil Farma continues to strengthen its presence across Pakistan's poultry, livestock, feed, and animal health sectors.</p>
+          </div>
+
+          <div className="distribution-right">
+            <div className="distribution-map" role="img" aria-label="Pakistan distribution map">
+              {/* Simplified interactive SVG map with provinces highlighted */}
+              <svg viewBox="0 0 800 600" preserveAspectRatio="xMidYMid meet" className="pakistan-map">
+                <defs>
+                  <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feDropShadow dx="0" dy="6" stdDeviation="12" flood-opacity="0.12" flood-color="#000" />
+                  </filter>
+                </defs>
+                {/* Balochistan */}
+                <path className="prov prov-balochistan" d="M80,360 C140,300 220,320 280,340 C300,310 340,280 380,300 C420,320 460,320 500,340 C520,360 520,380 480,400 C420,440 320,430 260,420 C180,410 120,390 80,360 Z" />
+                {/* Sindh */}
+                <path className="prov prov-sindh" d="M360,380 C420,360 480,360 520,380 C540,400 540,430 500,460 C460,490 420,500 360,490 C320,480 300,460 320,440 C340,420 350,400 360,380 Z" />
+                {/* Punjab */}
+                <path className="prov prov-punjab" d="M500,220 C560,200 620,210 680,240 C700,260 700,290 660,320 C620,350 560,340 520,330 C500,300 500,260 500,220 Z" />
+                {/* Khyber Pakhtunkhwa */}
+                <path className="prov prov-kpk" d="M580,90 C640,70 700,80 740,120 C760,150 740,180 700,190 C660,200 620,190 600,170 C590,140 585,115 580,90 Z" />
+
+                {/* Hub circles */}
+                <g className="hubs">
+                  <g className="hub hub-karachi" transform="translate(440,420)">
+                    <circle r="12" className="hub-ring" />
+                    <circle r="6" className="hub-core" />
+                    <text x="18" y="6" className="hub-label">Karachi · Head Office</text>
+                  </g>
+                  <g className="hub hub-sindh" transform="translate(420,360)">
+                    <circle r="8" className="hub-core hub-core--blue" />
+                    <text x="14" y="6" className="hub-label">Sindh</text>
+                  </g>
+                  <g className="hub hub-punjab" transform="translate(620,260)">
+                    <circle r="8" className="hub-core hub-core--blue" />
+                    <text x="14" y="6" className="hub-label">Punjab</text>
+                  </g>
+                  <g className="hub hub-kpk" transform="translate(700,120)">
+                    <circle r="8" className="hub-core hub-core--green" />
+                    <text x="14" y="6" className="hub-label">Khyber Pakhtunkhwa</text>
+                  </g>
+                  <g className="hub hub-balochistan" transform="translate(240,360)">
+                    <circle r="8" className="hub-core hub-core--green" />
+                    <text x="14" y="6" className="hub-label">Balochistan</text>
+                  </g>
+                </g>
+
+                {/* Distribution dashed lines */}
+                <g className="routes" fill="none" stroke="#F0C36B" strokeWidth="2" strokeDasharray="6 6" strokeLinecap="round">
+                  <path d="M440,420 C420,360 360,340 300,340" />
+                  <path d="M440,420 C520,360 580,320 640,260" />
+                  <path d="M440,420 C560,300 640,180 700,120" />
+                </g>
+              </svg>
+
+              <div className="distribution-legend">
+                <div><span className="legend-dot legend-dot--gold" /> Head Office — Karachi, Sindh</div>
+                <div><span className="legend-dot legend-dot--blue" /> Regional Hub — Punjab / Sindh</div>
+                <div><span className="legend-dot legend-dot--green" /> Regional Hub — Khyber Pakhtunkhwa / Balochistan</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── Calculator + Ecosystem ── */}
       <section className="section calc-science-section">
         <div className="container calc-science-grid">
