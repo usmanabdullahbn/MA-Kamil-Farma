@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import './NewProducts.css';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ALL PRODUCTS FROM M.A. KAMIL FARMA E-CATALOG
 // Data sourced directly from official product catalogue PDF
 // ─────────────────────────────────────────────────────────────────────────────
-const ALL_PRODUCTS = [
+export const ALL_PRODUCTS = [
   // ── POWDER ANTIBIOTICS ─────────────────────────────────────────────────────
   {
     id: 1, category: 'powder-antibiotic', form: 'Powder', species: 'Poultry',
@@ -519,7 +519,7 @@ const ALL_PRODUCTS = [
 // ─────────────────────────────────────────────────────────────────────────────
 // CATEGORY CONFIG
 // ─────────────────────────────────────────────────────────────────────────────
-const PRODUCT_CATEGORIES = [
+export const PRODUCT_CATEGORIES = [
   { key: '', label: 'All Products', icon: '💊', color: '#003366' },
   { key: 'powder-antibiotic', label: 'Powder Antibiotics', icon: '🧪', color: '#0d5d8c' },
   { key: 'liquid-antibiotic', label: 'Liquid Antibiotics', icon: '🧴', color: '#0d5d8c' },
@@ -532,9 +532,15 @@ const PRODUCT_CATEGORIES = [
   { key: 'drenches', label: 'Drenches', icon: '🌿', color: '#6b4a1e' },
 ];
 
+export const getProductSlug = product => product.fullName
+  .toLowerCase()
+  .replace(/%/g, ' percent')
+  .replace(/[^a-z0-9]+/g, '-')
+  .replace(/^-|-$/g, '');
+
 const getColor = cat => PRODUCT_CATEGORIES.find(c => c.key === cat)?.color || '#003366';
 const getIcon = cat => PRODUCT_CATEGORIES.find(c => c.key === cat)?.icon || '💊';
-const getLabel = cat => PRODUCT_CATEGORIES.find(c => c.key === cat)?.label || cat;
+export const getLabel = cat => PRODUCT_CATEGORIES.find(c => c.key === cat)?.label || cat;
 
 const getCardCategory = cat => getLabel(cat)
   .replace('Powder Antibiotics', 'Powder Antibiotic')
@@ -645,6 +651,7 @@ function ProductModal({ product, onClose }) {
 
 export default function NewProducts() {
   const { brand } = useParams();
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [activeCategory, setActiveCategory] = useState(() => (
     normalizeCategory(searchParams.get('category') || brand || '')
@@ -652,9 +659,9 @@ export default function NewProducts() {
   const [activeForm, setActiveForm] = useState(() => normalizeForm(searchParams.get('form')));
   const [activeSpecies, setActiveSpecies] = useState(() => normalizeSpecies(searchParams.get('species')));
   const [search, setSearch] = useState('');
-  const [selected, setSelected] = useState(null);
 
   const categories = PRODUCT_CATEGORIES;
+  const openProductPage = product => navigate(`/products/detail/${getProductSlug(product)}`);
 
   useEffect(() => {
     setActiveCategory(normalizeCategory(searchParams.get('category') || brand || ''));
@@ -762,7 +769,7 @@ export default function NewProducts() {
                 <article
                   key={product.id}
                   className="new-product-card"
-                  onClick={() => setSelected(product)}
+                  onClick={() => openProductPage(product)}
                 >
                   <div className="new-product-card__meta">
                     <span>{getCardCategory(product.category)}</span>
@@ -779,7 +786,7 @@ export default function NewProducts() {
                       aria-label={`Open ${product.name} details`}
                       onClick={e => {
                         e.stopPropagation();
-                        setSelected(product);
+                        openProductPage(product);
                       }}
                     >
                       ↗
@@ -791,8 +798,6 @@ export default function NewProducts() {
           </div>
         )}
       </section>
-
-      {selected && <ProductModal product={selected} onClose={() => setSelected(null)} />}
     </div>
   );
 }
