@@ -1,12 +1,12 @@
-import { useMemo, useState } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useEffect, useMemo, useState } from 'react';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import './NewProducts.css';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ALL PRODUCTS FROM M.A. KAMIL FARMA E-CATALOG
 // Data sourced directly from official product catalogue PDF
 // ─────────────────────────────────────────────────────────────────────────────
-const ALL_PRODUCTS = [
+export const ALL_PRODUCTS = [
   // ── POWDER ANTIBIOTICS ─────────────────────────────────────────────────────
   {
     id: 1, category: 'powder-antibiotic', form: 'Powder', species: 'Poultry',
@@ -519,22 +519,75 @@ const ALL_PRODUCTS = [
 // ─────────────────────────────────────────────────────────────────────────────
 // CATEGORY CONFIG
 // ─────────────────────────────────────────────────────────────────────────────
-const PRODUCT_CATEGORIES = [
+export const PRODUCT_CATEGORIES = [
   { key: '', label: 'All Products', icon: '💊', color: '#003366' },
-  { key: 'powder-antibiotic', label: 'Powder Antibiotics', icon: '🧪', color: '#003366' },
-  { key: 'liquid-antibiotic', label: 'Liquid Antibiotics', icon: '🧴', color: '#1e4d8c' },
-  { key: 'penicillin', label: 'Penicillin Range', icon: '💉', color: '#5c1a8c' },
+  { key: 'powder-antibiotic', label: 'Powder Antibiotics', icon: '🧪', color: '#0d5d8c' },
+  { key: 'liquid-antibiotic', label: 'Liquid Antibiotics', icon: '🧴', color: '#0d5d8c' },
+  { key: 'penicillin', label: 'Penicillins', icon: '💉', color: '#0d5d8c' },
   { key: 'diuretics', label: 'Diuretics', icon: '💧', color: '#0e6b7a' },
   { key: 'flusher', label: 'Flusher', icon: '🔄', color: '#3d7a4a' },
   { key: 'hepatoprotective', label: 'Hepatoprotective', icon: '🫀', color: '#7a4a0e' },
-  { key: 'immune-booster', label: 'Immune Boosters', icon: '🛡️', color: '#1e6b40' },
-  { key: 'immune-hepato', label: 'Immune + Hepato', icon: '✨', color: '#4a6b1e' },
+  { key: 'immune-booster', label: 'Immune Booster', icon: '🛡️', color: '#1e6b40' },
+  { key: 'immune-hepato', label: 'Immune Booster + Hepato', icon: '✨', color: '#4a6b1e' },
   { key: 'drenches', label: 'Drenches', icon: '🌿', color: '#6b4a1e' },
 ];
 
+export const getProductSlug = product => product.fullName
+  .toLowerCase()
+  .replace(/%/g, ' percent')
+  .replace(/[^a-z0-9]+/g, '-')
+  .replace(/^-|-$/g, '');
+
 const getColor = cat => PRODUCT_CATEGORIES.find(c => c.key === cat)?.color || '#003366';
 const getIcon = cat => PRODUCT_CATEGORIES.find(c => c.key === cat)?.icon || '💊';
-const getLabel = cat => PRODUCT_CATEGORIES.find(c => c.key === cat)?.label || cat;
+export const getLabel = cat => PRODUCT_CATEGORIES.find(c => c.key === cat)?.label || cat;
+
+const getCardCategory = cat => getLabel(cat)
+  .replace('Powder Antibiotics', 'Powder Antibiotic')
+  .replace('Liquid Antibiotics', 'Liquid Antibiotic')
+  .replace('Penicillins', 'Penicillin');
+
+const getProductDescriptor = product => {
+  const fullName = product.fullName.toLowerCase();
+
+  if (fullName.includes('water soluble powder')) return 'Water-soluble Powder';
+  if (fullName.includes('soluble powder')) return 'Soluble Powder';
+  if (fullName.includes('oral powder')) return 'Oral Powder';
+  if (fullName.includes('oral solution')) return 'Oral Solution';
+  if (fullName.includes('liquid')) return 'Liquid';
+
+  return product.form;
+};
+
+const getCompositionPreview = composition => {
+  const firstItems = composition.split(' · ').slice(0, 3).join('; ');
+  return firstItems.length > 110 ? `${firstItems.slice(0, 107)}...` : firstItems;
+};
+
+const normalizeCategory = value => (
+  PRODUCT_CATEGORIES.some(category => category.key === value) ? value : ''
+);
+
+const normalizeForm = value => {
+  if (!value) return 'All';
+
+  const form = value.toLowerCase();
+  if (form === 'powder') return 'Powder';
+  if (form === 'liquid') return 'Liquid';
+
+  return 'All';
+};
+
+const normalizeSpecies = value => {
+  if (!value) return '';
+
+  const species = value.toLowerCase();
+  if (species === 'poultry') return 'Poultry';
+  if (species === 'dairy' || species === 'livestock') return 'Livestock';
+  if (species === 'pets') return 'Pet Animals';
+
+  return '';
+};
 
 function ProductModal({ product, onClose }) {
   if (!product) return null;
@@ -598,13 +651,23 @@ function ProductModal({ product, onClose }) {
 
 export default function NewProducts() {
   const { brand } = useParams();
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [activeCategory, setActiveCategory] = useState(searchParams.get('category') || (brand ? brand : ''));
-  const [activeForm, setActiveForm] = useState(searchParams.get('form') || 'All');
+  const [activeCategory, setActiveCategory] = useState(() => (
+    normalizeCategory(searchParams.get('category') || brand || '')
+  ));
+  const [activeForm, setActiveForm] = useState(() => normalizeForm(searchParams.get('form')));
+  const [activeSpecies, setActiveSpecies] = useState(() => normalizeSpecies(searchParams.get('species')));
   const [search, setSearch] = useState('');
-  const [selected, setSelected] = useState(null);
 
   const categories = PRODUCT_CATEGORIES;
+  const openProductPage = product => navigate(`/products/detail/${getProductSlug(product)}`);
+
+  useEffect(() => {
+    setActiveCategory(normalizeCategory(searchParams.get('category') || brand || ''));
+    setActiveForm(normalizeForm(searchParams.get('form')));
+    setActiveSpecies(normalizeSpecies(searchParams.get('species')));
+  }, [brand, searchParams]);
 
   const filteredProducts = useMemo(() => {
     const q = search.toLowerCase();
@@ -612,79 +675,82 @@ export default function NewProducts() {
     return ALL_PRODUCTS.filter(product => {
       const matchCategory = !activeCategory || product.category === activeCategory;
       const matchForm = activeForm === 'All' || product.form === activeForm;
+      const matchSpecies = !activeSpecies || product.species === activeSpecies;
       const matchSearch = !q || [product.name, product.fullName, product.composition, product.benefits]
         .join(' ')
         .toLowerCase()
         .includes(q);
 
-      return matchCategory && matchForm && matchSearch;
+      return matchCategory && matchForm && matchSpecies && matchSearch;
     });
-  }, [activeCategory, activeForm, search]);
+  }, [activeCategory, activeForm, activeSpecies, search]);
 
   const clearFilters = () => {
     setActiveCategory('');
     setActiveForm('All');
+    setActiveSpecies('');
     setSearch('');
   };
 
   return (
     <div className="new-products-page">
       <section className="new-products-hero">
-        <div className="container">
-          <span className="section-eyebrow">Products & Solutions</span>
-          <h1 className="section-title section-title--white">Complete Pharmaceutical Range</h1>
-          <p className="section-lead new-products-hero__lead">
-            {ALL_PRODUCTS.length} veterinary products across {categories.length - 1} categories.
+        <div className="container new-products-hero__inner">
+          <div className="new-products-hero__title">
+            <span className="new-products-eyebrow">Complete Product Range</span>
+            <h1>Solutions built for healthier animals.</h1>
+          </div>
+          <p className="new-products-hero__lead">
+            Explore {ALL_PRODUCTS.length} veterinary pharmaceutical and animal-health products. Select any product name to open its technical product page.
           </p>
-        </div>
-      </section>
-
-      <section className="new-products-toolbar">
-        <div className="container new-products-toolbar__inner">
-          {categories.map(category => (
-            <button
-              key={category.key}
-              type="button"
-              className={`new-products-pill ${activeCategory === category.key ? 'active' : ''}`}
-              onClick={() => setActiveCategory(category.key)}
-            >
-              <span>{category.icon} {category.label}</span>
-              <strong>{category.key ? ALL_PRODUCTS.filter(product => product.category === category.key).length : ALL_PRODUCTS.length}</strong>
-            </button>
-          ))}
         </div>
       </section>
 
       <section className="new-products-controls">
-        <div className="container new-products-controls__inner">
-          <div className="new-products-form-filters">
-            {['All', 'Powder', 'Liquid'].map(form => (
+        <div className="container">
+          <div className="new-products-controls__top">
+            <label className="new-products-search-wrap">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="11" cy="11" r="7" />
+                <path d="m16.5 16.5 4 4" />
+              </svg>
+              <input
+                className="new-products-search"
+                type="search"
+                placeholder="Search product or active ingredient"
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+              />
+            </label>
+            <div className="new-products-count">
+              <strong>{filteredProducts.length}</strong>
+              <span>products</span>
+            </div>
+          </div>
+
+          <div className="new-products-toolbar__inner">
+            {categories.map(category => (
               <button
-                key={form}
+                key={category.key}
                 type="button"
-                className={`new-products-form-btn ${activeForm === form ? 'active' : ''}`}
-                onClick={() => setActiveForm(form)}
+                className={`new-products-pill ${activeCategory === category.key ? 'active' : ''}`}
+                onClick={() => setActiveCategory(category.key)}
               >
-                {form}
+                <span>{category.label}</span>
+                <strong>{category.key ? ALL_PRODUCTS.filter(product => product.category === category.key).length : ALL_PRODUCTS.length}</strong>
               </button>
             ))}
           </div>
-          <input
-            className="new-products-search"
-            type="search"
-            placeholder="Search products, composition or benefits"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-          />
         </div>
       </section>
 
       <section className="container new-products-content">
-        <div className="new-products-summary">
-          <p>
-            Showing <strong>{filteredProducts.length}</strong> of <strong>{ALL_PRODUCTS.length}</strong> products
-          </p>
-          {(activeCategory || activeForm !== 'All' || search) && (
+        <div className="new-products-section-head">
+          <div className="new-products-section-title">
+            <span className="new-products-eyebrow">Complete Name-Card System</span>
+            <h2>{activeCategory ? getLabel(activeCategory) : 'All products'}</h2>
+          </div>
+          {(activeCategory || activeForm !== 'All' || activeSpecies || search) && (
             <button type="button" className="new-products-clear" onClick={clearFilters}>
               Clear filters
             </button>
@@ -699,36 +765,31 @@ export default function NewProducts() {
         ) : (
           <div className="new-products-grid">
             {filteredProducts.map(product => {
-              const color = getColor(product.category);
-
               return (
                 <article
                   key={product.id}
                   className="new-product-card"
-                  onClick={() => setSelected(product)}
+                  onClick={() => openProductPage(product)}
                 >
-                  <div className="new-product-card__top" style={{ background: `${color}12` }}>
-                    <div className="new-product-card__icon-wrap" style={{ background: `${color}18`, color }}>
-                      {getIcon(product.category)}
-                    </div>
-                    <span className="new-product-card__badge" style={{ background: `${color}18`, color }}>
-                      {product.form}
-                    </span>
+                  <div className="new-product-card__meta">
+                    <span>{getCardCategory(product.category)}</span>
+                    <span>{getProductDescriptor(product)}</span>
                   </div>
                   <div className="new-product-card__body">
-                    <p className="new-product-card__species">{product.species}</p>
-                    <h3>{product.name}</h3>
-                    <p className="new-product-card__composition">{product.composition}</p>
-                    <p className="new-product-card__benefit">{product.benefits.split('.')[0]}. </p>
+                    <h3>{product.fullName}</h3>
+                  </div>
+                  <div className="new-product-card__footer">
+                    <p>{getCompositionPreview(product.composition)}</p>
                     <button
                       type="button"
                       className="new-product-card__button"
+                      aria-label={`Open ${product.name} details`}
                       onClick={e => {
                         e.stopPropagation();
-                        setSelected(product);
+                        openProductPage(product);
                       }}
                     >
-                      View details
+                      ↗
                     </button>
                   </div>
                 </article>
@@ -737,8 +798,6 @@ export default function NewProducts() {
           </div>
         )}
       </section>
-
-      {selected && <ProductModal product={selected} onClose={() => setSelected(null)} />}
     </div>
   );
 }

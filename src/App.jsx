@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import WhatsApp from './components/WhatsApp';
 import Home from './pages/Home';
 import NewProducts from './pages/NewProducts';
+import ProductPage from './pages/ProductPage';
 import { Blog, BlogPost } from './pages/Blog';
 import { About, Science, Industries, Contact, Join, Expo2025 } from './pages/SimplePages';
 import './App.css';
@@ -32,27 +33,37 @@ export default function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <div className="app">
-        <Navbar />
-        <main>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/products" element={<NewProducts />} />
-            <Route path="/products/:brand" element={<NewProducts />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/blog/:slug" element={<BlogPost />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/science" element={<Science />} />
-            <Route path="/industries" element={<Industries />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/join" element={<Join />} />
-            <Route path="/expo2025" element={<Expo2025 />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </main>
-        <Footer />
-        <WhatsApp />
-      </div>
+      <AppShell />
     </BrowserRouter>
+  );
+}
+
+function AppShell() {
+  const { pathname } = useLocation();
+  const isProductDetail = pathname.startsWith('/products/detail/');
+
+  return (
+    <div className="app">
+      {!isProductDetail && <Navbar />}
+      <main>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/products" element={<NewProducts />} />
+          <Route path="/products/detail/:slug" element={<ProductPage />} />
+          <Route path="/products/:brand" element={<NewProducts />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/science" element={<Science />} />
+          <Route path="/industries" element={<Industries />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/join" element={<Join />} />
+          <Route path="/expo2025" element={<Expo2025 />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </main>
+      {!isProductDetail && <Footer />}
+      {!isProductDetail && <WhatsApp />}
+    </div>
   );
 }
