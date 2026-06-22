@@ -83,7 +83,7 @@ const SCIENCE_LINKS = [
 ];
 
 const FEATURED_SOLUTIONS = [
-  { label: 'Poultry Solutions', text: 'Integrated health and performance solutions for commercial poultry operations', to: '/products?species=poultry', className: 'poultry' },
+  { label: 'Poultry Nutrition', text: 'Integrated health and performance solutions for commercial poultry operations', to: '/products?species=poultry', className: 'poultry' },
   { label: 'Feed Additives', text: 'Advanced nutritional technologies supporting productivity and efficiency.', to: 'https://feedadditives.makamilfarma.com', external: true, className: 'feed' },
   { label: 'New Product Launches', text: 'Explore the latest additions to the M.A. Kamil Farma portfolio.', to: '/products', className: 'launch' },
 ];
