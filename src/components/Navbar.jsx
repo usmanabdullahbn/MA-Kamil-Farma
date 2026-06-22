@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useLang } from '../hooks/useLang';
 import farmaLogo from '../assert/Farma Logo.jpg';
+import productCataloguePdf from '../assert/E-Catalog (M. A. Kamil Farma).pdf';
 import './Navbar.css';
 
 const LANGS = [
@@ -75,7 +76,7 @@ const SPECIES_LINKS = [
 ];
 
 const SCIENCE_LINKS = [
-  { label: 'Product Catalogue', text: 'Complete portfolio overview', icon: 'book', to: '/products' },
+  { label: 'Product Catalogue', text: 'Complete portfolio overview', icon: 'book', to: productCataloguePdf, download: true },
   { label: 'Product Information Sheets', text: 'Technical data & specifications', icon: 'file', to: '/products' },
   { label: 'Trial Data', text: 'Efficacy & field results', icon: 'flask', to: '/science' },
   { label: 'Technical Articles', text: 'Expert insights & knowledge', icon: 'book', to: '/blog' },
@@ -89,7 +90,7 @@ const FEATURED_SOLUTIONS = [
 ];
 
 const QUICK_ACTIONS = [
-  { label: 'Download Catalogue', text: 'Complete product portfolio', icon: 'download', to: '/products' },
+  { label: 'Download Catalogue', text: 'Complete product portfolio', icon: 'download', to: productCataloguePdf, download: true },
   { label: 'PIS Sheets', text: 'Product Information Sheets', icon: 'file', to: '/products' },
   { label: 'Trial Data', text: 'Efficacy & field studies', icon: 'flask', to: '/science' },
   { label: 'Dosage Calculator', text: 'Calculate accurate dosages', icon: 'calculator', to: '/contact' },
@@ -129,14 +130,25 @@ function ProductMegaMenu({ onMouseEnter, onMouseLeave }) {
         <MegaColumn title="Scientific Resources">
           <div className="nav-products-mega__resource-list">
             {SCIENCE_LINKS.map(item => (
-              <Link className="nav-products-mega__resource" to={item.to} key={item.label}>
-                <MegaIcon name={item.icon} />
-                <span>
-                  <strong>{item.label}</strong>
-                  <small>{item.text}</small>
-                </span>
-                <b>&gt;</b>
-              </Link>
+              item.download ? (
+                <a className="nav-products-mega__resource" href={item.to} download key={item.label}>
+                  <MegaIcon name={item.icon} />
+                  <span>
+                    <strong>{item.label}</strong>
+                    <small>{item.text}</small>
+                  </span>
+                  <b>&gt;</b>
+                </a>
+              ) : (
+                <Link className="nav-products-mega__resource" to={item.to} key={item.label}>
+                  <MegaIcon name={item.icon} />
+                  <span>
+                    <strong>{item.label}</strong>
+                    <small>{item.text}</small>
+                  </span>
+                  <b>&gt;</b>
+                </Link>
+              )
             ))}
           </div>
         </MegaColumn>
@@ -162,13 +174,23 @@ function ProductMegaMenu({ onMouseEnter, onMouseLeave }) {
 
       <div className="nav-products-mega__quickbar">
         {QUICK_ACTIONS.map(item => (
-          <Link className="nav-products-mega__quick" to={item.to} key={item.label}>
-            <MegaIcon name={item.icon} />
-            <span>
-              <strong>{item.label}</strong>
-              <small>{item.text}</small>
-            </span>
-          </Link>
+          item.download ? (
+            <a className="nav-products-mega__quick" href={item.to} download key={item.label}>
+              <MegaIcon name={item.icon} />
+              <span>
+                <strong>{item.label}</strong>
+                <small>{item.text}</small>
+              </span>
+            </a>
+          ) : (
+            <Link className="nav-products-mega__quick" to={item.to} key={item.label}>
+              <MegaIcon name={item.icon} />
+              <span>
+                <strong>{item.label}</strong>
+                <small>{item.text}</small>
+              </span>
+            </Link>
+          )
         ))}
       </div>
     </div>

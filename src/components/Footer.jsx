@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import farmaLogo from '../assert/Farma Logo.jpg';
+import productCataloguePdf from '../assert/E-Catalog (M. A. Kamil Farma).pdf';
 import './Footer.css';
 
 const CERTS = ['DRAP'];
@@ -16,7 +17,7 @@ export default function Footer() {
           ))}
           <span className="footer__certs-sep" />
           <span className="footer__certs-label">Download:</span>
-          <a href="#" className="footer__cert-dl">Product Brochures</a>
+          <a href={productCataloguePdf} download className="footer__cert-dl">Product Brochures</a>
           <a href="#" className="footer__cert-dl">PIS Sheets</a>
           <a href="#" className="footer__cert-dl">Trial Data</a>
         </div>

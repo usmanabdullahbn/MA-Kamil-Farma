@@ -4,6 +4,7 @@ import {
   getLabel,
   getProductSlug,
 } from './NewProducts';
+import productCataloguePdf from '../assert/E-Catalog (M. A. Kamil Farma).pdf';
 import './ProductPage.css';
 
 const makflor23Dosage = [
@@ -132,7 +133,7 @@ export default function ProductPage() {
 
                 <div className="product-actions">
                   <a className="product-button product-button--primary" href="#downloads">&darr; Download PIS Sheet</a>
-                  <a className="product-button" href="#downloads">&darr; Download Brochure</a>
+                  <a className="product-button" href={productCataloguePdf} download>&darr; Download Brochure</a>
                 </div>
 
                 <a className="product-enquire" href="https://wa.me/923352249111" target="_blank" rel="noreferrer">
@@ -182,7 +183,7 @@ export default function ProductPage() {
               <p className="product-detail__eyebrow">Document Library</p>
               <h2>Technical downloads</h2>
               <ProductDownload title="PIS Sheet" subtitle="Product Information Sheet · PDF" />
-              <ProductDownload title="Product Brochure" subtitle="Marketing literature · PDF" />
+              <ProductDownload title="Product Brochure" subtitle="Marketing literature · PDF" href={productCataloguePdf} download />
             </aside>
           </div>
         </section>
@@ -245,9 +246,9 @@ function ProductFact({ label, value }) {
   );
 }
 
-function ProductDownload({ title, subtitle }) {
+function ProductDownload({ title, subtitle, href = '#downloads', download = false }) {
   return (
-    <a className="product-download" href="#downloads">
+    <a className="product-download" href={href} download={download}>
       <span>
         <strong>{title}</strong>
         <small>{subtitle}</small>
