@@ -44,7 +44,7 @@ function AppShell() {
 
   return (
     <div className="app">
-      {!isProductDetail && <Navbar />}
+      <Navbar />
       <main>
         <Routes>
           <Route path="/" element={<Home />} />

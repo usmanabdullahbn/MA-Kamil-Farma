@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useLang } from '../hooks/useLang';
 import farmaLogo from '../assert/Farma Logo.jpg';
 import './Navbar.css';
@@ -236,6 +236,7 @@ export default function Navbar() {
   const [langOpen, setLangOpen] = useState(false);
   const { lang, setLang } = useLang();
   const location = useLocation();
+  const navigate = useNavigate();
   const timeoutRef = useRef(null);
 
   useEffect(() => {
@@ -290,7 +291,11 @@ export default function Navbar() {
                   onMouseEnter={() => handleMouseEnter(item.label)}
                   onMouseLeave={handleMouseLeave}
                 >
-                  <button className={`nav__link ${megaOpen === item.label ? 'nav__link--open' : ''}`}>
+                  <button
+                    type="button"
+                    className={`nav__link ${megaOpen === item.label ? 'nav__link--open' : ''}`}
+                    onClick={() => navigate('/products')}
+                  >
                     {item.label}
                     <svg className="nav__chevron" width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" fill="none"/></svg>
                   </button>

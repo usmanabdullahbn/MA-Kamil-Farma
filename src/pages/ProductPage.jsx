@@ -76,7 +76,6 @@ export default function ProductPage() {
   if (!product) {
     return (
       <div className="product-detail product-detail--missing">
-        <ProductHeader />
         <main className="product-detail__missing">
           <h1>Product not found</h1>
           <Link to="/products">Back to products</Link>
@@ -95,8 +94,6 @@ export default function ProductPage() {
 
   return (
     <div className="product-detail">
-      <ProductHeader />
-
       <main>
         <section className="product-detail__intro">
           <div className="product-detail__container">
@@ -236,21 +233,6 @@ export default function ProductPage() {
         <span>Sample product-detail layout</span>
       </footer>
     </div>
-  );
-}
-
-function ProductHeader() {
-  return (
-    <header className="product-detail__header">
-      <Link to="/" className="product-brand">
-        <span>MAK</span>
-        <div>
-          <strong>M.A. Kamil Farma</strong>
-          <small>Veterinary Health Since 1923</small>
-        </div>
-      </Link>
-      <p>Product Portfolio</p>
-    </header>
   );
 }
 
