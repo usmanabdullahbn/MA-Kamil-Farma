@@ -7,6 +7,11 @@ import {
 import productCataloguePdf from '../assert/E-Catalog (M. A. Kamil Farma).pdf';
 import './ProductPage.css';
 
+const productImageFiles = import.meta.glob('../assert/New folder/*.png', {
+  eager: true,
+  import: 'default'
+});
+
 const makflor23Dosage = [
   {
     use: 'Prevention',
@@ -31,6 +36,29 @@ const makflorBenefits = [
 const getFamily = product => product.name.split(/[-\s]/)[0];
 
 const formatCategory = category => getLabel(category).replace(/s$/, '');
+
+const normalizeSlug = value =>
+  String(value || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
+const getProductImage = product => {
+  const candidates = [product.name, product.fullName];
+
+  for (const candidate of candidates) {
+    const slug = normalizeSlug(candidate);
+    const match = Object.entries(productImageFiles).find(([filePath]) => {
+      const fileName = filePath.split('/').pop().replace(/^\d+_p\d+_/, '').replace(/\.png$/, '');
+      const fileSlug = normalizeSlug(fileName);
+      return fileSlug.includes(slug) || slug.includes(fileSlug);
+    });
+
+    if (match) return match[1];
+  }
+
+  return null;
+};
 
 const getComposition = product => {
   const match = product.composition.match(/^(.+?)\s+(\d+(?:\.\d+)?\s*(?:mg|MIU|IU))/i);
@@ -89,6 +117,7 @@ export default function ProductPage() {
   const dosageRows = getDosageRows(product);
   const benefits = getBenefits(product);
   const family = getFamily(product);
+  const productImage = getProductImage(product);
   const relatedProducts = ALL_PRODUCTS
     .filter(item => item.id !== product.id && getFamily(item) === family)
     .slice(0, 3);
@@ -110,9 +139,13 @@ export default function ProductPage() {
               <div className="product-packaging">
                 <p className="product-detail__eyebrow">Product Packaging</p>
                 <div className="product-packaging__frame" aria-label="Product image placeholder">
-                  <div className="product-packaging__placeholder">
-                    <span>Product image placeholder</span>
-                  </div>
+                  {productImage ? (
+                    <img src={productImage} alt={product.fullName} className="product-packaging__image" />
+                  ) : (
+                    <div className="product-packaging__placeholder">
+                      <span>Product image placeholder</span>
+                    </div>
+                  )}
                 </div>
                 <small>Packaging artwork from the approved product catalogue.</small>
               </div>
