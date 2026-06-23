@@ -176,7 +176,7 @@ export const ALL_PRODUCTS = [
   {
     id: 20, category: 'powder-antibiotic', form: 'Powder', species: 'Poultry',
     name: 'Tmulinkam-45', fullName: 'Tmulinkam-45 Oral Powder',
-    composition: 'Tiamulin Hydrogen Fumerate equivalent to Tiamulin base 450mg per gram',
+    composition: 'Tiamulin Hydrogen Fumerate 450mg per gram',
     dosage: 'Poultry: 1g per 2 litres of drinking water for 5 days. Feed: 1g per 1kg of feed for 5 days. Use medicated water within 24 hours.',
     benefits: 'Effectively treats respiratory infections including bacterial and enzootic pneumonia. Combats Mycoplasmosis, ensuring better respiratory performance. Reduces mortality and enhances recovery. Effective against chlamydiosis and other tiamulin-sensitive infections. Supports rapid recovery and improved productivity in affected flocks.',
   },
