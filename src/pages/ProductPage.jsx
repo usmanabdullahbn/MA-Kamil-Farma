@@ -160,7 +160,7 @@ export default function ProductPage() {
                   <span>Each ml contains</span>
                   <div>
                     <strong>{composition.ingredient}</strong>
-                    {composition.strength && <b>{composition.strength}</b>}
+                    {composition.strength && <b>1KG</b>}
                   </div>
                 </div>
 
