@@ -33,7 +33,85 @@ const makflorBenefits = [
   'Supports rapid recovery and improved flock health during bacterial outbreaks.',
 ];
 
-const getFamily = product => product.name.split(/[-\s]/)[0];
+const PRODUCT_FAMILIES = [
+  {
+    label: 'Tylokam',
+    products: ['Tylokam-100', 'Tylokam-10'],
+  },
+  {
+    label: 'Xinmak',
+    products: ['Xinmak', 'Xinmak Oral'],
+  },
+  {
+    label: 'Doxykam',
+    products: ['Doxykam-80', 'Doxykam-50'],
+  },
+  {
+    label: 'Colikam',
+    products: ['Colikam', 'Colikam-50'],
+  },
+  {
+    label: 'Mprokam',
+    products: ['Mprokam-90', 'Mprokam-50'],
+  },
+  {
+    label: 'Neokam',
+    products: ['Neokam-100', 'Neokam-72'],
+  },
+  {
+    label: 'Mak Amox',
+    products: ['Mak Amox-50', 'Mak Amox-80', 'Mak Amox C-20', 'Mak Amox C-50', 'Mak Amox-BLC', 'Mak Amox C-15'],
+  },
+  {
+    label: 'Mak Ze-Sel',
+    products: ['Mak Ze-Sel Sol', 'Mak Ze-Sel Forte', 'Mak Ze-Sel'],
+  },
+  {
+    label: 'Makflor',
+    products: ['Makflor-23', 'Makflor C-23', 'Makflor-20', 'Makflor-25', 'Makflor C-25', 'Makflor C-10'],
+  },
+  {
+    label: 'Enrokam',
+    products: ['Enrokam C-20', 'Enrokam C-10', 'Enrokam AG-10'],
+  },
+  {
+    label: 'Bronchoment',
+    products: ['Bronchoment-10', 'Bronchoment-20', 'Bronchoment-50'],
+  },
+  {
+    label: 'Sintolin',
+    products: ['Sintolin-44', 'Sintolin-40', 'Sintolin-110', 'Sintolin Plus'],
+  },
+  {
+    label: 'C-Kam',
+    products: ['C-Kam 100', 'C-Kam 250'],
+  },
+  {
+    label: 'Moxclav',
+    products: ['Moxclav', 'Moxclav-C'],
+  },
+];
+
+const getMappedFamily = product =>
+  PRODUCT_FAMILIES.find(family => family.products.includes(product.name));
+
+const getFamily = product => getMappedFamily(product)?.label || product.name.split(/[-\s]/)[0];
+
+const getRelatedProducts = product => {
+  const mappedFamily = getMappedFamily(product);
+
+  if (!mappedFamily) {
+    const family = getFamily(product);
+    return ALL_PRODUCTS
+      .filter(item => item.id !== product.id && getFamily(item) === family)
+      .slice(0, 3);
+  }
+
+  return mappedFamily.products
+    .filter(name => name !== product.name)
+    .map(name => ALL_PRODUCTS.find(item => item.name === name))
+    .filter(Boolean);
+};
 
 const formatCategory = category => getLabel(category).replace(/s$/, '');
 
@@ -92,7 +170,7 @@ const getBenefits = product => {
   if (product.name === 'Makflor-23') return makflorBenefits;
 
   return product.benefits
-    .split('. ')
+    .split(/\.\s+(?=[A-Z0-9])/)
     .map(item => item.trim().replace(/\.$/, ''))
     .filter(Boolean)
     .map(item => `${item}.`);
@@ -118,9 +196,7 @@ export default function ProductPage() {
   const benefits = getBenefits(product);
   const family = getFamily(product);
   const productImage = getProductImage(product);
-  const relatedProducts = ALL_PRODUCTS
-    .filter(item => item.id !== product.id && getFamily(item) === family)
-    .slice(0, 3);
+  const relatedProducts = getRelatedProducts(product);
 
   return (
     <div className="product-detail">
