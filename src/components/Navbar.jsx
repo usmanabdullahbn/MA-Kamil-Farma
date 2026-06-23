@@ -75,12 +75,10 @@ const SPECIES_LINKS = [
   { label: 'Companion Animals', text: 'Coming Soon', to: '/products?species=pets', className: 'companion' },
 ];
 
-const SCIENCE_LINKS = [
-  { label: 'Product Catalogue', text: 'Complete portfolio overview', icon: 'book', to: productCataloguePdf, download: true },
-  { label: 'Product Information Sheets', text: 'Technical data & specifications', icon: 'file', to: '/products' },
-  { label: 'Trial Data', text: 'Efficacy & field results', icon: 'flask', to: '/science' },
-  { label: 'Technical Articles', text: 'Expert insights & knowledge', icon: 'book', to: '/blog' },
-  { label: 'Dosage Calculator', text: 'Calculate accurate dosages', icon: 'calculator', to: '/contact' },
+const FORM_LINKS = [
+  { label: 'Powder Formulations', text: 'Water-soluble powder range', icon: 'powder', to: '/products?form=powder' },
+  { label: 'Liquid Formulations', text: 'Oral liquid solutions', icon: 'liquid', to: '/products?form=liquid' },
+  { label: 'Penicillin Range', text: 'Penicillin formulations', icon: 'penicillin', to: '/products?form=penicillin' },
 ];
 
 const FEATURED_SOLUTIONS = [
@@ -127,28 +125,17 @@ function ProductMegaMenu({ onMouseEnter, onMouseLeave }) {
           </div>
         </MegaColumn>
 
-        <MegaColumn title="Scientific Resources">
+        <MegaColumn title="By Form">
           <div className="nav-products-mega__resource-list">
-            {SCIENCE_LINKS.map(item => (
-              item.download ? (
-                <a className="nav-products-mega__resource" href={item.to} download key={item.label}>
-                  <MegaIcon name={item.icon} />
-                  <span>
-                    <strong>{item.label}</strong>
-                    <small>{item.text}</small>
-                  </span>
-                  <b>&gt;</b>
-                </a>
-              ) : (
-                <Link className="nav-products-mega__resource" to={item.to} key={item.label}>
-                  <MegaIcon name={item.icon} />
-                  <span>
-                    <strong>{item.label}</strong>
-                    <small>{item.text}</small>
-                  </span>
-                  <b>&gt;</b>
-                </Link>
-              )
+            {FORM_LINKS.map(item => (
+              <Link className="nav-products-mega__resource" to={item.to} key={item.label}>
+                <MegaIcon name={item.icon} />
+                <span>
+                  <strong>{item.label}</strong>
+                  <small>{item.text}</small>
+                </span>
+                <b>&gt;</b>
+              </Link>
             ))}
           </div>
         </MegaColumn>
@@ -169,6 +156,10 @@ function ProductMegaMenu({ onMouseEnter, onMouseLeave }) {
               );
             })}
           </div>
+          <Link className="nav-products-mega__dosage-btn" to="/contact">
+            <MegaIcon name="calculator" />
+            <span>Dosage Calculator</span>
+          </Link>
         </MegaColumn>
       </div>
 
@@ -239,6 +230,9 @@ function MegaIcon({ name }) {
     book: <path d="M4 5.5A3.5 3.5 0 0 1 7.5 2H20v17H7.5A3.5 3.5 0 0 0 4 22V5.5ZM4 5.5A3.5 3.5 0 0 1 7.5 9H20" />,
     file: <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8L14 2ZM14 2v6h6M8 13h8M8 17h5" />,
     flask: <path d="M9 2h6M10 2v6l-5 9a3 3 0 0 0 2.6 4.5h8.8A3 3 0 0 0 19 17l-5-9V2M8 15h8" />,
+    powder: <path d="M9 2h6M10 2v6.5L5.5 17a3 3 0 0 0 2.7 4.4h7.6a3 3 0 0 0 2.7-4.4L14 8.5V2M8.5 15.5h7M9 18h6" />,
+    liquid: <path d="M8 3h8M9 3v5.2l-3 4.6A5.2 5.2 0 0 0 10.4 21h3.2a5.2 5.2 0 0 0 4.4-8.2l-3-4.6V3M8 15c1.2-.7 2.4-.7 3.6 0 1.2.7 2.4.7 3.6 0" />,
+    penicillin: <path d="M15.5 3.5a3 3 0 0 1 4.2 4.2L8.2 19.2A3 3 0 0 1 4 15L15.5 3.5ZM12 7l5 5M6.8 16.4l2.8 2.8M4.8 12.2l7 7" />,
     calculator: <path d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2ZM8 6h8M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01M8 19h.01M12 19h.01M16 19h.01" />,
     download: <path d="M12 3v12M7 10l5 5 5-5M4 21h16" />,
     mail: <path d="M4 5h16v14H4V5ZM4 7l8 6 8-6" />,

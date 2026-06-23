@@ -275,6 +275,11 @@
 }
 
 .nav-products-mega__column:last-child {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-products-mega__column:last-child {
   border-right: 0;
 }
 
@@ -581,6 +586,38 @@
 .nav-products-mega__quick small {
   color: rgba(255, 255, 255, 0.76);
   font-size: 10px;
+}
+
+.nav-products-mega__dosage-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 42px;
+  margin-top: auto;
+  align-self: flex-end;
+  padding: 10px 16px;
+  border-radius: 3px;
+  background: linear-gradient(135deg, #c99721, #a77213);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+  box-shadow: 0 8px 18px rgba(201, 151, 33, 0.24);
+  transition:
+    transform var(--t-fast),
+    box-shadow var(--t-fast);
+}
+
+.nav-products-mega__dosage-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(201, 151, 33, 0.3);
+}
+
+.nav-products-mega__dosage-btn .nav-products-mega__icon {
+  width: 20px;
+  height: 20px;
+  color: #ffffff;
 }
 
 /* Actions */
