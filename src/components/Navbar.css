@@ -359,41 +359,36 @@
   border-radius: 3px;
   color: #ffffff;
   background: #153e66;
+  background-image: var(--species-image);
+  background-position: center;
+  background-size: cover;
 }
 
 .nav-products-mega__species::before {
   content: '';
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(circle at 78% 34%, rgba(255, 255, 255, 0.34), transparent 7%),
-    linear-gradient(90deg, rgba(5, 21, 42, 0.9) 0%, rgba(5, 21, 42, 0.58) 45%, rgba(5, 21, 42, 0.18) 100%),
-    linear-gradient(135deg, rgba(201, 151, 33, 0.24), transparent 38%);
+  background: linear-gradient(90deg, rgba(5, 21, 42, 0.88) 0%, rgba(5, 21, 42, 0.66) 46%, rgba(5, 21, 42, 0.14) 100%);
 }
 
 .nav-products-mega__species::after {
-  content: '';
-  position: absolute;
-  inset: 0 0 0 auto;
-  width: 58%;
-  opacity: 0.72;
-  background-size: 38px 38px;
-  background-image:
-    linear-gradient(30deg, rgba(255,255,255,0.16) 12%, transparent 12.5%, transparent 87%, rgba(255,255,255,0.16) 87.5%, rgba(255,255,255,0.16)),
-    linear-gradient(150deg, rgba(255,255,255,0.16) 12%, transparent 12.5%, transparent 87%, rgba(255,255,255,0.16) 87.5%, rgba(255,255,255,0.16));
+  display: none;
 }
 
 .nav-products-mega__species--poultry {
+  --species-image: url("https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?auto=format&fit=crop&w=900&q=80");
   border-left: 8px solid #c99721;
   background-color: #5a341b;
 }
 
 .nav-products-mega__species--dairy {
+  --species-image: url("https://images.unsplash.com/photo-1527153857715-3908f2bae5e8?auto=format&fit=crop&w=900&q=80");
   border-left: 8px solid #1f70b1;
   background-color: #264f69;
 }
 
 .nav-products-mega__species--livestock {
+  --species-image: url("https://images.unsplash.com/photo-1484557985045-edf25e08da73?auto=format&fit=crop&w=900&q=80");
   border-left: 8px solid #6fa142;
   background-color: #4d432f;
 }
@@ -472,42 +467,35 @@
   border: 1px solid #e4e9ef;
   border-radius: 3px;
   background: #f8fafc;
+  background-image: var(--featured-image);
+  background-position: right center;
+  background-size: cover;
 }
 
 .nav-products-mega__featured::before {
   content: '';
   position: absolute;
   inset: 0;
-  opacity: 0.85;
-  background:
-    radial-gradient(circle at 84% 50%, rgba(255,255,255,0.72), transparent 18%),
-    linear-gradient(120deg, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.88) 48%, rgba(255,255,255,0.36) 100%);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.9) 48%, rgba(255, 255, 255, 0.28) 100%);
 }
 
 .nav-products-mega__featured::after {
-  content: '';
-  position: absolute;
-  right: -8px;
-  top: 0;
-  width: 48%;
-  height: 100%;
-  opacity: 0.45;
-  background-size: 30px 30px;
-  background-image:
-    linear-gradient(30deg, #cfd8e3 12%, transparent 12.5%, transparent 87%, #cfd8e3 87.5%, #cfd8e3),
-    linear-gradient(150deg, #cfd8e3 12%, transparent 12.5%, transparent 87%, #cfd8e3 87.5%, #cfd8e3);
+  display: none;
 }
 
 .nav-products-mega__featured--poultry {
-  background: #fff4df;
+  --featured-image: url("https://images.unsplash.com/photo-1560493676-04071c5f467b?auto=format&fit=crop&w=900&q=80");
+  background-color: #fff4df;
 }
 
 .nav-products-mega__featured--feed {
-  background: #edf6fb;
+  --featured-image: url("https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=900&q=80");
+  background-color: #edf6fb;
 }
 
 .nav-products-mega__featured--launch {
-  background: #eef8e9;
+  --featured-image: url("https://images.unsplash.com/photo-1581093458791-9d42cc4683a4?auto=format&fit=crop&w=900&q=80");
+  background-color: #eef8e9;
 }
 
 .nav-products-mega__featured span,
