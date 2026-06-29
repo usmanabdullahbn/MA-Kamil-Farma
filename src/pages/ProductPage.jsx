@@ -4,13 +4,60 @@ import {
   getLabel,
   getProductSlug,
 } from './NewProducts';
-import productCataloguePdf from '../assert/E-Catalog (M. A. Kamil Farma).pdf';
 import './ProductPage.css';
 
 const productImageFiles = import.meta.glob('../assert/New folder/*.png', {
   eager: true,
   import: 'default'
 });
+
+const productBrochureFiles = import.meta.glob('../assert/Literature - Poultry Products/*.pdf', {
+  eager: true,
+  import: 'default'
+});
+
+const BROCHURE_FILE_BY_PRODUCT = {
+  Xinmak: 'XINKMAK WSP.pdf',
+  'Floxy N-Mak': 'Floxy N-Mak WSP.pdf',
+  'Tylokam-10': 'Tylokam-10 Oral Powder.pdf',
+  'Tylokam-100': 'Tylokam-100 Soluble Powder.pdf',
+  'Doxykam-50': 'Doxykam-50 Powder.pdf',
+  'Doxykam-80': 'Doxykam-80 Powder.pdf',
+  Colikam: 'Colikam powder.pdf',
+  'Colikam-50': 'Colikam-50 WSP.pdf',
+  'Neokam-72': 'Neokam-72 Powder.pdf',
+  'Neokam-100': 'Neokam-100 Powder.pdf',
+  'Oxykam-95%': 'oxykam-95_ WSP.pdf',
+  'Mprokam-50': 'Mprokam-50.pdf',
+  'Mprokam-90': 'Mprokam-90 Powder.pdf',
+  'Chlorkam-200': 'Chlorkam-200 WSP.pdf',
+  'Sintolin Plus': 'Sintolin Plus.pdf',
+  'Pefloxkam-10': 'Pefloxkam-10.pdf',
+  'Ofloxkam-10': 'Ofloxkam-10.pdf',
+  'Makflor-25': 'Makflor-25 Oral liquid.pdf',
+  'Makflor-23': 'Makflor-23 Oral Liquid.pdf',
+  'Tilkam-25': 'Tilkam-25 Solution.pdf',
+  'Enrokam C-20': 'Enrokam C 20.pdf',
+  'Enrokam C-10': 'Enrokam C-10 oral solution.pdf',
+  'Bromokam-5': 'Bromokam-5 Oral Liquid.pdf',
+  'Bronchoment-20': 'Bronchoment-20 Oral Liquid.pdf',
+  Moxclav: 'Moxclav Powder.pdf',
+  'Mak Amox-50': 'Mak Amox-50 Powder.pdf',
+  'Mak Amox-80': 'Mak Amox-80 Powder.pdf',
+  'Mak Amox C-15': 'Mak Amox C-15 Water Soluble Powder.pdf',
+  'Mak Amox C-20': 'Mak Amox C-20 WSP.pdf',
+  'Mak Amox C-50': 'Mak Amox C-50 Water Soluble Powder.pdf',
+  'Mox-LS': 'Mox-LS.pdf',
+  Flushkam: 'Fluskam WSP.pdf',
+  Makliv: 'Makliv Solution.pdf',
+  Hepakam: 'Hepakam.pdf',
+  'C-Kam 100': 'C-Kam 100 Powder.pdf',
+  'C-Kam 250': 'C Kam-250.pdf',
+  'Mak Gumbonil': 'Mak Gumbonil Powder.pdf',
+  'Mak Fivevit': 'Mak Fivevit.pdf',
+  'Mak Fourvit': 'Mak Fourvit Oral Liquid.pdf',
+  'Mak Ze-Sel Sol': 'Mak Zesel Solution.pdf',
+};
 
 const makflor23Dosage = [
   {
@@ -138,6 +185,16 @@ const getProductImage = product => {
   return null;
 };
 
+const getProductBrochure = product => {
+  const fileName = BROCHURE_FILE_BY_PRODUCT[product.name];
+
+  if (!fileName) return null;
+
+  const match = Object.entries(productBrochureFiles).find(([filePath]) => filePath.endsWith(`/${fileName}`));
+
+  return match?.[1] || null;
+};
+
 const getComposition = product => {
   const match = product.composition.match(/^(.+?)\s+(\d+(?:\.\d+)?\s*(?:mg|MIU|IU))/i);
 
@@ -196,6 +253,7 @@ export default function ProductPage() {
   const benefits = getBenefits(product);
   const family = getFamily(product);
   const productImage = getProductImage(product);
+  const productBrochure = getProductBrochure(product);
   const relatedProducts = getRelatedProducts(product);
 
   return (
@@ -242,16 +300,17 @@ export default function ProductPage() {
 
                 <div className="product-actions">
                   <a className="product-button product-button--primary" href="#downloads">&darr; Download PIS Sheet</a>
-                  <a className="product-button" href={productCataloguePdf} download>&darr; Download Brochure</a>
+                  {productBrochure ? (
+                    <a className="product-button" href={productBrochure} download>&darr; Download Brochure</a>
+                  ) : (
+                    <span className="product-button product-button--disabled">Brochure unavailable</span>
+                  )}
                 </div>
 
                 <a className="product-enquire" href="https://wa.me/923352249111" target="_blank" rel="noreferrer">
                   <span>Enquire about this product</span>
                   <b>&#8599;</b>
                 </a>
-                <p className="product-summary__note">
-                  Developer: connect these buttons to the approved product-specific PDF files stored in the CMS.
-                </p>
               </div>
             </div>
 
@@ -292,7 +351,12 @@ export default function ProductPage() {
               <p className="product-detail__eyebrow">Document Library</p>
               <h2>Technical downloads</h2>
               <ProductDownload title="PIS Sheet" subtitle="Product Information Sheet · PDF" />
-              <ProductDownload title="Product Brochure" subtitle="Marketing literature · PDF" href={productCataloguePdf} download />
+              <ProductDownload
+                title="Product Brochure"
+                subtitle={productBrochure ? 'Marketing literature · PDF' : 'Brochure not available for this product'}
+                href={productBrochure}
+                download={Boolean(productBrochure)}
+              />
             </aside>
           </div>
         </section>
@@ -356,6 +420,18 @@ function ProductFact({ label, value }) {
 }
 
 function ProductDownload({ title, subtitle, href = '#downloads', download = false }) {
+  if (!href) {
+    return (
+      <span className="product-download product-download--disabled">
+        <span>
+          <strong>{title}</strong>
+          <small>{subtitle}</small>
+        </span>
+        <b>&minus;</b>
+      </span>
+    );
+  }
+
   return (
     <a className="product-download" href={href} download={download}>
       <span>

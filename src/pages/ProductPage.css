@@ -194,6 +194,13 @@
   color: #ffffff;
 }
 
+.product-button--disabled {
+  cursor: not-allowed;
+  border-color: #cbd6df;
+  color: #8b9baa;
+  background: #f3f6f8;
+}
+
 .product-enquire {
   display: flex;
   align-items: center;
@@ -360,6 +367,15 @@
 .product-download b {
   font-size: 21px;
   font-weight: 400;
+}
+
+.product-download--disabled {
+  cursor: not-allowed;
+  color: #8b9baa;
+}
+
+.product-download--disabled small {
+  color: #8b9baa;
 }
 
 .product-detail__overview {
