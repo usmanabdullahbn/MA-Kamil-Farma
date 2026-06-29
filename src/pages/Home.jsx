@@ -163,6 +163,7 @@ const PRODUCTS = [
     desc: 'Antibiotics, anti-virals, phytogenics, additives, and premixes for poultry and livestock.',
     to: '/products/kamil-farma',
     items: ['Antibiotics', 'Anti-Virals', 'Phytogenics', 'Premixes'],
+    image: 'https://images.pexels.com/photos/3786126/pexels-photo-3786126.jpeg?auto=compress&cs=tinysrgb&w=1200',
   },
   {
     icon: (
@@ -178,6 +179,7 @@ const PRODUCTS = [
     desc: 'Binders, premixes, enzymes, and nutritional additives designed to improve feed efficiency and animal performance.',
     to: '/products',
     items: ['Binders', 'Premixes', 'Enzymes', 'Additives'],
+    image: 'https://images.pexels.com/photos/2255459/pexels-photo-2255459.jpeg?auto=compress&cs=tinysrgb&w=1200',
   },
 ];
 
@@ -193,7 +195,7 @@ const INDUSTRIES = [
     title: 'Feed Mills',
     color: '#2E8B57',
     desc: 'Binders and Rotamin portfolio for optimal pellet quality and nutritional value.',
-    items: ['Rotamin', 'Binders', 'Premixes']
+    items: ['Binders', 'Premixes']
   },
   {
     icon: (
@@ -235,9 +237,106 @@ const BLOGS = [
   { slug: 'rotamin-fcr-trial', cat: 'Research', title: 'Rotamin Trial Results: 18% FCR Improvement in Broiler Flocks', date: 'Mar 18, 2026', read: 5 },
 ];
 
+const REVEAL_GROUPS = [
+  '.products-section .section-header',
+  '.products-grid > *',
+  '.products-section__footer',
+  '.heritage-content > *',
+  '.heritage-visual > *',
+  '.industries-section .section-header',
+  '.industries-gride > *',
+  '.distribution-left > *',
+  '.distribution-right > *',
+  '.distribution-boxes > *',
+  '.calc-col > *',
+  '.ecosystem-panel > *',
+  '.ecosystem-nodes > *',
+];
+
+function useHomePageAnimation() {
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const revealNodes = REVEAL_GROUPS.flatMap(selector => Array.from(document.querySelectorAll(selector)))
+      .filter((node, index, list) => node.closest('.home') && list.indexOf(node) === index);
+
+    revealNodes.forEach(node => {
+      node.classList.add('home-reveal');
+
+      if (node.matches('.section-header, .products-section__footer, .ecosystem-panel > .section-eyebrow, .ecosystem-panel > .btn')) {
+        node.classList.add('home-reveal--mask');
+      }
+
+      if (node.matches('.product-card, .industry-card, .dist-box, .calc, .ecosystem-node') || node.classList.contains('distribution-legend')) {
+        node.classList.add('home-reveal--tile');
+      }
+
+      if (node.closest('.heritage-content') || node.closest('.distribution-left')) {
+        node.classList.add('home-reveal--left');
+      }
+
+      if (node.closest('.heritage-visual') || node.closest('.distribution-right')) {
+        node.classList.add('home-reveal--right');
+      }
+    });
+
+    if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+      revealNodes.forEach(node => node.classList.add('is-visible'));
+      return undefined;
+    }
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+
+        const siblings = Array.from(entry.target.parentElement?.children || []);
+        const siblingIndex = Math.max(0, siblings.indexOf(entry.target));
+        const cappedDelay = Math.min(siblingIndex * 80, 360);
+
+        entry.target.style.setProperty('--reveal-delay', `${cappedDelay}ms`);
+        entry.target.classList.add('is-visible');
+        revealObserver.unobserve(entry.target);
+      });
+    }, {
+      threshold: 0.16,
+      rootMargin: '0px 0px -10% 0px',
+    });
+
+    revealNodes.forEach(node => revealObserver.observe(node));
+
+    const hero = document.querySelector('.hero');
+    let rafId = 0;
+
+    const handlePointerMove = (event) => {
+      if (!hero || window.innerWidth < 900) return;
+
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        const rect = hero.getBoundingClientRect();
+        const x = (event.clientX - rect.left) / rect.width - 0.5;
+        const y = (event.clientY - rect.top) / rect.height - 0.5;
+
+        hero.style.setProperty('--hero-shift-x', `${(-x * 18).toFixed(2)}px`);
+        hero.style.setProperty('--hero-shift-y', `${(-y * 14).toFixed(2)}px`);
+      });
+    };
+
+    hero?.addEventListener('pointermove', handlePointerMove, { passive: true });
+
+    return () => {
+      revealObserver.disconnect();
+      hero?.removeEventListener('pointermove', handlePointerMove);
+      cancelAnimationFrame(rafId);
+    };
+  }, []);
+}
+
 export default function Home() {
   const { t } = useLang();
   const [activeTestimonial, setActiveTestimonial] = useState(0);
+
+  useHomePageAnimation();
 
   useEffect(() => {
     const id = setInterval(() => setActiveTestimonial(p => (p + 1) % TESTIMONIALS.length), 5000);
@@ -363,8 +462,14 @@ export default function Home() {
           <div className="products-grid">
             {PRODUCTS.map(p => (
               <Link key={p.title} to={p.to} className="product-card card">
-                <div className="product-card__top" style={{ background: p.color + '12' }}>
-                  <div className="product-card__icon" style={{ background: p.color + '20', color: p.color }}>
+                <div
+                  className="product-card__top"
+                  style={{
+                    '--product-color': p.color,
+                    '--product-bg-image': `url("${p.image}")`,
+                  }}
+                >
+                  <div className="product-card__icon" style={{ background: 'rgba(255, 255, 255, 0.9)', color: p.color }}>
                     {p.icon}
                   </div>
                   <span className="tag tag--navy product-card__tag">{p.tag}</span>
