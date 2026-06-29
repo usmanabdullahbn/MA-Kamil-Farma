@@ -195,12 +195,19 @@ const getProductBrochure = product => {
   return match?.[1] || null;
 };
 
-const getComposition = product => {
-  const match = product.composition.match(/^(.+?)\s+(\d+(?:\.\d+)?\s*(?:mg|MIU|IU))/i);
+const cleanCatalogueText = value =>
+  String(value || '')
+    .replace(/Â·/g, '·')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+const parseCompositionItem = item => {
+  const normalizedItem = cleanCatalogueText(item);
+  const match = normalizedItem.match(/^(.+?)\s+(\d[\d.,]*(?:\.\d+)?\s*(?:MIU|IU|mg|g|ml|%)(?:\s*\([^)]*\))?)$/i);
 
   if (!match) {
     return {
-      ingredient: product.composition.split(' per ')[0],
+      ingredient: normalizedItem,
       strength: '',
     };
   }
@@ -208,6 +215,20 @@ const getComposition = product => {
   return {
     ingredient: match[1].trim(),
     strength: match[2].replace(/\s+/g, ' '),
+  };
+};
+
+const getComposition = product => {
+  const normalizedComposition = cleanCatalogueText(product.composition);
+  const basisMatch = normalizedComposition.match(/\s+per\s+(.+)$/i);
+  const body = basisMatch ? normalizedComposition.slice(0, basisMatch.index).trim() : normalizedComposition;
+  const basis = basisMatch ? basisMatch[1].trim() : product.form === 'Liquid' ? 'ml' : 'gram';
+  const entries = body.split(/\s*·\s*/).filter(Boolean).map(parseCompositionItem);
+
+  return {
+    basis,
+    entries,
+    summary: body,
   };
 };
 
@@ -291,10 +312,14 @@ export default function ProductPage() {
 
                 <div className="product-composition">
                   <p className="product-detail__eyebrow">Composition</p>
-                  <span>Each ml contains</span>
-                  <div>
-                    <strong>{composition.ingredient}</strong>
-                    {composition.strength && <b>1KG</b>}
+                  <span>Each {composition.basis} contains</span>
+                  <div className="product-composition__list">
+                    {composition.entries.map(entry => (
+                      <div className="product-composition__item" key={`${entry.ingredient}-${entry.strength}`}>
+                        <strong>{entry.ingredient}</strong>
+                        {entry.strength && <b>{entry.strength}</b>}
+                      </div>
+                    ))}
                   </div>
                 </div>
 
@@ -318,7 +343,7 @@ export default function ProductPage() {
               <ProductFact label="Product Family" value={family} />
               <ProductFact label="Dosage Form" value={product.form === 'Liquid' ? 'Oral liquid' : product.form} />
               <ProductFact label="Primary Species" value={product.species} />
-              <ProductFact label="Active Ingredient" value={composition.ingredient} />
+              <ProductFact label="Active Ingredient" value={composition.summary} />
             </div>
           </div>
         </section>

@@ -149,24 +149,38 @@
   font-weight: 900;
 }
 
-.product-composition div {
+.product-composition__list {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.product-composition__item {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 24px;
-  margin-top: 4px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #edf2f6;
+}
+
+.product-composition__item:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
 }
 
 .product-composition strong {
   color: #142f4b;
-  font-size: 25px;
+  font-size: 18px;
   font-weight: 500;
+  line-height: 1.25;
 }
 
 .product-composition b {
   color: #073465;
-  font-size: 24px;
+  font-size: 17px;
   line-height: 1;
+  white-space: nowrap;
 }
 
 .product-actions {
@@ -576,7 +590,6 @@
     font-size: clamp(3rem, 16vw, 4.1rem);
   }
 
-  .product-composition div,
   .product-dosage__head,
   .product-dosage__row,
   .product-cta__inner,
@@ -584,7 +597,7 @@
     grid-template-columns: 1fr;
   }
 
-  .product-composition div {
+  .product-composition__item {
     align-items: flex-start;
     flex-direction: column;
     gap: 8px;
