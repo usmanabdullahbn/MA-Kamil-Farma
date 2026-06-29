@@ -358,17 +358,17 @@
   padding: 16px 18px;
   border-radius: 3px;
   color: #ffffff;
-  background: #153e66;
-  background-image: var(--species-image);
-  background-position: center;
+  background-color: #153e66;
+  background-image:
+    linear-gradient(90deg, rgba(5, 21, 42, 0.9) 0%, rgba(5, 21, 42, 0.62) 48%, rgba(5, 21, 42, 0.2) 100%),
+    var(--species-image);
+  background-position: center, var(--species-position, center);
   background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .nav-products-mega__species::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, rgba(5, 21, 42, 0.88) 0%, rgba(5, 21, 42, 0.66) 46%, rgba(5, 21, 42, 0.14) 100%);
+  display: none;
 }
 
 .nav-products-mega__species::after {
@@ -377,18 +377,21 @@
 
 .nav-products-mega__species--poultry {
   --species-image: url("https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?auto=format&fit=crop&w=900&q=80");
+  --species-position: 62% 44%;
   border-left: 8px solid #c99721;
   background-color: #5a341b;
 }
 
 .nav-products-mega__species--dairy {
   --species-image: url("https://images.unsplash.com/photo-1527153857715-3908f2bae5e8?auto=format&fit=crop&w=900&q=80");
+  --species-position: 50% 38%;
   border-left: 8px solid #1f70b1;
   background-color: #264f69;
 }
 
 .nav-products-mega__species--livestock {
   --species-image: url("https://images.unsplash.com/photo-1484557985045-edf25e08da73?auto=format&fit=crop&w=900&q=80");
+  --species-position: 46% 46%;
   border-left: 8px solid #6fa142;
   background-color: #4d432f;
 }
