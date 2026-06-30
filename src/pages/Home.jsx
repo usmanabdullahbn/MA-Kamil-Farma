@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useLang } from '../hooks/useLang';
+import { useTyping } from '../hooks/useTyping';
 import { TypingTitle } from '../components/TypingTitle';
 import bgHeroVideo from '../assert/bg-hero.mp4';
 import nationwideMapImage from '../assert/nation wide image.png';
@@ -63,8 +64,8 @@ function FeedCalculator() {
   function calculate() {
     const w = parseFloat(weight); const d = parseInt(days);
     if (!w || !d) return;
-    const daily = w * rates[species] * 1000;
-    const total = (daily * d / 1000).toFixed(2);
+    const daily = w * rates[species] * 1000; // g/day
+    const total = (daily * d / 1000).toFixed(2); // kg
     setResult({ daily: daily.toFixed(0), total, product: products[species][0] });
   }
 
@@ -118,6 +119,35 @@ function FeedCalculator() {
   );
 }
 
+// ── Stats counter ───────────────────────────────────────────
+function StatCounter({ end, suffix = '' }) {
+  const [val, setVal] = useState(0);
+  const ref = useRef();
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        let start = 0; const step = end / 60;
+        const id = setInterval(() => {
+          start = Math.min(start + step, end);
+          setVal(Math.floor(start));
+          if (start >= end) clearInterval(id);
+        }, 16);
+        obs.disconnect();
+      }
+    }, { threshold: 0.5 });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, [end]);
+  return <span ref={ref} className="stat__num">{val.toLocaleString()}{suffix}</span>;
+}
+
+const STATS = [
+  { num: 100, suffix: '+', label: 'Years of Excellence' },
+  { num: 15000, suffix: '+', label: 'Farms Served' },
+  { num: 500, suffix: '+', label: 'Product SKUs' },
+  { num: 12, suffix: '', label: 'Export Markets' },
+];
+
 const PRODUCTS = [
   {
     icon: (
@@ -166,7 +196,8 @@ const INDUSTRIES = [
     color: '#2E8B57',
     desc: 'Binders and Rotamin portfolio for optimal pellet quality and nutritional value.',
     items: ['Binders', 'Premixes'],
-    image: 'https://images.pexels.com/photos/1595104/pexels-photo-1595104.jpeg?auto=compress&cs=tinysrgb&w=1200'
+    image: 'https://images.pexels.com/photos/1595104/pexels-photo-1595104.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    video: 'https://videos.pexels.com/video-files/4911804/4911804-uhd_2560_1440_25fps.mp4'
   },
   {
     icon: (
@@ -180,8 +211,34 @@ const INDUSTRIES = [
     color: '#003366',
     desc: 'Antibiotics, phytogenics, and herd health management solutions.',
     items: ['Antibiotics', 'Phytogenics', 'Anti-Virals'],
-    image: 'https://images.pexels.com/photos/6235233/pexels-photo-6235233.jpeg?auto=compress&cs=tinysrgb&w=1200'
+    image: 'https://images.pexels.com/photos/6235233/pexels-photo-6235233.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    video: 'https://videos.pexels.com/video-files/6234611/6234611-uhd_2560_1440_25fps.mp4'
   },
+  // {
+  //   icon: (
+  //     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+  //       <path d="M12 3.8c3.4 0 6.2 2.7 6.2 6.2 0 3.4-2.7 6.2-6.2 6.2S5.8 13.4 5.8 10c0-3.5 2.8-6.2 6.2-6.2Z" stroke="currentColor" strokeWidth="1.6" />
+  //       <path d="M9.5 10.5c.3.8.9 1.4 1.8 1.7.9.3 1.9.2 2.7-.3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+  //       <path d="M8 18.5c1.5-1.6 3.2-2.4 4-2.4s2.5.8 4 2.4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+  //     </svg>
+  //   ),
+  //   title: 'Aquaculture',
+  //   color: '#1a5c99',
+  //   desc: 'Tailored solutions for sustainable aquaculture operations.',
+  //   focus: 'Coming Soon'
+  // },
+];
+
+const TESTIMONIALS = [
+  { name: 'Abdul Rehman', role: 'Feed Mill Owner, Lahore', text: 'Rotamin binders have significantly improved our pellet quality and durability. We\'ve seen a 15% improvement in FCR across our broiler customers. Highly recommend.', product: 'Rotamin Binder Pro', rating: 5 },
+  { name: 'Dr. Imran Khan', role: 'Veterinary Consultant, Punjab', text: 'The antibiotic range from M.A. Kamil Farma is consistently reliable. Withdrawal periods are clearly stated and our clients trust the products completely.', product: 'Veterinary Antibiotics', rating: 5 },
+  { name: 'Shahid Enterprises', role: 'Pharma Distributor, Karachi', text: 'Their amino acid and vitamin excipients meet international quality standards. The team is professional and delivery is always on time.', product: 'Pharma Excipients', rating: 5 },
+];
+
+const BLOGS = [
+  { slug: 'one-health-future', cat: 'Science', title: 'One Health: The Future of Veterinary Pharmaceutical Design', date: 'Apr 14, 2026', read: 6 },
+  { slug: 'antibiotic-resistance-pakistan', cat: 'Industry', title: 'Antibiotic Resistance in Pakistan\'s Livestock Sector', date: 'Apr 1, 2026', read: 8 },
+  { slug: 'rotamin-fcr-trial', cat: 'Research', title: 'Rotamin Trial Results: 18% FCR Improvement in Broiler Flocks', date: 'Mar 18, 2026', read: 5 },
 ];
 
 const REVEAL_GROUPS = [
@@ -212,15 +269,18 @@ function useHomePageAnimation() {
     revealNodes.forEach(node => {
       node.classList.add('home-reveal');
 
-      if (node.matches('.section-header, .products-section__footer, .ecosystem-panel > .section-eyebrow')) {
+      if (node.matches('.section-header, .products-section__footer, .ecosystem-panel > .section-eyebrow, .ecosystem-panel > .btn')) {
         node.classList.add('home-reveal--mask');
       }
+
       if (node.matches('.product-card, .industry-card, .dist-box, .calc, .ecosystem-node') || node.classList.contains('distribution-legend')) {
         node.classList.add('home-reveal--tile');
       }
+
       if (node.closest('.heritage-content') || node.closest('.distribution-left')) {
         node.classList.add('home-reveal--left');
       }
+
       if (node.closest('.heritage-visual') || node.closest('.distribution-right')) {
         node.classList.add('home-reveal--right');
       }
@@ -234,52 +294,55 @@ function useHomePageAnimation() {
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
+
         const siblings = Array.from(entry.target.parentElement?.children || []);
         const siblingIndex = Math.max(0, siblings.indexOf(entry.target));
-        const cappedDelay = Math.min(siblingIndex * 85, 400);
+        const cappedDelay = Math.min(siblingIndex * 80, 360);
 
         entry.target.style.setProperty('--reveal-delay', `${cappedDelay}ms`);
         entry.target.classList.add('is-visible');
         revealObserver.unobserve(entry.target);
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    }, {
+      threshold: 0.16,
+      rootMargin: '0px 0px -10% 0px',
+    });
 
     revealNodes.forEach(node => revealObserver.observe(node));
 
     const hero = document.querySelector('.hero');
-    let heroRaf = 0;
+    let rafId = 0;
 
     const handlePointerMove = (event) => {
       if (!hero || window.innerWidth < 900) return;
-      cancelAnimationFrame(heroRaf);
-      heroRaf = requestAnimationFrame(() => {
+
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
         const rect = hero.getBoundingClientRect();
         const x = (event.clientX - rect.left) / rect.width - 0.5;
         const y = (event.clientY - rect.top) / rect.height - 0.5;
-        hero.style.setProperty('--hero-shift-x', `${(-x * 24).toFixed(2)}px`);
-        hero.style.setProperty('--hero-shift-y', `${(-y * 18).toFixed(2)}px`);
+
+        hero.style.setProperty('--hero-shift-x', `${(-x * 18).toFixed(2)}px`);
+        hero.style.setProperty('--hero-shift-y', `${(-y * 14).toFixed(2)}px`);
       });
     };
 
     hero?.addEventListener('pointermove', handlePointerMove, { passive: true });
 
     const interactiveCards = Array.from(document.querySelectorAll(
-      '.home .product-card, .home .industry-card, .home .calc, .home .ecosystem-panel, .home .dist-box, .home .distribution-legend, .home .pakistan-map-image'
+      '.home .card, .home .calc, .home .ecosystem-panel, .home .dist-box, .home .distribution-legend, .home .pakistan-map-image'
     ));
 
-    let cardRaf = 0;
     const handleCardMove = (event) => {
       const card = event.currentTarget;
-      cancelAnimationFrame(cardRaf);
-      cardRaf = requestAnimationFrame(() => {
-        const rect = card.getBoundingClientRect();
-        const x = (event.clientX - rect.left) / rect.width;
-        const y = (event.clientY - rect.top) / rect.height;
-        card.style.setProperty('--spot-x', `${(x * 100).toFixed(1)}%`);
-        card.style.setProperty('--spot-y', `${(y * 100).toFixed(1)}%`);
-        card.style.setProperty('--tilt-x', `${((0.5 - y) * 7).toFixed(2)}deg`);
-        card.style.setProperty('--tilt-y', `${((x - 0.5) * 7).toFixed(2)}deg`);
-      });
+      const rect = card.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width;
+      const y = (event.clientY - rect.top) / rect.height;
+
+      card.style.setProperty('--spot-x', `${(x * 100).toFixed(1)}%`);
+      card.style.setProperty('--spot-y', `${(y * 100).toFixed(1)}%`);
+      card.style.setProperty('--tilt-x', `${((0.5 - y) * 5).toFixed(2)}deg`);
+      card.style.setProperty('--tilt-y', `${((x - 0.5) * 5).toFixed(2)}deg`);
     };
 
     const handleCardLeave = (event) => {
@@ -300,23 +363,31 @@ function useHomePageAnimation() {
         card.removeEventListener('pointermove', handleCardMove);
         card.removeEventListener('pointerleave', handleCardLeave);
       });
-      cancelAnimationFrame(heroRaf);
-      cancelAnimationFrame(cardRaf);
+      cancelAnimationFrame(rafId);
     };
   }, []);
 }
 
 export default function Home() {
   const { t } = useLang();
+  const [activeTestimonial, setActiveTestimonial] = useState(0);
+
   useHomePageAnimation();
+
+  useEffect(() => {
+    const id = setInterval(() => setActiveTestimonial(p => (p + 1) % TESTIMONIALS.length), 5000);
+    return () => clearInterval(id);
+  }, []);
 
   return (
     <div className="home">
+      {/* Expo banner */}
       <ExpoCountdown />
 
       {/* ── Hero ── */}
       <section className="hero">
         <div className="hero__bg">
+          {/* Background video — custom hero background */}
           <video
             className="hero__video"
             autoPlay
@@ -326,7 +397,10 @@ export default function Home() {
             preload="auto"
             poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E"
           >
-            <source src={bgHeroVideo} type="video/mp4" />
+            <source
+              src={bgHeroVideo}
+              type="video/mp4"
+            />
           </video>
           <div className="hero__bg-mesh" />
           <div className="hero__bg-overlay" />
@@ -349,6 +423,7 @@ export default function Home() {
             <Link to="/contact" className="btn btn--outline-white">{t('contactUs')}</Link>
           </div>
 
+          {/* Trust strip */}
           <div className="hero__trust animate-fade-up-d4">
             {['DRAP Approved'].map(c => (
               <div key={c} className="hero__trust-badge">
@@ -359,6 +434,7 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Species icons */}
         <div className="hero__species">
           {[
             {
@@ -398,6 +474,18 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      {/* ── Stats ── */}
+      {/* <section className="stats-section">
+        <div className="container stats-grid">
+          {STATS.map(s => (
+            <div key={s.label} className="stat">
+              <StatCounter end={s.num} suffix={s.suffix} />
+              <span className="stat__label">{s.label}</span>
+            </div>
+          ))}
+        </div>
+      </section> */}
 
       {/* ── Products ── */}
       <section className="section products-section">
@@ -493,7 +581,17 @@ export default function Home() {
                     '--product-bg-image': `url("${ind.image}")`,
                   }}
                 >
-                  <div className="industry-card__icon" style={{ background: 'rgba(255, 255, 255, 0.9)', color: ind.color }}>
+                  <video
+                    className="industry-card__video"
+                    src={ind.video}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    aria-hidden="true"
+                  />
+                  <div className="industry-card__icon" style={{ background: 'rgba(255, 255, 255, 0.92)', color: ind.color }}>
                     {ind.icon}
                   </div>
                 </div>
@@ -521,26 +619,58 @@ export default function Home() {
               <p className="distribution-intro">Our extensive distribution network ensures timely availability of high-quality veterinary pharmaceuticals and feed additives from coast to mountains.</p>
 
               <ul className="distribution-features">
-                {[
-                  { t: "Strong Regional Presence", d: "Strategic partners and stockists in all major regions" },
-                  { t: "Reliable Supply Chain", d: "Efficient logistics ensuring on-time delivery and product availability" },
-                  { t: "Trusted Partnerships", d: "Working with distributors, veterinarians & farmers nationwide" },
-                  { t: "Quality Commitment", d: "Maintaining product integrity across every mile" }
-                ].map((item, idx) => (
-                  <li key={idx}>
-                    <div className="feature-icon">
-                      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                        <path d="M3.5 18.5h17V9.2L12 4.5 3.5 9.2v9.3Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
-                        <path d="M9 18.5v-4h6v4" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
-                        <path d="M12 4.5v14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-                      </svg>
-                    </div>
-                    <div>
-                      <strong>{item.t}</strong>
-                      <span>{item.d}</span>
-                    </div>
-                  </li>
-                ))}
+                <li>
+                  <div className="feature-icon">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M3.5 18.5h17V9.2L12 4.5 3.5 9.2v9.3Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+                      <path d="M9 18.5v-4h6v4" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+                      <path d="M12 4.5v14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                    </svg>
+                  </div>
+                  <div>
+                    <strong>Strong Regional Presence</strong>
+                    <span>Strategic partners and stockists in all major regions</span>
+                  </div>
+                </li>
+                <li>
+                  <div className="feature-icon">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M3.5 18.5h17V9.2L12 4.5 3.5 9.2v9.3Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+                      <path d="M9 18.5v-4h6v4" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+                      <path d="M12 4.5v14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                    </svg>
+                  </div>
+                  <div>
+                    <strong>Reliable Supply Chain</strong>
+                    <span>Efficient logistics ensuring on-time delivery and product availability</span>
+                  </div>
+                </li>
+                <li>
+                  <div className="feature-icon">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M3.5 18.5h17V9.2L12 4.5 3.5 9.2v9.3Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+                      <path d="M9 18.5v-4h6v4" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+                      <path d="M12 4.5v14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                    </svg>
+                  </div>
+                  <div>
+                    <strong>Trusted Partnerships</strong>
+                    <span>Working with distributors, veterinarians &amp; farmers nationwide</span>
+                  </div>
+                </li>
+                <li>
+                  <div className="feature-icon">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M3.5 18.5h17V9.2L12 4.5 3.5 9.2v9.3Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+                      <path d="M9 18.5v-4h6v4" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+                      <path d="M12 4.5v14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                    </svg>
+                  </div>
+                  <div>
+                    <strong>Quality Commitment</strong>
+                    <span>Maintaining product integrity across every mile</span>
+                  </div>
+                </li>
               </ul>
             </div>
 
@@ -548,39 +678,82 @@ export default function Home() {
               <img src={nationwideMapImage} alt="Pakistan Distribution Network Map" className="pakistan-map-image" />
 
               <div className="distribution-legend">
-                {[
-                  { c: "gold", l: "Head Office", t: "Karachi, Sindh" },
-                  { c: "blue", l: "Regional Hub", t: "Punjab" },
-                  { c: "blue", l: "Regional Hub", t: "Sindh" },
-                  { c: "green", l: "Regional Hub", t: "Khyber Pakhtunkhwa" },
-                  { c: "teal", l: "Regional Hub", t: "Balochistan" },
-                  { c: "dashed", l: "Distribution Network", t: "Across Pakistan" }
-                ].map((leg, idx) => (
-                  <div className="legend-item" key={idx}>
-                    <span className={`legend-dot legend-dot--${leg.c}`} />
-                    <div>
-                      <div className="legend-label">{leg.l}</div>
-                      <div className="legend-text">{leg.t}</div>
-                    </div>
+                <div className="legend-item">
+                  <span className="legend-dot legend-dot--gold" />
+                  <div>
+                    <div className="legend-label">Head Office</div>
+                    <div className="legend-text">Karachi, Sindh</div>
                   </div>
-                ))}
+                </div>
+                <div className="legend-item">
+                  <span className="legend-dot legend-dot--blue" />
+                  <div>
+                    <div className="legend-label">Regional Hub</div>
+                    <div className="legend-text">Punjab</div>
+                  </div>
+                </div>
+                <div className="legend-item">
+                  <span className="legend-dot legend-dot--blue" />
+                  <div>
+                    <div className="legend-label">Regional Hub</div>
+                    <div className="legend-text">Sindh</div>
+                  </div>
+                </div>
+                <div className="legend-item">
+                  <span className="legend-dot legend-dot--green" />
+                  <div>
+                    <div className="legend-label">Regional Hub</div>
+                    <div className="legend-text">Khyber Pakhtunkhwa</div>
+                  </div>
+                </div>
+                <div className="legend-item">
+                  <span className="legend-dot legend-dot--teal" />
+                  <div>
+                    <div className="legend-label">Regional Hub</div>
+                    <div className="legend-text">Balochistan</div>
+                  </div>
+                </div>
+                <div className="legend-item">
+                  <span className="legend-dot legend-dot--dashed" />
+                  <div>
+                    <div className="legend-label">Distribution Network</div>
+                    <div className="legend-text">Across Pakistan</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
+          {/* Bottom feature boxes */}
           <div className="distribution-boxes">
-            {[
-              { i: <svg viewBox="0 0 24 24" fill="none"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.2 8 12 8 12s8-6.8 8-12c0-4.4-3.6-8-8-8zm0 11c-1.7 0-3-1.3-3-3s1.3-3 3-3 3 1.3 3 3-1.3 3-3 3z" fill="white"/></svg>, h: "Nationwide Coverage", p: "Serving all major provinces across Pakistan" },
-              { i: <svg viewBox="0 0 24 24" fill="none"><path d="M9 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm0 0c3.3 0 6 1.3 6 3v2H3v-2c0-1.7 2.7-3 6-3zm6-2c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1 7v-2c0-1.3-1.7-2.5-4-3" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>, h: "Strong Network", p: "Empowered by trusted distributors and partners" },
-              { i: <svg viewBox="0 0 24 24" fill="none"><path d="M20 7l-1.4-1.4c-.4-.4-1-.4-1.4 0l-2.1 2.1-7 7V16h3.3l7-7 2.1-2.1c.4-.4.4-1 0-1.4zM4 20h16v2H4z" fill="white"/></svg>, h: "Always Accessible", p: "Ensuring consistent availability where you need us" },
-              { i: <svg viewBox="0 0 24 24" fill="none"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-2 15l-5-5 1.4-1.4L10 14.2l7.6-7.6L19 8l-9 9z" fill="white"/></svg>, h: "Committed to Quality", p: "Delivering excellence with integrity at every step" }
-            ].map((box, idx) => (
-              <div className="dist-box" key={idx}>
-                <div className="dist-box__icon">{box.i}</div>
-                <h4>{box.h}</h4>
-                <p>{box.p}</p>
+            <div className="dist-box">
+              <div className="dist-box__icon">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.2 8 12 8 12s8-6.8 8-12c0-4.4-3.6-8-8-8zm0 11c-1.7 0-3-1.3-3-3s1.3-3 3-3 3 1.3 3 3-1.3 3-3 3z" fill="white"/></svg>
               </div>
-            ))}
+              <h4>Nationwide Coverage</h4>
+              <p>Serving all major provinces across Pakistan</p>
+            </div>
+            <div className="dist-box">
+              <div className="dist-box__icon">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M9 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm0 0c3.3 0 6 1.3 6 3v2H3v-2c0-1.7 2.7-3 6-3zm6-2c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1 7v-2c0-1.3-1.7-2.5-4-3" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </div>
+              <h4>Strong Network</h4>
+              <p>Empowered by trusted distributors and partners</p>
+            </div>
+            <div className="dist-box">
+              <div className="dist-box__icon">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M20 7l-1.4-1.4c-.4-.4-1-.4-1.4 0l-2.1 2.1-7 7V16h3.3l7-7 2.1-2.1c.4-.4.4-1 0-1.4zM4 20h16v2H4z" fill="white"/></svg>
+              </div>
+              <h4>Always Accessible</h4>
+              <p>Ensuring consistent availability where you need us</p>
+            </div>
+            <div className="dist-box">
+              <div className="dist-box__icon">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-2 15l-5-5 1.4-1.4L10 14.2l7.6-7.6L19 8l-9 9z" fill="white"/></svg>
+              </div>
+              <h4>Committed to Quality</h4>
+              <p>Delivering excellence with integrity at every step</p>
+            </div>
           </div>
         </div>
       </section>
@@ -592,8 +765,14 @@ export default function Home() {
             <FeedCalculator />
           </div>
           <div className="science-col">
+
             <div className="ecosystem-panel">
-              <span style={{ marginTop: "15px" }} className="section-eyebrow">Our Business Ecosystem</span>
+              <span style={{marginTop: "15px"}} className="section-eyebrow">Our Business Ecosystem</span>
+
+              {/* <div className="ecosystem-center">
+                <span>Core</span>
+                <h3>M.A. Kamil Farma</h3>
+              </div> */}
               <div className="ecosystem-nodes">
                 {[
                   'Manufacturing',
@@ -610,11 +789,98 @@ export default function Home() {
                   </div>
                 ))}
               </div>
-              <Link to="/about" style={{ marginBottom: "3px" }} className="btn btn--primary">Explore Our Network</Link>
+            <Link to="/about" style={{ marginBottom: "3px" }} className="btn btn--primary">Explore Our Network</Link>
             </div>
           </div>
         </div>
       </section>
+
+      {/* ── Testimonials ── */}
+      {/*
+      <section className="testimonials-section">
+        <div className="container">
+          <div className="section-header section-header--center">
+            <span className="section-eyebrow" style={{ color: 'var(--gold)' }}>Client Testimonials</span>
+            <h2 className="section-title section-title--white">Trusted by Pakistan's Best Farms</h2>
+          </div>
+          <div className="testimonials-slider testimonials-container">
+            {TESTIMONIALS.map((t, i) => (
+              <div key={i} className={`testimonial-card ${i === activeTestimonial ? 'active' : ''}`}>
+                <div className="testimonial-stars">{'★'.repeat(t.rating)}</div>
+                <p className="testimonial-text">"{t.text}"</p>
+                <div className="testimonial-footer">
+                  <div className="testimonial-author">
+                    <div className="testimonial-avatar">{t.name.split(' ').map(n => n[0]).join('').slice(0, 2)}</div>
+                    <div>
+                      <div className="testimonial-name">{t.name}</div>
+                      <div className="testimonial-role">{t.role}</div>
+                    </div>
+                  </div>
+                  <span className="tag tag--gold">{t.product}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="testimonials-dots">
+            {TESTIMONIALS.map((_, i) => (
+              <button key={i} className={`testimonials-dot ${i === activeTestimonial ? 'active' : ''}`} onClick={() => setActiveTestimonial(i)} />
+            ))}
+          </div>
+        </div>
+      </section>
+      */}
+
+      {/* ── Blog ── */}
+      {/*
+      <section className="section blog-section">
+        <div className="container">
+          <div className="section-header blog-header">
+            <div>
+              <span className="section-eyebrow">{t('blogTitle')}</span>
+              <h2 className="section-title">{t('blogTitle')}</h2>
+              <p className="section-lead">{t('blogSub')}</p>
+            </div>
+            <Link to="/blog" className="btn btn--outline">{t('viewAll')} Articles</Link>
+          </div>
+          <div className="blog-grid">
+            {BLOGS.map(b => (
+              <Link key={b.slug} to={`/blog/${b.slug}`} className="blog-card card">
+                <div className="blog-card__img">
+                  <div className="blog-card__img-placeholder" />
+                  <span className="tag tag--navy blog-card__cat">{b.cat}</span>
+                </div>
+                <div className="blog-card__body">
+                  <h3 className="blog-card__title">{b.title}</h3>
+                  <div className="blog-card__meta">
+                    <span>{b.date}</span>
+                    <span>·</span>
+                    <span>{b.read} min read</span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+      */}
+
+      {/* ── Feed Additives CTA ── */}
+      {/* <section className="fa-cta-section">
+        <div className="container">
+          <div className="fa-cta-card">
+            <div className="fa-cta-card__left">
+              <span className="section-eyebrow" style={{ color: 'var(--green-light)' }}>Sister Brand</span>
+              <h2 className="section-title section-title--white">Explore Our Feed Additives Division</h2>
+              <p style={{ color: 'rgba(255,255,255,0.68)', maxWidth: 460, lineHeight: 1.75 }}>
+                A dedicated product line of scientifically formulated feed additives — growth promoters, mycotoxin binders, digestive enzymes, and mineral premixes.
+              </p>
+            </div>
+            <a href="https://feedadditives.makamilfarma.com" target="_blank" rel="noopener noreferrer" className="btn btn--gold">
+              Visit Feed Additives Site ↗
+            </a>
+          </div>
+        </div>
+      </section> */}
     </div>
   );
 }
