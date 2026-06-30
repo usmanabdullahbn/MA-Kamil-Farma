@@ -1690,6 +1690,448 @@
 
 /* ── Animation Keyframes ────────────────────────── */
 
+/* ── Pro-level animations ────────────────────────── */
+
+/* Split-word reveal (used by SplitWords component) */
+.split-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  line-height: 1.18;
+}
+
+.split-word__inner {
+  display: inline-block;
+  transform: translate3d(0, 105%, 0);
+  opacity: 0;
+  transition:
+    transform 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.6s ease;
+  will-change: transform, opacity;
+}
+
+.split-word.is-in .split-word__inner {
+  transform: translate3d(0, 0, 0);
+  opacity: 1;
+}
+
+/* Hero parallax + magnetic buttons */
+.hero__bg {
+  transform: translate3d(0, var(--hero-parallax, 0px), 0);
+  will-change: transform;
+}
+
+.hero__title {
+  transform: translate3d(0, var(--hero-p-title, 0px), 0);
+  transition: transform 0.2s linear;
+}
+
+.hero__sub {
+  transform: translate3d(0, var(--hero-p-sub, 0px), 0);
+  transition: transform 0.2s linear;
+}
+
+.hero__actions {
+  transform: translate3d(0, var(--hero-p-actions, 0px), 0);
+  transition: transform 0.2s linear;
+}
+
+.hero__trust {
+  transform: translate3d(0, var(--hero-p-trust, 0px), 0);
+  transition: transform 0.2s linear;
+}
+
+.hero__actions .btn {
+  --mag-x: 0px;
+  --mag-y: 0px;
+  transform: translate3d(var(--mag-x), var(--mag-y), 0);
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow var(--t-mid),
+    background var(--t-mid),
+    color var(--t-mid);
+  will-change: transform;
+}
+
+.hero__actions .btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.22) 50%, transparent 65%);
+  transform: translateX(-120%);
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.hero__actions .btn:hover::after {
+  transform: translateX(120%);
+}
+
+/* Trust marquee */
+.hero__trust-marquee {
+  width: 100%;
+  max-width: 540px;
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
+}
+
+.hero__trust-track {
+  display: flex;
+  gap: 10px;
+  width: max-content;
+  animation: trustMarquee 32s linear infinite;
+}
+
+.hero__trust:hover .hero__trust-track {
+  animation-play-state: paused;
+}
+
+@keyframes trustMarquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* Floating species icons */
+.hero__species-item {
+  position: relative;
+  animation: speciesFloat 6s ease-in-out infinite;
+}
+
+.hero__species-item:nth-child(1) { animation-delay: 0s; }
+.hero__species-item:nth-child(2) { animation-delay: 1.2s; }
+.hero__species-item:nth-child(3) { animation-delay: 2.4s; }
+
+@keyframes speciesFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* Section title split-wrap */
+.section-title--split {
+  display: block;
+}
+
+/* Heritage year — count-up glow */
+.heritage-year-num {
+  background: linear-gradient(180deg, #ffffff 0%, #f0e6c8 60%, var(--gold) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 28px rgba(201, 166, 53, 0.18);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Glow halo on product / industry cards */
+.product-card::after,
+.industry-card::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(135deg, transparent 0%, rgba(201, 166, 53, 0.18) 50%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 1;
+}
+
+.product-card:hover::after,
+.industry-card:hover::after {
+  opacity: 1;
+}
+
+/* Animated border for ecosystem panel */
+.ecosystem-panel {
+  position: relative;
+  isolation: isolate;
+}
+
+.ecosystem-panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--ecosystem-angle, 0deg),
+    rgba(0, 51, 102, 0.12) 0deg,
+    rgba(201, 166, 53, 0.65) 90deg,
+    rgba(46, 139, 87, 0.45) 180deg,
+    rgba(0, 51, 102, 0.12) 270deg,
+    rgba(0, 51, 102, 0.12) 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  z-index: 0;
+  animation: ecosystemSpin 8s linear infinite paused;
+}
+
+.ecosystem-panel.is-in::after,
+.ecosystem-panel:hover::after {
+  opacity: 1;
+  animation-play-state: running;
+}
+
+@property --ecosystem-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes ecosystemSpin {
+  to { --ecosystem-angle: 360deg; }
+}
+
+/* Shimmer on ecosystem nodes */
+.ecosystem-node {
+  position: relative;
+  overflow: hidden;
+}
+
+.ecosystem-node::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(115deg, transparent 30%, rgba(201, 166, 53, 0.18) 50%, transparent 70%);
+  transform: translateX(-150%);
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.ecosystem-node:hover::after {
+  transform: translateX(180%);
+}
+
+.ecosystem-node:hover {
+  border-color: rgba(201, 166, 53, 0.35);
+  background: linear-gradient(180deg, var(--white) 0%, rgba(201, 166, 53, 0.06) 100%);
+}
+
+/* Pakistan map beam + grid */
+.pakistan-map-wrap {
+  position: relative;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-100);
+  background: var(--white);
+}
+
+.pakistan-map-wrap .pakistan-map-image {
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.pakistan-map-beam {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 30%;
+  height: 100%;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(201, 166, 53, 0.18) 50%,
+    transparent 100%
+  );
+  filter: blur(8px);
+  transform: translateX(-100%);
+  animation: mapBeam 5.5s ease-in-out infinite;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.pakistan-map-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0, 51, 102, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 51, 102, 0.06) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse at center, #000 30%, transparent 78%);
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 78%);
+  opacity: 0.55;
+}
+
+@keyframes mapBeam {
+  0% { transform: translateX(-100%); }
+  60% { transform: translateX(360%); }
+  100% { transform: translateX(360%); }
+}
+
+/* Dist-box shimmer on hover */
+.dist-box::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.dist-box:hover::after {
+  transform: translateX(120%);
+}
+
+.dist-box {
+  isolation: isolate;
+}
+
+/* Calc result reveal */
+@keyframes calcResultPop {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0) scale(0.98);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: blur(0);
+  }
+}
+
+.calc__result {
+  animation: calcResultPop 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Animated gradient border for stat-style accents */
+@keyframes gradientFlow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Subtle section ambient pulse */
+@keyframes sectionAmbient {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 0.85; }
+}
+
+/* Animated typing caret upgrade (used by TypingTitle) */
+.typing-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 0.95em;
+  margin-left: 4px;
+  background: var(--gold);
+  vertical-align: -0.12em;
+  border-radius: 1px;
+  box-shadow: 0 0 8px rgba(201, 166, 53, 0.45);
+}
+
+/* Hover shimmer for distribution feature list */
+.distribution-features li {
+  position: relative;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.distribution-features li:hover {
+  transform: translateX(4px);
+}
+
+/* Bounce for legend dot at first paint */
+.legend-dot--gold {
+  animation: legendDotPulse 3.2s ease-in-out infinite, dotBounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s both;
+}
+
+@keyframes dotBounce {
+  0% { transform: scale(0); }
+  60% { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
+
+/* Section-eyebrow: animated underline on view */
+.section-eyebrow {
+  position: relative;
+  display: inline-block;
+}
+
+.section-eyebrow::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 18px;
+  height: 1.5px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.2s;
+  opacity: 0.6;
+}
+
+.section-header.home-reveal.is-visible .section-eyebrow::before,
+.industries-section .section-header .section-eyebrow::before,
+.distribution-section .distribution-left .section-eyebrow::before {
+  transform: scaleX(1);
+}
+
+/* Heritage year card ambient ring */
+.heritage-year-card {
+  isolation: isolate;
+}
+
+.heritage-year-card::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(201, 166, 53, 0.5) 90deg,
+    transparent 180deg
+  );
+  filter: blur(8px);
+  opacity: 0;
+  z-index: -1;
+  animation: heritageGlow 5s linear infinite paused;
+}
+
+.heritage-year-card.is-in::after,
+.heritage-year-card:hover::after {
+  opacity: 0.7;
+  animation-play-state: running;
+}
+
+@keyframes heritageGlow {
+  to { transform: rotate(360deg); }
+}
+
+/* Section-title reveal polish (combines with home-reveal) */
+.home .section-title--split {
+  margin: 0;
+}
+
+/* Testimonials / Blog entries not in use, but make sure legacy classes still animate nicely */
+.testimonial-card {
+  will-change: transform, opacity;
+}
+
+/* Avoid layout shift when .split-word is used inside flex containers */
+.split-word + .split-word {
+  margin-left: 0;
+}
+
 /* Slide from left animation */
 @keyframes slideInFromLeft {
   from {
@@ -2111,22 +2553,36 @@
   .hero__video,
   .hero__species,
   .heritage-year-card::before,
+  .heritage-year-card::after,
+  .ecosystem-panel::after,
   .section-divider::after,
   .divider::after,
   .legend-dot,
+  .legend-dot--gold,
+  .pakistan-map-beam,
+  .hero__trust-track,
+  .hero__species-item,
   .home .home-reveal,
   .home .product-card,
   .home .industry-card,
   .home .blog-card,
   .home .home-reveal *,
-  .typing-cursor {
+  .home .home-reveal .split-word__inner,
+  .typing-cursor,
+  .product-card::after,
+  .industry-card::after,
+  .ecosystem-node::after,
+  .dist-box::after,
+  .hero__actions .btn::after {
     animation: none !important;
     transition: none !important;
   }
 
   .hero__video,
   .home .home-reveal,
-  .home .home-reveal * {
+  .home .home-reveal *,
+  .split-word__inner,
+  .calc__result {
     opacity: 1;
     transform: none;
     filter: none;

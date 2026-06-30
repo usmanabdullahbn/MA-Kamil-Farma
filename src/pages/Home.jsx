@@ -100,11 +100,15 @@ function FeedCalculator() {
         <div className="calc__result">
           <div className="calc__result-row">
             <div className="calc__result-item">
-              <span className="calc__result-num">{result.daily}g</span>
+              <span className="calc__result-num">
+                <AnimatedNumber value={parseFloat(result.daily)} duration={1200} />g
+              </span>
               <span className="calc__result-label">Per Day</span>
             </div>
             <div className="calc__result-item">
-              <span className="calc__result-num">{result.total}kg</span>
+              <span className="calc__result-num">
+                <AnimatedNumber value={parseFloat(result.total)} duration={1400} />kg
+              </span>
               <span className="calc__result-label">Total Required</span>
             </div>
           </div>
@@ -247,16 +251,99 @@ const REVEAL_GROUPS = [
   '.products-section__footer',
   '.heritage-content > *',
   '.heritage-visual > *',
+  '.heritage-year-card',
+  '.ecosystem-panel',
+  '.ecosystem-panel > *',
   '.industries-section .section-header',
   '.industries-gride > *',
   '.distribution-left > *',
   '.distribution-right > *',
   '.distribution-boxes > *',
   '.calc-col > *',
-  '.ecosystem-panel > *',
   '.ecosystem-nodes > *',
   '.hero__species > *',
 ];
+
+// ── Animated number (counts up when in view) ─────────────────
+function AnimatedNumber({ value, duration = 1600, format = (n) => n.toLocaleString() }) {
+  const ref = useRef(null);
+  const [display, setDisplay] = useState(0);
+  const started = useRef(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
+      setDisplay(value);
+      return undefined;
+    }
+    const node = ref.current;
+    if (!node) return undefined;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !started.current) {
+            started.current = true;
+            const start = performance.now();
+            const tick = (now) => {
+              const elapsed = now - start;
+              const t = Math.min(1, elapsed / duration);
+              // ease-out cubic
+              const eased = 1 - Math.pow(1 - t, 3);
+              setDisplay(value * eased);
+              if (t < 1) requestAnimationFrame(tick);
+              else setDisplay(value);
+            };
+            requestAnimationFrame(tick);
+            obs.disconnect();
+          }
+        });
+      },
+      { threshold: 0.4 }
+    );
+    obs.observe(node);
+    return () => obs.disconnect();
+  }, [value, duration]);
+
+  return <span ref={ref}>{format(Math.round(display))}</span>;
+}
+
+// ── Split-text word reveal ───────────────────────────────────
+function SplitWords({ text, as: Tag = 'span', className }) {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
+      setVisible(true);
+      return undefined;
+    }
+    const node = ref.current;
+    if (!node) return undefined;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisible(true);
+            obs.disconnect();
+          }
+        });
+      },
+      { threshold: 0.4 }
+    );
+    obs.observe(node);
+    return () => obs.disconnect();
+  }, []);
+
+  const words = String(text).split(' ');
+  return (
+    <Tag ref={ref} className={className} aria-label={text}>
+      {words.map((w, i) => (
+        <span key={i} className={`split-word ${visible ? 'is-in' : ''}`} style={{ transitionDelay: `${i * 55}ms` }}>
+          <span className="split-word__inner">{w}{i < words.length - 1 ? ' ' : ''}</span>
+        </span>
+      ))}
+    </Tag>
+  );
+}
 
 function useHomePageAnimation() {
   useEffect(() => {
@@ -287,7 +374,15 @@ function useHomePageAnimation() {
     });
 
     if (prefersReducedMotion || !('IntersectionObserver' in window)) {
-      revealNodes.forEach(node => node.classList.add('is-visible'));
+      revealNodes.forEach(node => {
+        node.classList.add('is-visible');
+        if (
+          node.classList.contains('ecosystem-panel') ||
+          node.classList.contains('heritage-year-card')
+        ) {
+          node.classList.add('is-in');
+        }
+      });
       return undefined;
     }
 
@@ -301,6 +396,13 @@ function useHomePageAnimation() {
 
         entry.target.style.setProperty('--reveal-delay', `${cappedDelay}ms`);
         entry.target.classList.add('is-visible');
+        // Mark a few key elements as "in" for their continuous animations
+        if (
+          entry.target.classList.contains('ecosystem-panel') ||
+          entry.target.classList.contains('heritage-year-card')
+        ) {
+          entry.target.classList.add('is-in');
+        }
         revealObserver.unobserve(entry.target);
       });
     }, {
@@ -328,6 +430,58 @@ function useHomePageAnimation() {
     };
 
     hero?.addEventListener('pointermove', handlePointerMove, { passive: true });
+
+    // Magnetic effect for hero CTA buttons
+    const magneticButtons = Array.from(document.querySelectorAll('.hero__actions .btn'));
+    const magneticHandlers = magneticButtons.map((btn) => {
+      let raf = 0;
+      const onMove = (e) => {
+        if (window.innerWidth < 900) return;
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(() => {
+          const rect = btn.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
+          btn.style.setProperty('--mag-x', `${(x * 0.25).toFixed(2)}px`);
+          btn.style.setProperty('--mag-y', `${(y * 0.25).toFixed(2)}px`);
+        });
+      };
+      const onLeave = () => {
+        cancelAnimationFrame(raf);
+        btn.style.setProperty('--mag-x', '0px');
+        btn.style.setProperty('--mag-y', '0px');
+      };
+      btn.addEventListener('pointermove', onMove, { passive: true });
+      btn.addEventListener('pointerleave', onLeave);
+      return { btn, onMove, onLeave, raf };
+    });
+
+    // Parallax scroll for hero background layers
+    const heroBg = document.querySelector('.hero__bg');
+    const heroTitle = document.querySelector('.hero__title');
+    const heroSub = document.querySelector('.hero__sub');
+    const heroActions = document.querySelector('.hero__actions');
+    const heroTrust = document.querySelector('.hero__trust');
+
+    let scrollRaf = 0;
+    const onScroll = () => {
+      if (!hero) return;
+      cancelAnimationFrame(scrollRaf);
+      scrollRaf = requestAnimationFrame(() => {
+        const rect = hero.getBoundingClientRect();
+        if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+        const progress = Math.max(-0.3, Math.min(1, -rect.top / rect.height));
+        if (heroBg) {
+          heroBg.style.setProperty('--hero-parallax', `${(progress * 80).toFixed(2)}px`);
+        }
+        if (heroTitle) heroTitle.style.setProperty('--hero-p-title', `${(progress * 32).toFixed(2)}px`);
+        if (heroSub) heroSub.style.setProperty('--hero-p-sub', `${(progress * 18).toFixed(2)}px`);
+        if (heroActions) heroActions.style.setProperty('--hero-p-actions', `${(progress * 12).toFixed(2)}px`);
+        if (heroTrust) heroTrust.style.setProperty('--hero-p-trust', `${(progress * 8).toFixed(2)}px`);
+      });
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
 
     const interactiveCards = Array.from(document.querySelectorAll(
       '.home .card, .home .calc, .home .ecosystem-panel, .home .dist-box, .home .distribution-legend, .home .pakistan-map-image'
@@ -359,11 +513,17 @@ function useHomePageAnimation() {
     return () => {
       revealObserver.disconnect();
       hero?.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener('scroll', onScroll);
+      magneticHandlers.forEach(({ btn, onMove, onLeave }) => {
+        btn.removeEventListener('pointermove', onMove);
+        btn.removeEventListener('pointerleave', onLeave);
+      });
       interactiveCards.forEach(card => {
         card.removeEventListener('pointermove', handleCardMove);
         card.removeEventListener('pointerleave', handleCardLeave);
       });
       cancelAnimationFrame(rafId);
+      cancelAnimationFrame(scrollRaf);
     };
   }, []);
 }
@@ -425,12 +585,22 @@ export default function Home() {
 
           {/* Trust strip */}
           <div className="hero__trust animate-fade-up-d4">
-            {['DRAP Approved'].map(c => (
-              <div key={c} className="hero__trust-badge">
-                <span className="hero__trust-check">✓</span>
-                {c}
+            <div className="hero__trust-marquee">
+              <div className="hero__trust-track">
+                {['DRAP Approved', 'ISO Certified', '100+ Years', '15,000+ Farms', '500+ SKUs', '12+ Export Markets'].map((c) => (
+                  <div key={c} className="hero__trust-badge">
+                    <span className="hero__trust-check">✓</span>
+                    {c}
+                  </div>
+                ))}
+                {['DRAP Approved', 'ISO Certified', '100+ Years', '15,000+ Farms', '500+ SKUs', '12+ Export Markets'].map((c) => (
+                  <div key={c + '-dup'} className="hero__trust-badge" aria-hidden="true">
+                    <span className="hero__trust-check">✓</span>
+                    {c}
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </div>
 
@@ -492,7 +662,9 @@ export default function Home() {
         <div className="container">
           <div className="section-header">
             <span className="section-eyebrow">{t('ourProducts')}</span>
-            <h2 className="section-title">{t('productsTitle')}</h2>
+            <h2 className="section-title section-title--split">
+              <SplitWords text={t('productsTitle')} />
+            </h2>
             <p className="section-lead">From proprietary pharmaceutical brands to raw material excipients — engineered for performance, safety, and compliance.</p>
           </div>
           <div className="products-grid">
@@ -535,7 +707,9 @@ export default function Home() {
         <div className="container heritage-grid">
           <div className="heritage-content">
             <span className="section-eyebrow">Our Philosophy</span>
-            <h2 className="section-title section-title--white">One Health. One Century. One Vision.</h2>
+            <h2 className="section-title section-title--white section-title--split">
+              <SplitWords text="One Health. One Century. One Vision." />
+            </h2>
             <div className="divider" />
             <p className="heritage-text">
               At M.A. Kamil Farma Pvt. Ltd., we are guided by the Divine Providence of Allah and aligned with the <strong>One Health vision</strong> — the inseparable connection between human, animal, and environmental health.
@@ -552,7 +726,9 @@ export default function Home() {
           </div>
           <div className="heritage-visual">
             <div className="heritage-year-card">
-              <div className="heritage-year-num">1923</div>
+              <div className="heritage-year-num">
+                1923
+              </div>
               <div className="heritage-year-line" />
               <div className="heritage-year-label">Year Founded</div>
             </div>
@@ -569,7 +745,9 @@ export default function Home() {
         <div className="container">
           <div className="section-header">
             <span className="section-eyebrow">Industries Served</span>
-            <h2 className="section-title">Tailored Solutions for Every Sector</h2>
+            <h2 className="section-title section-title--split">
+              <SplitWords text="Tailored Solutions for Every Sector" />
+            </h2>
           </div>
           <div className="industries-gride">
             {INDUSTRIES.map(ind => (
@@ -614,7 +792,9 @@ export default function Home() {
           <div className="distribution-top-grid">
             <div className="distribution-left">
               <span className="section-eyebrow">Nationwide Distribution Network</span>
-              <h2 className="section-title">Delivering Excellence Across Pakistan</h2>
+              <h2 className="section-title section-title--split">
+                <SplitWords text="Delivering Excellence Across Pakistan" />
+              </h2>
               <div className="section-divider" />
               <p className="distribution-intro">Our extensive distribution network ensures timely availability of high-quality veterinary pharmaceuticals and feed additives from coast to mountains.</p>
 
@@ -675,7 +855,11 @@ export default function Home() {
             </div>
 
             <div className="distribution-right">
-              <img src={nationwideMapImage} alt="Pakistan Distribution Network Map" className="pakistan-map-image" />
+              <div className="pakistan-map-wrap">
+                <img src={nationwideMapImage} alt="Pakistan Distribution Network Map" className="pakistan-map-image" />
+                <div className="pakistan-map-beam" aria-hidden="true" />
+                <div className="pakistan-map-grid" aria-hidden="true" />
+              </div>
 
               <div className="distribution-legend">
                 <div className="legend-item">
