@@ -259,41 +259,6 @@
   margin-bottom: 44px;
 }
 
-.hero__trust {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.hero__trust-badge {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 7px 14px;
-  border-radius: 100px;
-  font-size: 12px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.75);
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(4px);
-  transition:
-    transform var(--t-mid),
-    background var(--t-mid),
-    border-color var(--t-mid);
-}
-
-.hero__trust-badge:hover {
-  transform: translateY(-2px);
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(201, 166, 53, 0.28);
-}
-
-.hero__trust-check {
-  color: var(--green-light);
-  font-size: 13px;
-}
-
 /* Species panel */
 .hero__species {
   position: absolute;
@@ -1736,11 +1701,6 @@
   transition: transform 0.2s linear;
 }
 
-.hero__trust {
-  transform: translate3d(0, var(--hero-p-trust, 0px), 0);
-  transition: transform 0.2s linear;
-}
-
 .hero__actions .btn {
   --mag-x: 0px;
   --mag-y: 0px;
@@ -1766,35 +1726,6 @@
 
 .hero__actions .btn:hover::after {
   transform: translateX(120%);
-}
-
-/* Trust marquee */
-.hero__trust-marquee {
-  width: 100%;
-  max-width: 540px;
-  overflow: hidden;
-  mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
-}
-
-.hero__trust-track {
-  display: flex;
-  gap: 10px;
-  width: max-content;
-  animation: trustMarquee 32s linear infinite;
-}
-
-.hero__trust:hover .hero__trust-track {
-  animation-play-state: paused;
-}
-
-@keyframes trustMarquee {
-  from {
-    transform: translate3d(0, 0, 0);
-  }
-  to {
-    transform: translate3d(-50%, 0, 0);
-  }
 }
 
 /* Floating species icons */
@@ -2560,7 +2491,6 @@
   .legend-dot,
   .legend-dot--gold,
   .pakistan-map-beam,
-  .hero__trust-track,
   .hero__species-item,
   .home .home-reveal,
   .home .product-card,

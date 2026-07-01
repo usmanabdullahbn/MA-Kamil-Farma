@@ -16,6 +16,11 @@ const productBrochureFiles = import.meta.glob('../assert/Literature - Poultry Pr
   import: 'default'
 });
 
+const productPisFiles = import.meta.glob('../assert/PIS/*.pdf', {
+  eager: true,
+  import: 'default'
+});
+
 const BROCHURE_FILE_BY_PRODUCT = {
   Xinmak: 'XINKMAK WSP.pdf',
   'Floxy N-Mak': 'Floxy N-Mak WSP.pdf',
@@ -57,6 +62,41 @@ const BROCHURE_FILE_BY_PRODUCT = {
   'Mak Fivevit': 'Mak Fivevit.pdf',
   'Mak Fourvit': 'Mak Fourvit Oral Liquid.pdf',
   'Mak Ze-Sel Sol': 'Mak Zesel Solution.pdf',
+};
+
+const PIS_FILE_BY_PRODUCT = {
+  'C-Kam 100': '01-c-kam-100-PIS.pdf',
+  'C-Kam 250': '02-c-kam-250-PIS.pdf',
+  'Chlorkam-200': '03-chlorkam-200-PIS.pdf',
+  Colikam: '04-colikam-powder-PIS.pdf',
+  'Colikam-50': '05-colikam-50-PIS.pdf',
+  Diurikam: '06-diurikam-powder-PIS.pdf',
+  'Dl-Chol': '07-dl-chol-PIS.pdf',
+  'Doxykam-50': '08-doxykam-50-powder-PIS.pdf',
+  'Doxykam-80': '09-doxykam-80-powder-PIS.pdf',
+  'Enrokam C-10': '10-enrokam-c-10-oral-solution-PIS.pdf',
+  'Floxy N-Mak': '11-floxy-n-mak-PIS.pdf',
+  Flushkam: '12-flushkam-wsp-PIS.pdf',
+  Hepakam: '13-hepakam-oral-liquid-PIS.pdf',
+  'Mak Fivevit': '14-mak-fivevit-water-soluble-powder-PIS.pdf',
+  'Mak Gumbonil': '15-mak-gumbonil-PIS.pdf',
+  'Mak Ze-Sel': '16-mak-ze-sel-PIS.pdf',
+  'Mak Ze-Sel Forte': '17-mak-ze-sel-forte-oral-liquid-PIS.pdf',
+  'Makflor C-23': '18-makflor-c-23-PIS.pdf',
+  'Makflor-23': '19-makflor-23-PIS.pdf',
+  'Mprokam-50': '20-mprokam-50-powder-PIS.pdf',
+  'Mprokam-90': '21-mprokam-90-powder-PIS.pdf',
+  'Neokam-100': '22-neokam-100-PIS.pdf',
+  'Neokam-72': '23-neokam-72-PIS.pdf',
+  'Ofloxkam-10': '24-ofloxkam-10-oral-solution-PIS.pdf',
+  'Oxykam-95%': '25-oxykam-95-PIS.pdf',
+  'Pefloxkam-10': '26-pefloxkam-10-solution-PIS.pdf',
+  'Sulpha T-Mak': '27-sulpha-t-mak-suspension-PIS.pdf',
+  'Tilkam-25': '28-tilkam-25-solution-PIS.pdf',
+  'Tylokam-10': '29-tylokam-10-powder-PIS.pdf',
+  'Tylokam-100': '30-tylokam-100-PIS.pdf',
+  Xinmak: '33-xinmak-wsp-PIS.pdf',
+  'Xinmak Oral': '32-xinmak-oral-PIS.pdf',
 };
 
 const makflor23Dosage = [
@@ -195,6 +235,16 @@ const getProductBrochure = product => {
   return match?.[1] || null;
 };
 
+const getProductPis = product => {
+  const fileName = PIS_FILE_BY_PRODUCT[product.name];
+
+  if (!fileName) return null;
+
+  const match = Object.entries(productPisFiles).find(([filePath]) => filePath.endsWith(`/${fileName}`));
+
+  return match?.[1] || null;
+};
+
 const cleanCatalogueText = value =>
   String(value || '')
     .replace(/Â·/g, '·')
@@ -275,6 +325,7 @@ export default function ProductPage() {
   const family = getFamily(product);
   const productImage = getProductImage(product);
   const productBrochure = getProductBrochure(product);
+  const productPis = getProductPis(product);
   const relatedProducts = getRelatedProducts(product);
 
   return (
@@ -324,7 +375,11 @@ export default function ProductPage() {
                 </div>
 
                 <div className="product-actions">
-                  <a className="product-button product-button--primary" href="#downloads">&darr; Download PIS Sheet</a>
+                  {productPis ? (
+                    <a className="product-button product-button--primary" href={productPis} download>&darr; Download PIS Sheet</a>
+                  ) : (
+                    <span className="product-button product-button--disabled">PIS unavailable</span>
+                  )}
                   {productBrochure ? (
                     <a className="product-button" href={productBrochure} download>&darr; Download Brochure</a>
                   ) : (
@@ -375,7 +430,12 @@ export default function ProductPage() {
             <aside className="product-downloads" id="downloads">
               <p className="product-detail__eyebrow">Document Library</p>
               <h2>Technical downloads</h2>
-              <ProductDownload title="PIS Sheet" subtitle="Product Information Sheet · PDF" />
+              <ProductDownload
+                title="PIS Sheet"
+                subtitle={productPis ? 'Product Information Sheet · PDF' : 'PIS sheet not available for this product'}
+                href={productPis}
+                download={Boolean(productPis)}
+              />
               <ProductDownload
                 title="Product Brochure"
                 subtitle={productBrochure ? 'Marketing literature · PDF' : 'Brochure not available for this product'}

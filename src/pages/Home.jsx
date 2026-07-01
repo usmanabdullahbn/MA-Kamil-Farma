@@ -5,6 +5,7 @@ import { useTyping } from '../hooks/useTyping';
 import { TypingTitle } from '../components/TypingTitle';
 import bgHeroVideo from '../assert/bg-hero.mp4';
 import nationwideMapImage from '../assert/nation wide image.png';
+import chickenDoctorImage from '../assert/chicken-doctor.webp';
 import './Home.css';
 
 // ── Expo Countdown ──────────────────────────────────────────
@@ -215,8 +216,7 @@ const INDUSTRIES = [
     color: '#003366',
     desc: 'Antibiotics, phytogenics, and herd health management solutions.',
     items: ['Antibiotics', 'Phytogenics', 'Anti-Virals'],
-    image: 'https://images.pexels.com/photos/6235233/pexels-photo-6235233.jpeg?auto=compress&cs=tinysrgb&w=1200',
-    video: 'https://videos.pexels.com/video-files/6234611/6234611-uhd_2560_1440_25fps.mp4'
+    image: chickenDoctorImage,
   },
   // {
   //   icon: (
@@ -461,7 +461,6 @@ function useHomePageAnimation() {
     const heroTitle = document.querySelector('.hero__title');
     const heroSub = document.querySelector('.hero__sub');
     const heroActions = document.querySelector('.hero__actions');
-    const heroTrust = document.querySelector('.hero__trust');
 
     let scrollRaf = 0;
     const onScroll = () => {
@@ -477,7 +476,6 @@ function useHomePageAnimation() {
         if (heroTitle) heroTitle.style.setProperty('--hero-p-title', `${(progress * 32).toFixed(2)}px`);
         if (heroSub) heroSub.style.setProperty('--hero-p-sub', `${(progress * 18).toFixed(2)}px`);
         if (heroActions) heroActions.style.setProperty('--hero-p-actions', `${(progress * 12).toFixed(2)}px`);
-        if (heroTrust) heroTrust.style.setProperty('--hero-p-trust', `${(progress * 8).toFixed(2)}px`);
       });
     };
     onScroll();
@@ -581,26 +579,6 @@ export default function Home() {
           <div className="hero__actions animate-fade-up-d3">
             <Link to="/products" className="btn btn--gold">{t('exploreProducts')}</Link>
             <Link to="/contact" className="btn btn--outline-white">{t('contactUs')}</Link>
-          </div>
-
-          {/* Trust strip */}
-          <div className="hero__trust animate-fade-up-d4">
-            <div className="hero__trust-marquee">
-              <div className="hero__trust-track">
-                {['DRAP Approved', 'ISO Certified', '100+ Years', '15,000+ Farms', '500+ SKUs', '12+ Export Markets'].map((c) => (
-                  <div key={c} className="hero__trust-badge">
-                    <span className="hero__trust-check">✓</span>
-                    {c}
-                  </div>
-                ))}
-                {['DRAP Approved', 'ISO Certified', '100+ Years', '15,000+ Farms', '500+ SKUs', '12+ Export Markets'].map((c) => (
-                  <div key={c + '-dup'} className="hero__trust-badge" aria-hidden="true">
-                    <span className="hero__trust-check">✓</span>
-                    {c}
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
 
@@ -759,16 +737,18 @@ export default function Home() {
                     '--product-bg-image': `url("${ind.image}")`,
                   }}
                 >
-                  <video
-                    className="industry-card__video"
-                    src={ind.video}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="metadata"
-                    aria-hidden="true"
-                  />
+                  {ind.video && (
+                    <video
+                      className="industry-card__video"
+                      src={ind.video}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      preload="metadata"
+                      aria-hidden="true"
+                    />
+                  )}
                   <div className="industry-card__icon" style={{ background: 'rgba(255, 255, 255, 0.92)', color: ind.color }}>
                     {ind.icon}
                   </div>

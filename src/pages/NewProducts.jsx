@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import productCataloguePdf from '../assert/E-Catalog (M. A. Kamil Farma).pdf';
 import './NewProducts.css';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -750,11 +751,21 @@ export default function NewProducts() {
             <span className="new-products-eyebrow">Complete Name-Card System</span>
             <h2>{activeCategory ? getLabel(activeCategory) : 'All products'}</h2>
           </div>
-          {(activeCategory || activeForm !== 'All' || activeSpecies || search) && (
-            <button type="button" className="new-products-clear" onClick={clearFilters}>
-              Clear filters
-            </button>
-          )}
+          <div className="new-products-section-actions">
+            <a className="new-products-brochure-btn" href={productCataloguePdf} download>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3v12" />
+                <path d="m7 10 5 5 5-5" />
+                <path d="M4 21h16" />
+              </svg>
+              <span>Product Brochure Download</span>
+            </a>
+            {(activeCategory || activeForm !== 'All' || activeSpecies || search) && (
+              <button type="button" className="new-products-clear" onClick={clearFilters}>
+                Clear filters
+              </button>
+            )}
+          </div>
         </div>
 
         {filteredProducts.length === 0 ? (
