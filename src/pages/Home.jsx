@@ -12,6 +12,7 @@ import './Home.css';
 function ExpoCountdown() {
   const target = new Date('2025-10-20T00:00:00');
   const [time, setTime] = useState({ d: 0, h: 0, m: 0, s: 0 });
+  const [tickKey, setTickKey] = useState(0);
   useEffect(() => {
     const tick = () => {
       const diff = Math.max(0, target - Date.now());
@@ -21,6 +22,8 @@ function ExpoCountdown() {
         m: Math.floor((diff % 3600000) / 60000),
         s: Math.floor((diff % 60000) / 1000),
       });
+      // Bump a key each second so the seconds unit can replay a tiny "tick" animation
+      setTickKey(k => k + 1);
     };
     tick();
     const id = setInterval(tick, 1000);
@@ -36,7 +39,12 @@ function ExpoCountdown() {
         <div className="expo-countdown">
           {[['d', 'Days'], ['h', 'Hrs'], ['m', 'Min'], ['s', 'Sec']].map(([k, l]) => (
             <div key={k} className="expo-countdown__unit">
-              <span className="expo-countdown__num">{String(time[k]).padStart(2, '0')}</span>
+              <span
+                key={k === 's' ? tickKey : undefined}
+                className={`expo-countdown__num${k === 's' ? ' expo-countdown__num--tick' : ''}`}
+              >
+                {String(time[k]).padStart(2, '0')}
+              </span>
               <span className="expo-countdown__label">{l}</span>
             </div>
           ))}
@@ -53,6 +61,7 @@ function FeedCalculator() {
   const [weight, setWeight] = useState('');
   const [days, setDays] = useState('');
   const [result, setResult] = useState(null);
+  const [pulseBtn, setPulseBtn] = useState(false);
 
   const rates = { poultry: 0.075, dairy: 0.032, swine: 0.045, aqua: 0.02 };
   const products = {
@@ -68,6 +77,9 @@ function FeedCalculator() {
     const daily = w * rates[species] * 1000; // g/day
     const total = (daily * d / 1000).toFixed(2); // kg
     setResult({ daily: daily.toFixed(0), total, product: products[species][0] });
+    // Trigger a brief press-pulse animation on the button
+    setPulseBtn(true);
+    setTimeout(() => setPulseBtn(false), 500);
   }
 
   return (
@@ -95,7 +107,7 @@ function FeedCalculator() {
           <label>Treatment Days</label>
           <input type="number" min="1" max="365" placeholder="e.g. 7" value={days} onChange={e => { setDays(e.target.value); setResult(null); }} />
         </div>
-        <button className="btn btn--navy calc__btn" onClick={calculate}>Calculate</button>
+        <button className={`btn btn--navy calc__btn${pulseBtn ? ' calc__btn--pulse' : ''}`} onClick={calculate}>Calculate</button>
       </div>
       {result && (
         <div className="calc__result">
@@ -338,7 +350,7 @@ function SplitWords({ text, as: Tag = 'span', className }) {
     <Tag ref={ref} className={className} aria-label={text}>
       {words.map((w, i) => (
         <span key={i} className={`split-word ${visible ? 'is-in' : ''}`} style={{ transitionDelay: `${i * 55}ms` }}>
-          <span className="split-word__inner">{w}{i < words.length - 1 ? ' ' : ''}</span>
+          <span className="split-word__inner">{w}{i < words.length - 1 ? ' ' : ''}</span>
         </span>
       ))}
     </Tag>
