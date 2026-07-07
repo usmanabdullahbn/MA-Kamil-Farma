@@ -287,7 +287,7 @@ export function Blog() {
               </p>
               <div className="blog-coming-soon__actions">
                 <Link to="/contact" className="btn btn--gold">Register Interest</Link>
-                <a href="https://wa.me/923001234567" target="_blank" rel="noopener noreferrer" className="btn btn--outline">Get Notified</a>
+                <a href="https://wa.me/923352249111" target="_blank" rel="noopener noreferrer" className="btn btn--outline">Get Notified</a>
               </div>
               <div className="blog-coming-soon__categories">
                 <h4 className="blog-coming-soon__categories-title">Future Topics Will Cover</h4>
@@ -558,7 +558,7 @@ export function BlogPost() {
             <p>Our expert team is available to advise on the right pharmaceutical solution for your operation.</p>
             <div className="post-cta__actions">
               <Link to="/contact" className="btn btn--gold">Contact Us</Link>
-              <a href="https://wa.me/923001234567" target="_blank" rel="noopener noreferrer" className="btn btn--outline-white">WhatsApp</a>
+              <a href="https://wa.me/923352249111" target="_blank" rel="noopener noreferrer" className="btn btn--outline-white">WhatsApp</a>
             </div>
           </div>
         </div>
