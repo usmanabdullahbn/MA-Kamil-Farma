@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import productCataloguePdf from '../assert/E-Catalog (M. A. Kamil Farma).pdf';
 import './NewProducts.css';
@@ -543,6 +543,54 @@ const getColor = cat => PRODUCT_CATEGORIES.find(c => c.key === cat)?.color || '#
 const getIcon = cat => PRODUCT_CATEGORIES.find(c => c.key === cat)?.icon || '💊';
 export const getLabel = cat => PRODUCT_CATEGORIES.find(c => c.key === cat)?.label || cat;
 
+const THERAPEUTIC_FILTERS = [
+  {
+    key: 'antibiotics',
+    label: 'Antibiotics',
+    matches: product => ['powder-antibiotic', 'liquid-antibiotic', 'penicillin'].includes(product.category),
+  },
+  {
+    key: 'respiratory-health',
+    label: 'Respiratory Health',
+    matches: product => /broncho|respiratory|sintolin|breath|cough/i.test(`${product.name} ${product.fullName} ${product.benefits}`),
+  },
+  {
+    key: 'gut-health',
+    label: 'Gut Health',
+    matches: product => /gut|intestinal|digest|colikam|neokam|diarr/i.test(`${product.name} ${product.fullName} ${product.benefits}`),
+  },
+  {
+    key: 'liver-support',
+    label: 'Liver Support',
+    matches: product => ['hepatoprotective', 'immune-hepato'].includes(product.category),
+  },
+  {
+    key: 'vitamins-minerals',
+    label: 'Vitamins & Minerals',
+    matches: product => product.category === 'immune-booster' || /vitamin|mineral|selenium|ze-sel|fivevit|fourvit/i.test(`${product.name} ${product.fullName} ${product.composition}`),
+  },
+  {
+    key: 'electrolytes',
+    label: 'Electrolytes',
+    matches: product => ['diuretics', 'flusher'].includes(product.category) || /electrolyte|diuretic|flush/i.test(`${product.name} ${product.fullName} ${product.benefits}`),
+  },
+  {
+    key: 'feed-additives',
+    label: 'Feed Additives',
+    matches: product => ['hepatoprotective', 'immune-booster', 'immune-hepato', 'flusher'].includes(product.category),
+  },
+  {
+    key: 'performance-enhancers',
+    label: 'Performance Enhancers',
+    matches: product => ['immune-booster', 'hepatoprotective', 'immune-hepato'].includes(product.category) || /performance|growth|immunity|productivity/i.test(product.benefits),
+  },
+  {
+    key: 'biosecurity',
+    label: 'Biosecurity',
+    matches: product => /biosecurity|toxin|detox|gumbonil|flush/i.test(`${product.name} ${product.fullName} ${product.benefits}`),
+  },
+];
+
 const getCardCategory = cat => getLabel(cat)
   .replace('Powder Antibiotics', 'Powder Antibiotic')
   .replace('Liquid Antibiotics', 'Liquid Antibiotic')
@@ -588,6 +636,22 @@ const normalizeSpecies = value => {
   if (species === 'pets') return 'Pet Animals';
 
   return '';
+};
+
+const normalizeTherapeuticArea = value => (
+  THERAPEUTIC_FILTERS.some(area => area.key === value) ? value : ''
+);
+
+const getTherapeuticArea = key => THERAPEUTIC_FILTERS.find(area => area.key === key);
+
+const getFilterTitle = ({ activeCategory, activeForm, activeSpecies, activeTherapeuticArea }) => {
+  if (activeTherapeuticArea) return getTherapeuticArea(activeTherapeuticArea)?.label || 'Therapeutic Area';
+  if (activeCategory) return getLabel(activeCategory);
+  if (activeForm === 'Powder') return 'Powder Formulations';
+  if (activeForm === 'Liquid') return 'Liquid Formulations';
+  if (activeSpecies) return `${activeSpecies} Products`;
+
+  return 'All products';
 };
 
 function ProductModal({ product, onClose }) {
@@ -654,26 +718,50 @@ export default function NewProducts() {
   const { brand } = useParams();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [activeCategory, setActiveCategory] = useState(() => (
-    normalizeCategory(searchParams.get('category') || brand || '')
-  ));
-  const [activeForm, setActiveForm] = useState(() => normalizeForm(searchParams.get('form')));
-  const [activeSpecies, setActiveSpecies] = useState(() => normalizeSpecies(searchParams.get('species')));
   const [search, setSearch] = useState('');
 
   const categories = PRODUCT_CATEGORIES;
   const openProductPage = product => navigate(`/products/detail/${getProductSlug(product)}`);
+  const activeCategory = normalizeCategory(searchParams.get('category') || brand || '');
+  const activeForm = normalizeForm(searchParams.get('form'));
+  const activeSpecies = normalizeSpecies(searchParams.get('species'));
+  const activeTherapeuticArea = normalizeTherapeuticArea(searchParams.get('area'));
+  const filterTitle = getFilterTitle({ activeCategory, activeForm, activeSpecies, activeTherapeuticArea });
+  const hasActiveFilters = Boolean(activeCategory || activeForm !== 'All' || activeSpecies || activeTherapeuticArea || search);
 
-  useEffect(() => {
-    setActiveCategory(normalizeCategory(searchParams.get('category') || brand || ''));
-    setActiveForm(normalizeForm(searchParams.get('form')));
-    setActiveSpecies(normalizeSpecies(searchParams.get('species')));
-  }, [brand, searchParams]);
+  const updateUrlFilters = nextFilters => {
+    const params = new URLSearchParams(searchParams);
+
+    if ('category' in nextFilters) {
+      nextFilters.category ? params.set('category', nextFilters.category) : params.delete('category');
+      params.delete('area');
+    }
+
+    if ('form' in nextFilters) {
+      nextFilters.form && nextFilters.form !== 'All'
+        ? params.set('form', nextFilters.form.toLowerCase())
+        : params.delete('form');
+      params.delete('area');
+    }
+
+    if ('species' in nextFilters) {
+      nextFilters.species ? params.set('species', nextFilters.species.toLowerCase()) : params.delete('species');
+      params.delete('area');
+    }
+
+    const searchString = params.toString();
+    navigate({
+      pathname: '/products',
+      search: searchString ? `?${searchString}` : '',
+    });
+  };
 
   const filteredProducts = useMemo(() => {
     const q = search.toLowerCase();
 
     return ALL_PRODUCTS.filter(product => {
+      const therapeuticArea = getTherapeuticArea(activeTherapeuticArea);
+      const matchTherapeuticArea = !therapeuticArea || therapeuticArea.matches(product);
       const matchCategory = !activeCategory || product.category === activeCategory;
       const matchForm = activeForm === 'All' || product.form === activeForm;
       const matchSpecies = !activeSpecies || product.species === activeSpecies;
@@ -682,15 +770,13 @@ export default function NewProducts() {
         .toLowerCase()
         .includes(q);
 
-      return matchCategory && matchForm && matchSpecies && matchSearch;
+      return matchTherapeuticArea && matchCategory && matchForm && matchSpecies && matchSearch;
     });
-  }, [activeCategory, activeForm, activeSpecies, search]);
+  }, [activeCategory, activeForm, activeSpecies, activeTherapeuticArea, search]);
 
   const clearFilters = () => {
-    setActiveCategory('');
-    setActiveForm('All');
-    setActiveSpecies('');
     setSearch('');
+    navigate('/products');
   };
 
   return (
@@ -734,8 +820,19 @@ export default function NewProducts() {
               <button
                 key={category.key}
                 type="button"
-                className={`new-products-pill ${activeCategory === category.key ? 'active' : ''}`}
-                onClick={() => setActiveCategory(category.key)}
+                className={`new-products-pill ${
+                  category.key
+                    ? activeCategory === category.key ? 'active' : ''
+                    : !hasActiveFilters ? 'active' : ''
+                }`}
+                onClick={() => {
+                  if (category.key) {
+                    updateUrlFilters({ category: category.key });
+                    return;
+                  }
+
+                  clearFilters();
+                }}
               >
                 <span>{category.label}</span>
                 <strong>{category.key ? ALL_PRODUCTS.filter(product => product.category === category.key).length : ALL_PRODUCTS.length}</strong>
@@ -749,7 +846,7 @@ export default function NewProducts() {
         <div className="new-products-section-head">
           <div className="new-products-section-title">
             <span className="new-products-eyebrow">Complete Name-Card System</span>
-            <h2>{activeCategory ? getLabel(activeCategory) : 'All products'}</h2>
+            <h2>{filterTitle}</h2>
           </div>
           <div className="new-products-section-actions">
             <a className="new-products-brochure-btn" href={productCataloguePdf} download>
@@ -760,7 +857,7 @@ export default function NewProducts() {
               </svg>
               <span>Product Brochure Download</span>
             </a>
-            {(activeCategory || activeForm !== 'All' || activeSpecies || search) && (
+            {hasActiveFilters && (
               <button type="button" className="new-products-clear" onClick={clearFilters}>
                 Clear filters
               </button>

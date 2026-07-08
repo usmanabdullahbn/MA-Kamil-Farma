@@ -345,12 +345,12 @@ function SplitWords({ text, as: Tag = 'span', className }) {
     return () => obs.disconnect();
   }, []);
 
-  const words = String(text).split(' ');
+  const words = String(text).split(/\s+/);
   return (
     <Tag ref={ref} className={className} aria-label={text}>
       {words.map((w, i) => (
         <span key={i} className={`split-word ${visible ? 'is-in' : ''}`} style={{ transitionDelay: `${i * 55}ms` }}>
-          <span className="split-word__inner">{w}{i < words.length - 1 ? ' ' : ''}</span>
+          <span className="split-word__inner">{w}</span>
         </span>
       ))}
     </Tag>

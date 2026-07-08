@@ -1734,6 +1734,10 @@
   line-height: 1.18;
 }
 
+.split-word + .split-word {
+  margin-left: 0.18em;
+}
+
 .split-word__inner {
   display: inline-block;
   transform: translate3d(0, 105%, 0);
@@ -2125,11 +2129,6 @@
 /* Testimonials / Blog entries not in use, but make sure legacy classes still animate nicely */
 .testimonial-card {
   will-change: transform, opacity;
-}
-
-/* Avoid layout shift when .split-word is used inside flex containers */
-.split-word + .split-word {
-  margin-left: 0;
 }
 
 /* Slide from left animation */

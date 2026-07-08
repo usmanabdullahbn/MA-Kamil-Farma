@@ -38,7 +38,7 @@ const NAV = [
         links: [
           { label: 'Powder Formulations', to: '/products?form=powder' },
           { label: 'Liquid Formulations', to: '/products?form=liquid' },
-          { label: 'Penicillin Range', to: '/products?form=penicillin' },
+          { label: 'Penicillin Range', to: '/products?category=penicillin' },
         ]
       },
       {
@@ -57,15 +57,15 @@ const NAV = [
 ];
 
 const THERAPEUTIC_AREAS = [
-  { label: 'Antibiotics', icon: 'shield' },
-  { label: 'Respiratory Health', icon: 'lungs' },
-  { label: 'Gut Health', icon: 'gut' },
-  { label: 'Liver Support', icon: 'leaf' },
-  { label: 'Vitamins & Minerals', icon: 'molecule' },
-  { label: 'Electrolytes', icon: 'drop' },
-  { label: 'Feed Additives', icon: 'sprout' },
-  { label: 'Performance Enhancers', icon: 'chart' },
-  { label: 'Biosecurity', icon: 'shield' },
+  { label: 'Antibiotics', icon: 'shield', to: '/products?area=antibiotics' },
+  { label: 'Respiratory Health', icon: 'lungs', to: '/products?area=respiratory-health' },
+  { label: 'Gut Health', icon: 'gut', to: '/products?area=gut-health' },
+  { label: 'Liver Support', icon: 'leaf', to: '/products?area=liver-support' },
+  { label: 'Vitamins & Minerals', icon: 'molecule', to: '/products?area=vitamins-minerals' },
+  { label: 'Electrolytes', icon: 'drop', to: '/products?area=electrolytes' },
+  { label: 'Feed Additives', icon: 'sprout', to: '/products?area=feed-additives' },
+  { label: 'Performance Enhancers', icon: 'chart', to: '/products?area=performance-enhancers' },
+  { label: 'Biosecurity', icon: 'shield', to: '/products?area=biosecurity' },
 ];
 
 const SPECIES_LINKS = [
@@ -78,7 +78,7 @@ const SPECIES_LINKS = [
 const FORM_LINKS = [
   { label: 'Powder Formulations', text: 'Water-soluble powder range', icon: 'powder', to: '/products?form=powder' },
   { label: 'Liquid Formulations', text: 'Oral liquid solutions', icon: 'liquid', to: '/products?form=liquid' },
-  { label: 'Penicillin Range', text: 'Penicillin formulations', icon: 'penicillin', to: '/products?form=penicillin' },
+  { label: 'Penicillin Range', text: 'Penicillin formulations', icon: 'penicillin', to: '/products?category=penicillin' },
 ];
 
 const FEATURED_SOLUTIONS = [
@@ -102,7 +102,7 @@ function ProductMegaMenu({ onMouseEnter, onMouseLeave }) {
         <MegaColumn title="Therapeutic Areas">
           <div className="nav-products-mega__area-list">
             {THERAPEUTIC_AREAS.map(item => (
-              <Link className="nav-products-mega__area" to="/products" key={item.label}>
+              <Link className="nav-products-mega__area" to={item.to} key={item.label}>
                 <MegaIcon name={item.icon} />
                 <span>{item.label}</span>
                 <b>&gt;</b>
