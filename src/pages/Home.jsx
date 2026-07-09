@@ -6,6 +6,7 @@ import { TypingTitle } from '../components/TypingTitle';
 import bgHeroVideo from '../assert/bg-hero.mp4';
 import nationwideMapImage from '../assert/nation wide image.png';
 import chickenDoctorImage from '../assert/chicken-doctor.webp';
+import veterinaryPharmaceuticalImage from '../assert/Vernatry Phamacuticle.jpeg';
 import './Home.css';
 
 // ── Expo Countdown ──────────────────────────────────────────
@@ -180,7 +181,7 @@ const PRODUCTS = [
     desc: 'Antibiotics, anti-virals, phytogenics, additives, and premixes for poultry and livestock.',
     to: '/products/kamil-farma',
     items: ['Antibiotics', 'Anti-Virals', 'Phytogenics', 'Premixes'],
-    image: 'https://images.pexels.com/photos/3786126/pexels-photo-3786126.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    image: veterinaryPharmaceuticalImage,
   },
   {
     icon: (
