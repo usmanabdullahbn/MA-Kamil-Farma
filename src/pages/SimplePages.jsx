@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Simple.css';
 
@@ -304,6 +304,30 @@ export function Science() {
 
 export function Industries() {
   const [openFaq, setOpenFaq] = useState(null);
+  const industriesGridRef = useRef(null);
+
+  useEffect(() => {
+    const grid = industriesGridRef.current;
+    const anchors = grid?.querySelectorAll('.industry-card-reveal-anchor');
+    if (!grid || !anchors?.length) return undefined;
+
+    if (!('IntersectionObserver' in window)) {
+      anchors.forEach((anchor) => anchor.firstElementChild?.classList.add('is-visible'));
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.firstElementChild?.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -10% 0px' });
+
+    anchors.forEach((anchor) => observer.observe(anchor));
+    return () => observer.disconnect();
+  }, []);
 
   const faqItems = [
     {
@@ -409,25 +433,35 @@ export function Industries() {
       <div className="container simple-body">
         {/* Industry Cards Grid */}
         <section style={{ marginBottom: 80 }}>
-          <div className="industries-grid">
-            {industries.map((industry) => (
-              <div key={industry.title} className="industry-card">
-                <div className="industry-card__icon">{industry.icon}</div>
-                <h3 className="industry-card__title">{industry.title}</h3>
-                <p className="industry-card__desc">{industry.desc}</p>
-                <div className="industry-card__areas">
-                  <div className="industry-card__label">Key Areas</div>
-                  <ul className="industry-card__list">
-                    {industry.keyAreas.map((area) => (
-                      <li key={area}>
-                        <span className="list-bullet">•</span>
-                        {area}
-                      </li>
-                    ))}
-                  </ul>
+          <div className="industries-grid" ref={industriesGridRef}>
+            {industries.map((industry, index) => {
+              const directions = ['left', 'top', 'right', 'left', 'bottom', 'right'];
+
+              return (
+                <div key={industry.title} className="industry-card-reveal-anchor">
+                  <div
+                    className="industry-card industry-card--reveal"
+                    data-reveal-from={directions[index]}
+                    style={{ '--industry-reveal-delay': `${(index % 3) * 90}ms` }}
+                  >
+                    <div className="industry-card__icon">{industry.icon}</div>
+                    <h3 className="industry-card__title">{industry.title}</h3>
+                    <p className="industry-card__desc">{industry.desc}</p>
+                    <div className="industry-card__areas">
+                      <div className="industry-card__label">Key Areas</div>
+                      <ul className="industry-card__list">
+                        {industry.keyAreas.map((area) => (
+                          <li key={area}>
+                            <span className="list-bullet">•</span>
+                            {area}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </section>
 
