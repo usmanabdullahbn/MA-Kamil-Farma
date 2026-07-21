@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import productCataloguePdf from '../assert/E-Catalog (M. A. Kamil Farma).pdf';
+import productHeroBanner from '../assert/Product page banner.jpeg';
 import './NewProducts.css';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -782,7 +783,16 @@ export default function NewProducts() {
   return (
     <div className="new-products-page">
       <section className="new-products-hero">
-        <div className="container new-products-hero__inner">
+        <div className="new-products-hero__inner">
+          <div className="new-products-hero__image-wrap">
+            <img
+              className="new-products-hero__image"
+              src={productHeroBanner}
+              alt="Product hero banner"
+            />
+          </div>
+
+          {/*
           <div className="new-products-hero__title">
             <span className="new-products-eyebrow">Complete Product Range</span>
             <h1>Solutions built for healthier animals.</h1>
@@ -790,6 +800,7 @@ export default function NewProducts() {
           <p className="new-products-hero__lead">
             Explore {ALL_PRODUCTS.length} veterinary pharmaceutical and animal-health products. Select any product name to open its technical product page.
           </p>
+          */}
         </div>
       </section>
 
