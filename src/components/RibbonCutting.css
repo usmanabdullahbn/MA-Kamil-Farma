@@ -1,0 +1,260 @@
+.ribbon-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 5000;
+  overflow: hidden;
+  --ribbon-red-light: #ef5b63;
+  --ribbon-red: #d21f2f;
+  --ribbon-red-dark: #8f0f1c;
+  --ribbon-shadow: 0 4px 20px rgba(210, 31, 47, 0.4), 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+.ribbon-overlay.phase-revealing,
+.ribbon-overlay.phase-cutting {
+  pointer-events: none;
+}
+.ribbon-overlay.phase-idle {
+  pointer-events: auto;
+  /* Scissors cursor everywhere on the page while the ribbon is uncut */
+  cursor:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24'><g fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='6' cy='6' r='3'/><circle cx='6' cy='18' r='3'/><line x1='20' y1='4' x2='8.12' y2='15.88'/><line x1='14.47' y1='14.48' x2='20' y2='20'/><line x1='8.12' y1='8.12' x2='12' y2='12'/></g><g fill='none' stroke='crimson' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='6' cy='6' r='3'/><circle cx='6' cy='18' r='3'/><line x1='20' y1='4' x2='8.12' y2='15.88'/><line x1='14.47' y1='14.48' x2='20' y2='20'/><line x1='8.12' y1='8.12' x2='12' y2='12'/></g></svg>")
+    27 5,
+    pointer;
+}
+
+/* Two "stage curtain" panels that part when the ribbon is cut */
+.ribbon-curtain {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  background:
+    repeating-linear-gradient(
+      100deg,
+      rgba(201, 166, 53, 0.05) 0px,
+      rgba(201, 166, 53, 0.05) 2px,
+      transparent 2px,
+      transparent 34px
+    ),
+    linear-gradient(160deg, var(--navy-dark) 0%, var(--navy) 55%, var(--navy-mid) 100%);
+  transition: transform 1.05s cubic-bezier(0.65, 0, 0.35, 1);
+  will-change: transform;
+}
+.ribbon-curtain-left { left: 0; box-shadow: inset -40px 0 60px -30px rgba(0, 0, 0, 0.45); }
+.ribbon-curtain-right { right: 0; box-shadow: inset 40px 0 60px -30px rgba(0, 0, 0, 0.45); }
+
+.phase-revealing .ribbon-curtain-left,
+.phase-done .ribbon-curtain-left { transform: translateX(-100%); }
+.phase-revealing .ribbon-curtain-right,
+.phase-done .ribbon-curtain-right { transform: translateX(100%); }
+
+/* Header copy — parked in the free top-left corner, clear of the diagonal ribbon */
+.ribbon-content {
+  position: absolute;
+  z-index: 2;
+  top: 10%;
+  left: 7%;
+  right: 7%;
+  max-width: 560px;
+  text-align: left;
+  pointer-events: none;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.phase-revealing .ribbon-content { opacity: 0; transform: translateY(-24px); }
+
+.ribbon-eyebrow {
+  font-family: var(--font-body);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  color: var(--gold-light);
+  margin-bottom: 14px;
+}
+.ribbon-title {
+  font-family: var(--font-display);
+  color: var(--white);
+  font-size: clamp(1.6rem, 4.4vw, 3rem);
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+.ribbon-hint {
+  font-family: var(--font-body);
+  color: var(--gray-200);
+  font-size: 0.98rem;
+}
+
+/* Ribbon stage — a thin red sash cutting straight from the top-right corner
+   to the bottom-left corner. Positioned/sized via inline styles (geometry
+   depends on viewport size); rotation comes from the shared --angle var. */
+.ribbon-stage {
+  position: absolute;
+  z-index: 2;
+  height: 64px;
+  transform: translate(-50%, -50%) rotate(var(--angle));
+  display: flex;
+  align-items: center;
+  touch-action: none;
+  outline: none;
+}
+.ribbon-stage:focus-visible .ribbon-band { outline: 3px solid var(--gold-light); outline-offset: 6px; }
+
+.ribbon-band {
+  position: relative;
+  width: 100%;
+  height: 18px;
+  background: linear-gradient(180deg, var(--ribbon-red-light) 0%, var(--ribbon-red) 50%, var(--ribbon-red-dark) 100%);
+  box-shadow: var(--ribbon-shadow);
+}
+.ribbon-band::after,
+.ribbon-half::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.18) 0px,
+    rgba(255, 255, 255, 0.18) 3px,
+    transparent 3px,
+    transparent 10px
+  );
+  mix-blend-mode: overlay;
+}
+
+/* Knot tied at the ribbon's center — sits in the band's own (unrotated)
+   local frame, so it inherits the parent's rotation and its loops always
+   read as perpendicular to the ribbon on screen. */
+.ribbon-knot {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 78px;
+  transform: translate(-50%, -50%);
+  animation: ribbon-knot-sway 2.6s ease-in-out infinite;
+}
+.ribbon-knot-loop {
+  position: absolute;
+  left: 50%;
+  width: 24px;
+  height: 34px;
+  background: linear-gradient(135deg, var(--ribbon-red-light) 0%, var(--ribbon-red) 55%, var(--ribbon-red-dark) 100%);
+  box-shadow: var(--ribbon-shadow);
+}
+/* Full lobe up top, tapering to a point at the knot — a loop standing above the ribbon */
+.ribbon-knot-loop-top {
+  top: 2px;
+  transform: translateX(-50%) rotate(-10deg);
+  transform-origin: center bottom;
+  border-radius: 50% 50% 50% 50% / 65% 65% 35% 35%;
+}
+/* Mirrored below the ribbon */
+.ribbon-knot-loop-bottom {
+  bottom: 2px;
+  transform: translateX(-50%) rotate(10deg);
+  transform-origin: center top;
+  border-radius: 50% 50% 50% 50% / 35% 35% 65% 65%;
+}
+.ribbon-knot-center {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  width: 22px;
+  height: 22px;
+  transform: translate(-50%, -50%) rotate(45deg);
+  background: linear-gradient(135deg, var(--ribbon-red) 0%, var(--ribbon-red-dark) 100%);
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+}
+
+@keyframes ribbon-knot-sway {
+  0%, 100% { transform: translate(-50%, -50%) rotate(-3deg); }
+  50% { transform: translate(-50%, -50%) rotate(3deg); }
+}
+
+/* Cut halves — same thin sash, split at the center, falling straight down
+   under true gravity while tumbling, regardless of the ribbon's angle. */
+.ribbon-half {
+  position: absolute;
+  z-index: 2;
+  height: 18px;
+  background: linear-gradient(180deg, var(--ribbon-red-light) 0%, var(--ribbon-red) 50%, var(--ribbon-red-dark) 100%);
+  box-shadow: var(--ribbon-shadow);
+  overflow: hidden;
+}
+.ribbon-half-tr { animation: ribbon-fall-tr 1s cubic-bezier(0.55, 0, 0.85, 0.35) forwards; }
+.ribbon-half-bl { animation: ribbon-fall-bl 1s cubic-bezier(0.55, 0, 0.85, 0.35) forwards; }
+
+@keyframes ribbon-fall-tr {
+  0% { transform: translate(-50%, -50%) rotate(var(--angle)); opacity: 1; }
+  100% { transform: translate(-50%, -50%) translateY(90vh) rotate(calc(var(--angle) - 65deg)); opacity: 0; }
+}
+@keyframes ribbon-fall-bl {
+  0% { transform: translate(-50%, -50%) rotate(var(--angle)); opacity: 1; }
+  100% { transform: translate(-50%, -50%) translateY(90vh) rotate(calc(var(--angle) + 65deg)); opacity: 0; }
+}
+
+.ribbon-scissors {
+  position: absolute;
+  z-index: 3;
+  font-size: 2rem;
+  transform: translate(-50%, -50%) rotate(calc(var(--angle) - 90deg));
+  animation: ribbon-snip 0.5s ease-out forwards, ribbon-snip-fade 0.5s ease-in 0.5s forwards;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4));
+}
+@keyframes ribbon-snip {
+  0% { transform: translate(-50%, -50%) rotate(calc(var(--angle) - 90deg)) scale(0.85); }
+  50% { transform: translate(-50%, -50%) rotate(calc(var(--angle) - 70deg)) scale(1.15); }
+  100% { transform: translate(-50%, -50%) rotate(calc(var(--angle) - 90deg)) scale(1); }
+}
+@keyframes ribbon-snip-fade {
+  to { opacity: 0; }
+}
+
+/* Confetti */
+.ribbon-confetti {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  overflow: hidden;
+}
+.confetti-piece {
+  position: absolute;
+  top: -5%;
+  border-radius: 1px;
+  opacity: 0;
+  animation-name: confetti-fall;
+  animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  animation-fill-mode: forwards;
+}
+@keyframes confetti-fall {
+  0% { opacity: 1; transform: translate(0, 0) rotate(0deg); }
+  100% { opacity: 0; transform: translate(var(--drift), 115vh) rotate(var(--rotate)); }
+}
+
+/* Skip link — sits in the other free corner, bottom-right */
+.ribbon-skip {
+  position: absolute;
+  bottom: 28px;
+  right: 28px;
+  z-index: 2;
+  color: var(--gray-300);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  opacity: 0.75;
+  transition: opacity var(--t-fast), color var(--t-fast);
+}
+.ribbon-skip:hover { opacity: 1; color: var(--gold-light); }
+
+@media (max-width: 560px) {
+  .ribbon-content { top: 8%; left: 6%; right: 6%; }
+  .ribbon-stage { height: 48px; }
+  .ribbon-band, .ribbon-half { height: 13px; }
+  .ribbon-scissors { font-size: 1.6rem; }
+  .ribbon-knot { width: 28px; height: 54px; }
+  .ribbon-knot-loop { width: 17px; height: 24px; }
+  .ribbon-knot-center { width: 15px; height: 15px; }
+}
