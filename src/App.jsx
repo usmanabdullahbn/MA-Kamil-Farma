@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import WhatsApp from './components/WhatsApp';
 import RibbonCutting from './components/RibbonCutting';
+import PageTranslator from './i18n/translator/PageTranslator';
 import Home from './pages/Home';
 import NewProducts from './pages/NewProducts';
 import ProductPage from './pages/ProductPage';
@@ -45,6 +46,7 @@ function AppShell() {
 
   return (
     <div className="app">
+      <PageTranslator />
       {pathname === '/' && <RibbonCutting />}
       <Navbar />
       <main>

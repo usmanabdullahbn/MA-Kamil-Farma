@@ -1,16 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useLang } from '../hooks/useLang';
+import { LANGUAGES as LANGS, getLanguage } from '../i18n/languages';
 import farmaLogo from '../assert/Farma Logo.jpg';
 import productCataloguePdf from '../assert/E-Catalog (M. A. Kamil Farma).pdf';
 import './Navbar.css';
 
-const LANGS = [
-  { code: 'en', label: 'EN', full: 'English' },
-  { code: 'ur', label: 'اردو', full: 'Urdu' },
-  { code: 'fr', label: 'FR', full: 'Français' },
-  { code: 'ar', label: 'عربي', full: 'العربية' },
-];
 
 const NAV = [
   { label: 'Home', to: '/' },
@@ -334,10 +329,10 @@ export default function Navbar() {
           {/* Right side */}
           <div className="nav__actions">
             {/* Language toggle */}
-            <div className="nav__lang" onMouseEnter={() => setLangOpen(true)} onMouseLeave={() => setLangOpen(false)}>
+            <div className="nav__lang" translate="no" onMouseEnter={() => setLangOpen(true)} onMouseLeave={() => setLangOpen(false)}>
               <button className="nav__lang-btn" onClick={() => setLangOpen(!langOpen)}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
-                {LANGS.find(l => l.code === lang)?.label}
+                {getLanguage(lang).label}
               </button>
               {langOpen && (
                 <div className="nav__lang-dropdown">
@@ -345,8 +340,8 @@ export default function Navbar() {
                     <button key={l.code}
                       className={`nav__lang-option ${lang === l.code ? 'active' : ''}`}
                       onClick={() => { setLang(l.code); setLangOpen(false); }}>
-                      <span>{l.label}</span>
-                      <span className="nav__lang-full">{l.full}</span>
+                      <span lang={l.htmlLang}>{l.label}</span>
+                      <span className="nav__lang-full" lang={l.htmlLang}>{l.name}</span>
                     </button>
                   ))}
                 </div>
@@ -384,10 +379,10 @@ export default function Navbar() {
               <NavLink key={item.to} to={item.to} className="nav__mobile-link">{item.label}</NavLink>
             )
           )}
-          <div className="nav__mobile-langs">
+          <div className="nav__mobile-langs" translate="no">
             {LANGS.map(l => (
-              <button key={l.code} className={`nav__mobile-lang ${lang === l.code ? 'active' : ''}`} onClick={() => { setLang(l.code); }}>
-                {l.full}
+              <button key={l.code} className={`nav__mobile-lang ${lang === l.code ? 'active' : ''}`} onClick={() => { setLang(l.code); }} lang={l.htmlLang}>
+                {l.name}
               </button>
             ))}
           </div>

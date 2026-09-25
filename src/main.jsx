@@ -4,6 +4,7 @@ import i18n from './i18n/config'
 import { I18nextProvider } from 'react-i18next'
 import App from './App.jsx'
 import './index.css'
+import './i18n/translator/fonts.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

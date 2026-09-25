@@ -1,0 +1,210 @@
+/*
+ * Typography for the Perso-Arabic script languages.
+ *
+ *   Sindhi         Lateef (SIL) — a Naskh face designed for Sindhi, named after
+ *                  Shah Abdul Latif Bhittai, with the Sindhi letter forms
+ *                  (ڪ ڳ ڱ ڄ ڃ ٻ ڀ ٽ ٺ ڊ ڏ ڌ ڍ ڦ ڙ ۾).
+ *   Urdu, Punjabi  Noto Nastaliq Urdu — Nastaliq is the standard script style
+ *                  for Urdu and for Punjabi in Shahmukhi.
+ *   Pashto         Noto Naskh Arabic — Naskh, as Pashto is normally printed,
+ *                  covering the Pashto letters (ټ ډ ړ ږ ښ ګ ڼ ې ۍ څ ځ).
+ *
+ * Every family is limited to Arabic-script code points, so Latin brand names,
+ * chemical names and digits keep rendering in the site's own fonts.
+ * size-adjust evens out how large each face draws on the em.
+ */
+
+/* ── Sindhi: Lateef ─────────────────────────────────────────── */
+@font-face {
+  font-family: 'Sindhi Lateef';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  size-adjust: 135%;
+  src: url('@fontsource/lateef/files/lateef-arabic-400-normal.woff2') format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200C-200F, U+2E41, U+2E80;
+}
+@font-face {
+  font-family: 'Sindhi Lateef';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  size-adjust: 135%;
+  src: url('@fontsource/lateef/files/lateef-arabic-500-normal.woff2') format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200C-200F, U+2E41, U+2E80;
+}
+@font-face {
+  font-family: 'Sindhi Lateef';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  size-adjust: 135%;
+  src: url('@fontsource/lateef/files/lateef-arabic-600-normal.woff2') format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200C-200F, U+2E41, U+2E80;
+}
+@font-face {
+  font-family: 'Sindhi Lateef';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700 900;
+  size-adjust: 135%;
+  src: url('@fontsource/lateef/files/lateef-arabic-700-normal.woff2') format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200C-200F, U+2E41, U+2E80;
+}
+
+/* ── Urdu & Punjabi: Noto Nastaliq Urdu ─────────────────────── */
+@font-face {
+  font-family: 'Site Nastaliq';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url('@fontsource/noto-nastaliq-urdu/files/noto-nastaliq-urdu-arabic-400-normal.woff2') format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200C-200F, U+2E41, U+2E80;
+}
+@font-face {
+  font-family: 'Site Nastaliq';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url('@fontsource/noto-nastaliq-urdu/files/noto-nastaliq-urdu-arabic-500-normal.woff2') format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200C-200F, U+2E41, U+2E80;
+}
+@font-face {
+  font-family: 'Site Nastaliq';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url('@fontsource/noto-nastaliq-urdu/files/noto-nastaliq-urdu-arabic-600-normal.woff2') format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200C-200F, U+2E41, U+2E80;
+}
+@font-face {
+  font-family: 'Site Nastaliq';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700 900;
+  src: url('@fontsource/noto-nastaliq-urdu/files/noto-nastaliq-urdu-arabic-700-normal.woff2') format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200C-200F, U+2E41, U+2E80;
+}
+
+/* ── Pashto: Noto Naskh Arabic ──────────────────────────────── */
+@font-face {
+  font-family: 'Site Naskh';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  size-adjust: 108%;
+  src: url('@fontsource/noto-naskh-arabic/files/noto-naskh-arabic-arabic-400-normal.woff2') format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200C-200F, U+2E41, U+2E80;
+}
+@font-face {
+  font-family: 'Site Naskh';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  size-adjust: 108%;
+  src: url('@fontsource/noto-naskh-arabic/files/noto-naskh-arabic-arabic-500-normal.woff2') format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200C-200F, U+2E41, U+2E80;
+}
+@font-face {
+  font-family: 'Site Naskh';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  size-adjust: 108%;
+  src: url('@fontsource/noto-naskh-arabic/files/noto-naskh-arabic-arabic-600-normal.woff2') format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200C-200F, U+2E41, U+2E80;
+}
+@font-face {
+  font-family: 'Site Naskh';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700 900;
+  size-adjust: 108%;
+  src: url('@fontsource/noto-naskh-arabic/files/noto-naskh-arabic-arabic-700-normal.woff2') format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200C-200F, U+2E41, U+2E80;
+}
+
+/* ── Font selection per language ────────────────────────────── */
+html:lang(sd) {
+  --script-font: 'Sindhi Lateef';
+}
+html:is(:lang(ur), :lang(pa)) {
+  --script-font: 'Site Nastaliq';
+}
+html:lang(ps) {
+  --script-font: 'Site Naskh';
+}
+html:is(:lang(sd), :lang(ur), :lang(pa), :lang(ps)) {
+  --font-display: var(--script-font), 'Playfair Display', Georgia, serif;
+  --font-body: var(--script-font), 'DM Sans', system-ui, sans-serif;
+  --font-mono: var(--script-font), 'DM Mono', monospace;
+}
+
+/* Each language's name in the picker, in its own font whatever the page language. */
+body [lang|="sd"] { font-family: 'Sindhi Lateef', 'DM Sans', system-ui, sans-serif; }
+body :is([lang|="ur"], [lang|="pa"]) { font-family: 'Site Nastaliq', 'DM Sans', system-ui, sans-serif; }
+body [lang|="ps"] { font-family: 'Site Naskh', 'DM Sans', system-ui, sans-serif; }
+
+/* While a language's dictionary downloads, hide the page instead of flashing English. */
+html[data-translating] #root {
+  visibility: hidden;
+}
+
+/* ── Shared rules for right-to-left script ──────────────────── */
+
+/*
+ * Arabic-script letters join to each other: letter-spacing tears the joins
+ * apart, and uppercase/italic have no meaning (italic would be a fake slant).
+ */
+html[dir="rtl"] body *:not(svg):not(svg *) {
+  letter-spacing: normal !important;
+  text-transform: none !important;
+  font-style: normal !important;
+}
+
+/* Tiny uppercase labels were sized for Latin caps; Arabic script needs more. */
+html[dir="rtl"] :is(.section-eyebrow, .new-products-eyebrow, .product-detail__eyebrow, .new-product-card__meta, .nav__link, .footer__certs-label, .tag) {
+  font-size: max(1em, 14px);
+}
+
+html[dir="rtl"] :is(input, textarea, select) {
+  text-align: right;
+}
+
+/* Emails, phone numbers and URLs read left-to-right inside RTL text. */
+html[dir="rtl"] :is(a[href^="mailto:"], a[href^="tel:"], input[type="email"], input[type="tel"]) {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+/* Naskh (Sindhi, Pashto) needs more vertical room than the Latin display face. */
+html:is(:lang(sd), :lang(ps)) body {
+  line-height: 1.8;
+}
+html:is(:lang(sd), :lang(ps)) :is(h1, h2, h3, h4, h5, h6, .section-title, .hero__title) {
+  line-height: 1.45;
+}
+html:is(:lang(sd), :lang(ps)) :is(p, li, blockquote, .section-lead) {
+  line-height: 1.9;
+}
+
+/* Nastaliq (Urdu, Punjabi) is a tall, diagonal script: it needs even more. */
+html:is(:lang(ur), :lang(pa)) body {
+  line-height: 2.1;
+}
+/* !important: several components set tight heading line-heights for the
+   Latin display face, which makes Nastaliq's tall letters collide. */
+html:is(:lang(ur), :lang(pa)) :is(h1, h2, h3, h4, h5, h6, .section-title, .hero__title) {
+  line-height: 1.85 !important;
+}
+html:is(:lang(ur), :lang(pa)) :is(.section-eyebrow, .new-products-eyebrow, .product-detail__eyebrow) {
+  line-height: 2 !important;
+  margin-bottom: 0.5em;
+}
+/* Letters like ک rise far above the line in Nastaliq; keep them clear of the label above. */
+html:is(:lang(ur), :lang(pa)) :is(.section-eyebrow, .new-products-eyebrow, .product-detail__eyebrow) + :is(h1, h2, h3) {
+  margin-top: 0.9em;
+}
+html:is(:lang(ur), :lang(pa)) :is(p, li, blockquote, .section-lead) {
+  line-height: 2.2;
+}

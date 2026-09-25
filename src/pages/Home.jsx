@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useLang } from '../hooks/useLang';
 import { useTyping } from '../hooks/useTyping';
 import { TypingTitle } from '../components/TypingTitle';
+import { useTranslator } from '../i18n/translator/loader';
 import bgHeroVideo from '../assert/bg-hero.mp4';
 import nationwideMapImage from '../assert/nation wide image.png';
 import chickenDoctorImage from '../assert/chicken-doctor.webp';
@@ -320,7 +321,12 @@ function AnimatedNumber({ value, duration = 1600, format = (n) => n.toLocaleStri
 }
 
 // ── Split-text word reveal ───────────────────────────────────
-function SplitWords({ text, as: Tag = 'span', className }) {
+function SplitWords({ text: sourceText, as: Tag = 'span', className }) {
+  const { lang } = useLang();
+  const translate = useTranslator(lang);
+  // Translate the whole phrase before splitting: the page-level translator
+  // only sees the individual word spans, which it can't match.
+  const text = (translate && translate(sourceText)) ?? sourceText;
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
 
@@ -688,7 +694,7 @@ export default function Home() {
             ))}
           </div>
           <div className="products-section__footer">
-            <Link to="/products" className="btn btn--primary">{t('viewAll')} Products</Link>
+            <Link to="/products" className="btn btn--primary">{t('viewAllProducts')}</Link>
           </div>
         </div>
       </section>
