@@ -61,6 +61,9 @@
   transition: opacity 0.5s ease, transform 0.5s ease;
 }
 .phase-revealing .ribbon-content { opacity: 0; transform: translateY(-24px); }
+/* Right-to-left pages would anchor this box to the right edge, straight under
+   the ribbon (which starts top-right). Keep it top-left, clear of the ribbon. */
+[dir="rtl"] .ribbon-content { right: auto; text-align: right; }
 
 .ribbon-eyebrow {
   font-family: var(--font-body);
@@ -249,8 +252,41 @@
 }
 .ribbon-skip:hover { opacity: 1; color: var(--gold-light); }
 
+/* Language picker (shared LanguageMenu, restyled for the intro). */
+.ribbon-lang {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  z-index: 3;
+  cursor: auto;
+}
+.ribbon-lang .nav__lang-btn {
+  padding: 8px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(6px);
+  color: var(--white);
+  font-size: 14px;
+  cursor: pointer;
+}
+.ribbon-lang .nav__lang-btn:hover {
+  border-color: var(--gold-light);
+  background: rgba(255, 255, 255, 0.14);
+}
+.ribbon-lang .nav__lang-dropdown {
+  left: 0;
+  right: auto;
+  margin-top: 6px;
+  min-width: 170px;
+}
+.ribbon-lang .nav__lang-option {
+  cursor: pointer;
+}
+
 @media (max-width: 560px) {
   .ribbon-content { top: 8%; left: 6%; right: 6%; }
+  .ribbon-lang { top: 16px; left: 16px; }
   .ribbon-stage { height: 48px; }
   .ribbon-band, .ribbon-half { height: 13px; }
   .ribbon-scissors { font-size: 1.6rem; }

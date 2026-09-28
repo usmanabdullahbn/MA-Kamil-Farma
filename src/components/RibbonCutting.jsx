@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import LanguageMenu from './LanguageMenu';
 import './RibbonCutting.css';
 
 const SESSION_KEY = 'ma-kamil-ribbon-cut';
@@ -172,6 +173,12 @@ export default function RibbonCutting() {
             />
           ))}
         </div>
+      )}
+
+      {phase === 'idle' && (
+        // Top-left: the ribbon runs top-right to bottom-left, so reaching this
+        // corner never sweeps the pointer across it and cuts it by accident.
+        <LanguageMenu className="ribbon-lang" />
       )}
 
       {phase === 'idle' && (

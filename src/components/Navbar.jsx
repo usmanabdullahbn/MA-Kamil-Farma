@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useLang } from '../hooks/useLang';
-import { LANGUAGES as LANGS, getLanguage } from '../i18n/languages';
+import { LANGUAGES as LANGS } from '../i18n/languages';
+import LanguageMenu from './LanguageMenu';
 import farmaLogo from '../assert/Farma Logo.jpg';
 import productCataloguePdf from '../assert/E-Catalog (M. A. Kamil Farma).pdf';
 import './Navbar.css';
@@ -244,7 +245,6 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [megaOpen, setMegaOpen] = useState(null);
-  const [langOpen, setLangOpen] = useState(false);
   const { lang, setLang } = useLang();
   const location = useLocation();
   const navigate = useNavigate();
@@ -329,24 +329,7 @@ export default function Navbar() {
           {/* Right side */}
           <div className="nav__actions">
             {/* Language toggle */}
-            <div className="nav__lang" translate="no" onMouseEnter={() => setLangOpen(true)} onMouseLeave={() => setLangOpen(false)}>
-              <button className="nav__lang-btn" onClick={() => setLangOpen(!langOpen)}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
-                {getLanguage(lang).label}
-              </button>
-              {langOpen && (
-                <div className="nav__lang-dropdown">
-                  {LANGS.map(l => (
-                    <button key={l.code}
-                      className={`nav__lang-option ${lang === l.code ? 'active' : ''}`}
-                      onClick={() => { setLang(l.code); setLangOpen(false); }}>
-                      <span lang={l.htmlLang}>{l.label}</span>
-                      <span className="nav__lang-full" lang={l.htmlLang}>{l.name}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
+            <LanguageMenu />
 
             <Link to="/contact" className="btn btn--gold nav__cta">Get in Touch</Link>
           </div>
