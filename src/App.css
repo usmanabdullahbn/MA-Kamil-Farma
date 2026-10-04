@@ -1,1 +1,29 @@
 .app { display:flex; flex-direction:column; min-height:100vh; }
+
+.auto-scroll-control {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 1200;
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgba(255,255,255,.35);
+  border-radius: 50%;
+  color: #fff;
+  background: var(--navy);
+  box-shadow: 0 5px 18px rgba(0,31,64,.25);
+}
+
+.auto-scroll-control:hover { background: var(--navy-mid); }
+.auto-scroll-control--active { background: #9b342d; }
+.auto-scroll-control--active:hover { background: #7e2924; }
+.auto-scroll-control svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.auto-scroll-control--active svg rect { fill: currentColor; stroke: none; }
+
+@media (max-width: 600px) {
+  .auto-scroll-control { top: 16px; right: 12px; width: 28px; height: 28px; }
+  .auto-scroll-control svg { width: 15px; height: 15px; }
+}
