@@ -52,9 +52,14 @@ function AutoScrollControl() {
     let frame;
     let lastTick = 0;
     let switchTimer;
+    // Pause at the top of each page so its content (images, product lists) can load
+    // before we decide whether we've reached the bottom.
+    const startTimer = window.setTimeout(() => {
+      frame = window.requestAnimationFrame(scroll);
+    }, 1500);
     const scroll = (time) => {
       if (time - lastTick >= 30) {
-        window.scrollBy(0, 3);
+        window.scrollTo({ top: window.scrollY + 3, behavior: 'instant' });
         lastTick = time;
       }
       const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
@@ -62,13 +67,13 @@ function AutoScrollControl() {
         switchTimer = window.setTimeout(() => {
           pageIndex.current = (pageIndex.current + 1) % AUTO_SCROLL_PAGES.length;
           navigate(AUTO_SCROLL_PAGES[pageIndex.current]);
-        }, 900);
+        }, 1500);
         return;
       }
       frame = window.requestAnimationFrame(scroll);
     };
-    frame = window.requestAnimationFrame(scroll);
     return () => {
+      window.clearTimeout(startTimer);
       window.cancelAnimationFrame(frame);
       window.clearTimeout(switchTimer);
     };

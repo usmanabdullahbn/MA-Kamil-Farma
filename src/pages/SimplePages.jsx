@@ -556,7 +556,7 @@ export function Contact() {
             <h2>Our Offices</h2>
             {[
               { icon:'📍', label:'Registered Office', value:'H-17 SITE Phase 2, Karachi, Pakistan' },
-              { icon:'📞', label:'Phone', value:'+92 123 456 7890' },
+              { icon:'📞', label:'Phone', value:'0335 2249111' },
               { icon:'✉️', label:'Email', value:'info@makamilfarma.com' },
               { icon:'🕐', label:'Business Hours', value:'Mon–Sat, 9:00 AM – 6:00 PM (PKT)' },
             ].map(c => (
